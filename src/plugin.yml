@@ -2,7 +2,7 @@ name: LandClaim
 main: net.minespire.landclaim.LandClaim
 version: 1.0
 depend: [Vault, WorldGuard, WorldEdit]
-
+api-version: 1.13
 permissions:
   wglandclaim.*:
     default: op
@@ -45,3 +45,6 @@ commands:
   rg claimplot:
     description: Claims a small region, must be inside a town region that you own.
     usage: /region claimplot <region_name>
+  lcl:
+    description: Main Command
+    usage: /lcl

@@ -45,6 +45,7 @@ public class LandClaim extends JavaPlugin {
 
     public void onEnable() {
         this.getServer().getPluginManager().registerEvents((Listener)this.regionCreator, (Plugin)this);
+        this.getCommand("lcl").setExecutor(new MainCommand());
         if (!this.setupEconomy()) {
             log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", this.getDescription().getName()));
             this.getServer().getPluginManager().disablePlugin((Plugin)this);
