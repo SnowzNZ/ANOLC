@@ -2,12 +2,13 @@ package net.minespire.landclaim;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
@@ -17,10 +18,8 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.sk89q.worldedit.entity.Player;
-import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.commands.task.RegionLister;
+import com.sk89q.worldguard.bukkit.BukkitWorldGuardPlatform;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
@@ -28,11 +27,14 @@ public class GUI implements Listener{
 	 
     // Create a new inventory, with no owner, a size of nine, called example
     private final Inventory inv;
- 
-    public GUI(Player player) {
+    
+    public GUI(Player player, Location location) {
         inv = Bukkit.createInventory(null, 9, "Example");
-        World world = player.getWorld();
-        RegionManager region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(world);
+        
+        BukkitWorldGuardPlatform wgPlatform = (BukkitWorldGuardPlatform) WorldGuard.getInstance().getPlatform();
+        com.sk89q.worldedit.world.World weWorld = wgPlatform.getWorldByName(location.getWorld().getName());
+        
+        RegionManager region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(weWorld);
 
         Map<String, ProtectedRegion> regions = region.getRegions();
         
@@ -58,17 +60,14 @@ public class GUI implements Listener{
  
     // You can open the inventory with this
     public void openInventory(Player p) {
-    	((HumanEntity) p).openInventory(inv);
+    	p.openInventory(inv);
         return;
     }
  
     // Check for clicks on items
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        String invName = e.getInventory().getTitle();
-        if (!invName.equals(inv.getName())) {
-            return;
-        }
+
         if (e.getClick().equals(ClickType.NUMBER_KEY)){
              e.setCancelled(true); 
         }
@@ -81,6 +80,6 @@ public class GUI implements Listener{
         if (clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
 
         // Using slots click is a best option for your inventory click's
-        if (e.getRawSlot() == 10) ((HumanEntity)p).sendMessage("You clicked at slot " + 10);
+        if (e.getRawSlot() == 10) p.sendMessage("You clicked at slot " + 10);
     }
 }

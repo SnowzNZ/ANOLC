@@ -4,9 +4,10 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.sk89q.worldedit.entity.Player;
+
 
 
 public class MainCommand implements CommandExecutor {
@@ -17,7 +18,7 @@ public class MainCommand implements CommandExecutor {
             Player player = (Player)sender;
             
             
-            GUI gui = new GUI(player);
+            GUI gui = new GUI(player, player.getLocation());
             gui.openInventory(player);
             
             /*

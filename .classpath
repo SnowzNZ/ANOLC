@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/bradb/Downloads/Vault1.6.11 (1).jar"/>
-	<classpathentry kind="lib" path="C:/Users/bradb/Downloads/worldedit-bukkit-7.0.0-SNAPSHOT-dist (3).jar"/>
-	<classpathentry kind="lib" path="C:/Users/bradb/Downloads/worldguard-legacy-7.0.0-SNAPSHOT-dist (4).jar"/>
-	<classpathentry kind="lib" path="C:/Users/bradb/Downloads/Spigot-1.13.2-0c02b0c-20190425-0538.jar"/>
+	<classpathentry kind="lib" path="Resources/Spigot-1.14.2-baafee9-20190602-0956.jar"/>
+	<classpathentry kind="lib" path="Resources/Vault1.6.11.jar"/>
+	<classpathentry kind="lib" path="Resources/worldedit-bukkit-7.0.0-SNAPSHOT-dist.jar"/>
+	<classpathentry kind="lib" path="Resources/worldguard-legacy-7.0.0-SNAPSHOT-dist.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
