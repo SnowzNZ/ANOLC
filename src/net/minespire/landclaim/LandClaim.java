@@ -1,6 +1,8 @@
 package net.minespire.landclaim;
 
 
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.flags.Flag;
 import java.io.File;
 import java.util.HashMap;
@@ -28,6 +30,11 @@ public class LandClaim extends JavaPlugin {
     private Map<String, Flag<?>> flags = new HashMap();
     private Map<String, FlagCost> flagCosts = new HashMap<String, FlagCost>();
     private Map<String, Conversation> conversations = new HashMap<String, Conversation>();
+    public static LandClaim plugin;
+    public static WorldEdit we;
+    public static WorldGuard wg;
+    
+    public static Map<String, Claim> claimMap;
     public static Economy econ = null;
     private static boolean enablePlots = false;
     private static boolean autoExpand = false;
@@ -36,19 +43,23 @@ public class LandClaim extends JavaPlugin {
     private int minRegionWidth = 10;
     private int maxPlotWidth = 30;
     public ConversationFactory factory;
-    public CreateRegions regionCreator;
+    //public CreateRegions regionCreator;
 
     public LandClaim() {
         this.factory = new ConversationFactory((Plugin)this);
-        this.regionCreator = new CreateRegions(this);
+        //this.regionCreator = new CreateRegions(this);
     }
 
     public void onEnable() {
-        this.getServer().getPluginManager().registerEvents((Listener)this.regionCreator, (Plugin)this);
-        this.getCommand("lcl").setExecutor(new MainCommand());
-        if (!this.setupEconomy()) {
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", this.getDescription().getName()));
-            this.getServer().getPluginManager().disablePlugin((Plugin)this);
+        this.getCommand("land").setExecutor(new MainCommand());
+        plugin = this;
+        we = WorldEdit.getInstance();
+        wg = WorldGuard.getInstance();
+        
+        
+        if (!setupEconomy() ) {
+            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            getServer().getPluginManager().disablePlugin(this);
             return;
         }
         /*Flag<?>[] allFlags = DefaultFlag.getFlags();
@@ -164,19 +175,17 @@ public class LandClaim extends JavaPlugin {
         }
     }
 
-    public boolean setupEconomy() {
-        if (this.getServer().getPluginManager().getPlugin("Vault") == null) {
+    
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
-        RegisteredServiceProvider rsp = this.getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
             return false;
         }
-        econ = (Economy)rsp.getProvider();
-        if (econ != null) {
-            return true;
-        }
-        return false;
+        econ = rsp.getProvider();
+        return econ != null;
     }
 
     public void promptForConfirmation(Player player, double townCost) {
@@ -185,8 +194,13 @@ public class LandClaim extends JavaPlugin {
             this.conversations.remove(player.getName());
         }
         player.sendMessage((Object)ChatColor.GOLD + "This region will cost " + (Object)ChatColor.WHITE + "$" + townCost + (Object)ChatColor.GOLD + " to claim");
-        Conversation c = this.factory.withFirstPrompt((Prompt)new FirstPrompt(this, this.regionCreator, player)).withEscapeSequence("exit").withTimeout(15).thatExcludesNonPlayersWithMessage("close prompt").withLocalEcho(false).buildConversation((Conversable)player);
-        this.conversations.put(player.getName(), c);
-        c.begin();
+        //Conversation c = this.factory.withFirstPrompt((Prompt)new FirstPrompt(this, this.regionCreator, player)).withEscapeSequence("exit").withTimeout(15).thatExcludesNonPlayersWithMessage("close prompt").withLocalEcho(false).buildConversation((Conversable)player);
+       // this.conversations.put(player.getName(), c);
+        //c.begin();
+    }
+    
+    
+    public LandClaim getPlugin() {
+    	return plugin;
     }
 }

@@ -8,9 +8,9 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-
+/*
 public class FirstPrompt
-extends FixedSetPrompt {
+extends FixedSetPrompt {/*
     LandClaim plugin;
     CreateRegions regionCreator;
     Player player;
@@ -39,5 +39,5 @@ extends FixedSetPrompt {
         }
         return END_OF_CONVERSATION;
     }
-}
+}*/
 

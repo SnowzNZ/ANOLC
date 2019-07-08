@@ -4,7 +4,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="Resources/Spigot-1.14.2-baafee9-20190602-0956.jar"/>
 	<classpathentry kind="lib" path="Resources/Vault1.6.11.jar"/>
-	<classpathentry kind="lib" path="Resources/worldedit-bukkit-7.0.0-SNAPSHOT-dist.jar"/>
-	<classpathentry kind="lib" path="Resources/worldguard-legacy-7.0.0-SNAPSHOT-dist.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Brad/Downloads/worldedit-bukkit-7.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Brad/Downloads/worldguard-bukkit-7.0.1-beta-01.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
