@@ -4,47 +4,44 @@ version: 1.0
 depend: [Vault, WorldGuard, WorldEdit]
 api-version: 1.13
 permissions:
-  wglandclaim.*:
+  landclaim.*:
     default: op
     description: All WGLandClaim permissions (no restrictions or charges).
     children:
-      wglandclaim.claimplot: true
-      wglandclaim.bypass: true
-  wglandclaim.claimplot:
+      landclaim.claimplot: true
+      landclaim.bypass: true
+  landclaim.claimplot:
     description: Ability to claim a WGLandClaim plot and get charged
     default: true
-  wglandclaim.claimregion:
+  landclaim.claimregion:
     description: Ability to claim a WGLandClaim region and get charged
     default: false
-  wglandclaim.bypass.*:
+  landclaim.bypass.*:
     description: Bypasses costs and limits on WGLandClaim regions, plots, and flags
     default: false
     children:
-      wglandclaim.bypass.claim: true
-      wglandclaim.bypass.claimplot: true
-      wglandclaim.bypass.flags: true
-  wglandclaim.bypass.claim:
+      landclaim.bypass.claim: true
+      landclaim.bypass.claimplot: true
+      landclaim.bypass.flags: true
+  landclaim.bypass.claim:
     description: Bypass cost and limits of region claiming.
     default: false
-  wglandclaim.bypass.claimplot:
+  landclaim.bypass.claimplot:
     description: Bypass cost and limits of plot claiming.
     default: false
-  wglandclaim.bypass.flags:
+  landclaim.bypass.flags:
     description: Bypass costs of setting flags.
     default: false
+  landclaim.regions.*:
+    description: Can have unlimited number of claims
+    default: false
+  landclaim.plots.*:
+    description: Can have unlimited number of plots
+    default: false
 commands:
-  region claimtown:
-    description: Claims a large region.
-    usage: /region claimtown <region_name>
-  rg claimtown:
-    description: Claims a large region.
-    usage: /region claimtown <region_name>
-  region claimplot:
-    description: Claims a small region, must be inside a town region that you own.
-    usage: /region claimplot <region_name>
-  rg claimplot:
-    description: Claims a small region, must be inside a town region that you own.
-    usage: /region claimplot <region_name>
-  lcl:
-    description: Main Command
-    usage: /lcl
+  lc:
+    description: Base command for land claim
+    usage: Type /lc claim <regionName> or /lc claimplot <plotName>
+  lc list:
+    description: Base command for land claim
+    usage: Type /lc claim <regionName> or /lc claimplot <plotName>
