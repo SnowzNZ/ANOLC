@@ -46,4 +46,18 @@ public class Claimer {
 		} else return false;
 		
 	}
+	
+	public static boolean permissionToClaimInWorld(Player player) {
+		if(player.hasPermission("landclaim.world.*")) return true;
+    	Set<PermissionAttachmentInfo> playerPermissions = player.getEffectivePermissions();
+    	for(PermissionAttachmentInfo perm : playerPermissions) {
+    		if(perm.getPermission().startsWith("landclaim.world.")) {
+    			String worldPerm = perm.getPermission().substring(16);
+    			if(worldPerm.equals(player.getWorld().getName().toString())) {
+    				return true;
+    			}
+    		}	
+    	}
+    	return false;
+	}
 }

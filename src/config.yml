@@ -6,11 +6,9 @@ Claims:
     MaxSize: 10000
     MaxLWRatio: 4          # This determines the maximum ratio of the longest side to the shortest. Example 400 blocks x 100 blocks = 4. This prevents impractically shaped regions.
     PricePerBlock: 1.5     # Area x PricePerBlock = RegionCost
-    MaxClaims: 3           # You can bypass this with the permission landclaim.regions.# (landclaim.claims.5 for example)
   Plots:
     PricePerBlock: 0.1     # Volume x PricePerBlock = PlotCost
     BaseCost: 500          # The lowest price for a plot no matter how small.
-    MaxPlotsTotal: 3       # Max plots a single player can have overall. Bypass with landclaim.plots.# (landclaim.plotstotal.5 for example)
 GUI:
   Slots: 27
   FillerItem: GLASS_PANE
@@ -19,14 +17,14 @@ GUI:
     ClaimItem:
       Material: GRASS_BLOCK
       Slot: 14
-      ItemName: 'Are You Sure You Want To Claim This Region?'
+      ItemName: '&3Are You Sure You Want To Claim This Region?'
       Lore: '&5Region Name: &f{RegionName}|&5Region Cost: &f{RegionCost}|&5Region Size: &f{RegionLength} x {RegionWidth}|&aClick to confirm purchase.'# Separate lore into new lines with the pipe symbol (|).
   ClaimPlot:
     Title: '        &3Confirm Plot Claim'
     ClaimItem:
       Material: DIRT
       Slot: 14
-      ItemName: 'Are You Sure You Want To Claim This Plot?'
+      ItemName: '&3Are You Sure You Want To Claim This Plot?'
       Lore: '&5Region Name: &f{RegionName}|&5Region Cost: &f{RegionCost}|&5Region Size: &f{RegionLength} x {RegionHeight} x {RegionWidth}|&aClick to confirm purchase.'
   ClaimsList:
     Title: '      &3Your Regions and Plots'

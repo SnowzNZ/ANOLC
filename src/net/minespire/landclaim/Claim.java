@@ -79,6 +79,7 @@ public class Claim {
 			return false;
 		}
 		
+		
 		minPoint = selection.getMinimumPoint();
 		maxPoint = selection.getMaximumPoint();
 		

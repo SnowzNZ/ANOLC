@@ -22,7 +22,8 @@ public class InventoryClickListener implements Listener {
 		Player player = (Player) clickEvent.getWhoClicked();
 		ItemStack clickedItem = clickEvent.getCurrentItem();
 		
-		if((clickedItem != null) && ((clickedItem.getItemMeta().getDisplayName().equals(LandClaim.plugin.getConfig().getString("GUI.ClaimRegion.ClaimItem.ItemName")) || (clickedItem.getItemMeta().getDisplayName().equals(LandClaim.plugin.getConfig().getString("GUI.ClaimPlot.ClaimItem.ItemName")))))){
+		if((clickedItem != null) && ((clickedItem.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', LandClaim.plugin.getConfig().getString("GUI.ClaimRegion.ClaimItem.ItemName"))) 
+				|| (clickedItem.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', LandClaim.plugin.getConfig().getString("GUI.ClaimPlot.ClaimItem.ItemName"))))))){
 			Claim claim = LandClaim.claimMap.get(player.getUniqueId().toString());
 			claim.saveClaim();
 			//DeedListener deed = new DeedListener(player, claim.getRegionName(), claim.getWorld().getName(), true);

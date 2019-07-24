@@ -38,6 +38,10 @@ public class MainCommand implements CommandExecutor {
     					player.sendMessage("You don't have permission to claim or have claimed too many regions!");
     					return true;
     				}
+    				if(!Claimer.permissionToClaimInWorld(player)) {
+    					player.sendMessage("You don't have permission to claim in this world!");
+    					return true;
+    				}
                     Claim claim = new Claim(player, args[1]);
                     if(!claim.createClaim()) return true;
                     if(claim.overlapsUnownedRegion()) {
@@ -71,6 +75,10 @@ public class MainCommand implements CommandExecutor {
     				if(args[1]==null) return false;
     				if(!Claimer.permissionToClaimPlot(player)) {
     					player.sendMessage("You don't have permission to claim or have claimed too many plots!");
+    					return true;
+    				}
+    				if(!Claimer.permissionToClaimInWorld(player)) {
+    					player.sendMessage("You don't have permission to claim in this world!");
     					return true;
     				}
                     Claim claim = new Claim(player, args[1], true);
@@ -153,7 +161,11 @@ public class MainCommand implements CommandExecutor {
                     gui.openGUI();
     			} else sender.sendMessage("You must be a player to use that command!");
     			break;
-			case "reload": 
+			case "reload":
+				if((sender instanceof Player) && !player.hasPermission("landclaim.reload")) {
+					sender.sendMessage("You don't have permission to do that!");
+					return true;
+				}
 				LandClaim.plugin.reloadConfig();
 				LandClaim.plugin.getCommand("lc").setTabCompleter(new CommandCompleter());
 				LandClaim.plugin.getCommand("lc").setExecutor(new MainCommand());

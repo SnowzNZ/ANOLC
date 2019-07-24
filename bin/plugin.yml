@@ -10,38 +10,28 @@ permissions:
     children:
       landclaim.claimplot: true
       landclaim.bypass: true
+  landclaim.reload:
+    description: Ability to reload LandClaim
+    default: false
+  landclaim.list:
+    description: List your regions and plots
+    default: true
   landclaim.claimplot:
     description: Ability to claim a WGLandClaim plot and get charged
     default: true
   landclaim.claimregion:
     description: Ability to claim a WGLandClaim region and get charged
-    default: false
-  landclaim.bypass.*:
-    description: Bypasses costs and limits on WGLandClaim regions, plots, and flags
-    default: false
-    children:
-      landclaim.bypass.claim: true
-      landclaim.bypass.claimplot: true
-      landclaim.bypass.flags: true
-  landclaim.bypass.claim:
-    description: Bypass cost and limits of region claiming.
-    default: false
-  landclaim.bypass.claimplot:
-    description: Bypass cost and limits of plot claiming.
-    default: false
-  landclaim.bypass.flags:
-    description: Bypass costs of setting flags.
-    default: false
+    default: true
   landclaim.regions.*:
     description: Can have unlimited number of claims
     default: false
   landclaim.plots.*:
     description: Can have unlimited number of plots
     default: false
+  landclaim.world.*:
+    description: Can claim in any world
+    default: false
 commands:
   lc:
-    description: Base command for land claim
-    usage: Type /lc claim <regionName> or /lc claimplot <plotName>
-  lc list:
     description: Base command for land claim
     usage: Type /lc claim <regionName> or /lc claimplot <plotName>
