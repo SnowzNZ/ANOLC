@@ -45,6 +45,7 @@ public class LandClaim extends JavaPlugin {
     }
     public void onEnable() {
         plugin = this;
+        GUI.inventoryNames.add("");
         getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
         //getServer().getPluginManager().registerEvents(new DeedListener(), this);

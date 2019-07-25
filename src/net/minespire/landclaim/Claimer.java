@@ -53,7 +53,7 @@ public class Claimer {
     	for(PermissionAttachmentInfo perm : playerPermissions) {
     		if(perm.getPermission().startsWith("landclaim.world.")) {
     			String worldPerm = perm.getPermission().substring(16);
-    			if(worldPerm.equals(player.getWorld().getName().toString())) {
+    			if(worldPerm.equalsIgnoreCase((player.getWorld().getName().toString()))) {
     				return true;
     			}
     		}	

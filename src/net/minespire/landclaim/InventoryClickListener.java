@@ -15,9 +15,14 @@ public class InventoryClickListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onInventoryClick(InventoryClickEvent clickEvent) {
+		boolean LandClaimGUI = false;
 		for(String title : GUI.inventoryNames) {
-			if(clickEvent.getWhoClicked().getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', title))) clickEvent.setCancelled(true);
+			if(clickEvent.getWhoClicked().getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', title))) {
+				clickEvent.setCancelled(true);
+				LandClaimGUI = true;
+			}
 		}
+		if(!LandClaimGUI) return;
 			
 		Player player = (Player) clickEvent.getWhoClicked();
 		ItemStack clickedItem = clickEvent.getCurrentItem();

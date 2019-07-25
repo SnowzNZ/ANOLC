@@ -1,4 +1,4 @@
-Version: 1.0.0 # Do not change this
+Version: 1.0.1 # Do not change this
   
 Claims:
   Regions:
@@ -18,7 +18,7 @@ GUI:
       Material: GRASS_BLOCK
       Slot: 14
       ItemName: '&3Are You Sure You Want To Claim This Region?'
-      Lore: '&5Region Name: &f{RegionName}|&5Region Cost: &f{RegionCost}|&5Region Size: &f{RegionLength} x {RegionWidth}|&aClick to confirm purchase.'# Separate lore into new lines with the pipe symbol (|).
+      Lore: '&5Region Name: &f{RegionName}|&5Region Cost: &f{RegionCost}|&5Region Size: &f{RegionLength} x {RegionHeight} x {RegionWidth}|&aClick to confirm purchase.'# Separate lore into new lines with the pipe symbol (|).
   ClaimPlot:
     Title: '        &3Confirm Plot Claim'
     ClaimItem:
