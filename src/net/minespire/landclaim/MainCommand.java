@@ -2,7 +2,6 @@ package net.minespire.landclaim;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,7 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
@@ -63,10 +61,6 @@ public class MainCommand implements CommandExecutor {
             				.setSlot(LandClaim.plugin.getConfig().getInt("GUI.ClaimRegion.ClaimItem.Slot")-1)
             				.setMeta());
             		
-            		int slotsToFill = gui.getNumSlots()-gui.getNumGUIItems();
-            		for(int x = 0; x < slotsToFill; x++) {
-            			gui.addGUIItem(gui.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString("GUI.FillerItem"))));
-            		}
                     gui.openGUI();
     			} else sender.sendMessage("You must be a player to use that command!");
     			break;
@@ -106,10 +100,6 @@ public class MainCommand implements CommandExecutor {
             				.setSlot(LandClaim.plugin.getConfig().getInt("GUI.ClaimPlot.ClaimItem.Slot")-1)
             				.setMeta());
             		
-            		int slotsToFill = gui.getNumSlots()-gui.getNumGUIItems();
-            		for(int x = 0; x < slotsToFill; x++) {
-            			gui.addGUIItem(gui.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString("GUI.FillerItem"))));
-            		}
                     gui.openGUI();
     			} else sender.sendMessage("You must be a player to use that command!");
     			break;
@@ -128,6 +118,7 @@ public class MainCommand implements CommandExecutor {
             		List<String> regionList = new ArrayList<>();
             		
             		for(ProtectedRegion rg : Claim.getClaimListOwner(player, false)) {
+            			Claim.saveClaimToPlayerMap(player, rg.getId());
             			regionList.add(ChatColor.DARK_AQUA + rg.getId() + ChatColor.WHITE + rg.getMinimumPoint().toString() + rg.getMaximumPoint().toString());
             		}
             		gui.addGUIItem(ownerRegions.setDisplayName(LandClaim.plugin.getConfig().getString("GUI.ClaimsList.OwnerRegions.ItemName"))
@@ -135,6 +126,7 @@ public class MainCommand implements CommandExecutor {
             		regionList.clear();
             		
             		for(ProtectedRegion rg : Claim.getClaimListMember(player, false)) {
+            			Claim.saveClaimToPlayerMap(player, rg.getId());
             			regionList.add(ChatColor.DARK_AQUA + rg.getId() + ChatColor.WHITE + rg.getMinimumPoint().toString() + rg.getMaximumPoint().toString());
             		}
             		gui.addGUIItem(memberRegions.setDisplayName(LandClaim.plugin.getConfig().getString("GUI.ClaimsList.MemberRegions.ItemName"))
@@ -142,6 +134,7 @@ public class MainCommand implements CommandExecutor {
             		regionList.clear();
             		
             		for(ProtectedRegion rg : Claim.getClaimListOwner(player, true)) {
+            			Claim.saveClaimToPlayerMap(player, rg.getId());
             			regionList.add(ChatColor.DARK_AQUA + rg.getId() + ChatColor.WHITE + rg.getMinimumPoint().toString() + rg.getMaximumPoint().toString());
             		}
             		gui.addGUIItem(ownerPlots.setDisplayName(LandClaim.plugin.getConfig().getString("GUI.ClaimsList.OwnerPlots.ItemName"))
@@ -149,16 +142,13 @@ public class MainCommand implements CommandExecutor {
             		regionList.clear();
             		
             		for(ProtectedRegion rg : Claim.getClaimListMember(player, true)) {
+            			Claim.saveClaimToPlayerMap(player, rg.getId());
             			regionList.add(ChatColor.DARK_AQUA + rg.getId() + ChatColor.WHITE + rg.getMinimumPoint().toString() + rg.getMaximumPoint().toString());
             		}
             		gui.addGUIItem(memberPlots.setDisplayName(LandClaim.plugin.getConfig().getString("GUI.ClaimsList.MemberPlots.ItemName"))
             				.setLore(regionList).setMeta().setSlot(LandClaim.plugin.getConfig().getInt("GUI.ClaimsList.MemberPlots.Slot")-1));
-            		
-            		int slotsToFill = gui.getNumSlots()-gui.getNumGUIItems();
-            		for(int x = 0; x < slotsToFill; x++) {
-            			gui.addGUIItem(gui.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString("GUI.FillerItem"))));
-            		}
-                    gui.openGUI();
+            		GUI.saveGUIToPlayerMap(player, gui, true);
+            		gui.openGUI();
     			} else sender.sendMessage("You must be a player to use that command!");
     			break;
 			case "reload":
@@ -207,6 +197,5 @@ public class MainCommand implements CommandExecutor {
 		}
 
 	}
-
 	
 }

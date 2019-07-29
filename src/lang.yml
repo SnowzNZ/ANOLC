@@ -1,0 +1,9 @@
+Verion: 1.0
+
+SmallRegion: 'Your selection is too small!
+LargeRegion: 'Your selection is too large!'
+ProportionRequirements: 'Your selection doesn't meet proportion requirements!'
+NotEnoughMoney: 'You don't have {RegionCost} to claim this region'
+RegionOverlap: 'Your selection overlaps a region belonging to someone else!'
+PlotInsideRegion: 'You may only claim a plot inside a region that you own!'
+WorldPermission: 'You don't have permission to claim in this world!'

@@ -1,8 +1,11 @@
 package net.minespire.landclaim;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,23 +15,33 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import net.minespire.landclaim.GUI.GUIItem;
+
 public class GUI{
 	private Inventory inventory;
 	//private String rgName;
 	private Player player;
 	private int guiSlots;
 	//private Claim claim;
+	//public Map<String,GUI> playerMenus = new HashMap<>();
+	public static Map<String, List<GUI>> playersGUIMap = new HashMap<>();
 	private List<GUIItem> guiItems;
 	public static List<String> inventoryNames = new ArrayList<>();;
 
-	
+		
 	public GUI(int guiSlots) {
 		int slotCountModifier = guiSlots%9;
 		if(slotCountModifier!=0) {
 			this.guiSlots = (9-slotCountModifier)+guiSlots;
 		} else this.guiSlots = guiSlots;
-		
+		//playerMenus.put("list", null);
+		//playerMenus.put("listByCategory", null);
+		//playerMenus.put("editClaim", null);
 		guiItems = new ArrayList<>();
+	}
+	
+	public GUI() {
+		this(LandClaim.plugin.getConfig().getInt("GUI.Slots"));
 	}
 	
 	public int getNumSlots() {
@@ -46,6 +59,7 @@ public class GUI{
 	
 	public GUI setPlayer(Player player) {
 		this.player = player;
+		//playersGUIMap.put(player.getUniqueId().toString(), playerMenus);
 		return this;
 	}
 	
@@ -60,8 +74,17 @@ public class GUI{
 		return this;
 	}
 	
+	private void createFillerItems() {
+		int slotsToFill = this.getNumSlots()-this.getNumGUIItems();
+		for(int x = 0; x < slotsToFill; x++) {
+			this.addGUIItem(this.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString("GUI.FillerItem"))).setDisplayName(" ").setMeta());
+		}
+	}
+	
 	
 	private void setItemsToSlots() {
+		if(inventory.firstEmpty() < 0) return;
+		createFillerItems();
 		Iterator<GUIItem> iterator = guiItems.iterator();
 		List<GUIItem> fillerItems = new ArrayList<>();
 		GUIItem tempHolder;
@@ -72,7 +95,8 @@ public class GUI{
 			} else fillerItems.add(tempHolder);
 		}
 		iterator = fillerItems.iterator();
-		while(iterator.hasNext()) {
+		while(iterator.hasNext()) 
+		{
 			inventory.setItem(inventory.firstEmpty(), iterator.next().item);
 		}
 	}
@@ -124,6 +148,20 @@ public class GUI{
 			}
 			return loreList;
 		}
+	}
+	
+	public static void saveGUIToPlayerMap(Player player, GUI gui, boolean startNewList) {
+		List<GUI> playerGUIList;
+		if(!GUI.playersGUIMap.containsKey(player.getUniqueId().toString()) || startNewList == true) {
+			playerGUIList = new ArrayList<>();
+			playerGUIList.add(gui);
+			GUI.playersGUIMap.put(player.getUniqueId().toString(), playerGUIList);
+		} else {
+			playerGUIList = GUI.playersGUIMap.get(player.getUniqueId().toString());
+			playerGUIList.add(gui);
+			GUI.playersGUIMap.put(player.getUniqueId().toString(), playerGUIList);
+		}
+		
 	}
 	
 }

@@ -2,6 +2,7 @@ package net.minespire.landclaim;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +17,6 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.entity.Player;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.regions.RegionOperationException;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.domains.DefaultDomain;
@@ -40,6 +40,7 @@ public class Claim {
 	private int claimVolume;
 	private boolean isPlot = false;
 	private boolean regionAlreadyExists = false;
+	public static Map<String,List<String>> playerClaimsMap = new HashMap<>();
 	
 	public Claim(org.bukkit.entity.Player player, String rgName) {
 		this.player = BukkitAdapter.adapt(player);
@@ -104,6 +105,10 @@ public class Claim {
 		calculateClaimArea();
 		calculateClaimCost();
 		return true;
+	}
+	
+	public void deleteRegion() {
+		rgManager.removeRegion(rgName);
 	}
 	
 	public Set<UUID> getRegionOwners(String regionName, String worldName) {
@@ -219,6 +224,38 @@ public class Claim {
 			
 	}
 	
+	public static boolean regionIsPlot(org.bukkit.World bukkitWorld, String regionName) {
+		World world = BukkitAdapter.adapt(bukkitWorld);
+		RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+		Collection<ProtectedRegion> regionCollection = rgManager.getRegions().values();
+		for(ProtectedRegion rg : regionCollection) {
+			if(rg.getId().equals(regionName)) {
+				if(rg.getFlag(LandClaim.LandClaimRegionFlag)!=null) {
+					if(rg.getFlag(LandClaim.LandClaimRegionFlag).equals("plot")) return true;
+				} else return false;
+				
+			}
+		}
+		return false;
+	}
+	
+	public static String playerIsOwnerOrMember(org.bukkit.entity.Player player, String regionName) {
+		World world = BukkitAdapter.adapt(player.getWorld());
+		RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+		Collection<ProtectedRegion> regionCollection = rgManager.getRegions().values();
+		for(ProtectedRegion rg : regionCollection) {
+			if(rg.getOwners().contains(player.getUniqueId())) return "Owner";
+			else if(rg.getMembers().contains(player.getUniqueId())) return "Member";
+		}
+		return null;
+	}
+	
+	public static void removeRegion(org.bukkit.entity.Player player, String regionName) {
+		World world = BukkitAdapter.adapt(player.getWorld());
+		RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+		rgManager.removeRegion(regionName);
+	}
+	
 	public static String parsePlaceholders(String string, Claim claim) {
 		string = string.replace("{RegionCost}",  String.format("$%.2f", claim.getClaimCost()));
 		string = string.replace("{RegionSize}", String.valueOf(claim.getClaimArea()));
@@ -301,6 +338,19 @@ public class Claim {
 	
 	public boolean isPlot() {
 		return isPlot;
+	}
+	
+	public static void saveClaimToPlayerMap(org.bukkit.entity.Player player, String claim) {
+		List<String> playerClaimList;
+		if(!playerClaimsMap.containsKey(player.getUniqueId().toString())) {
+			playerClaimList = new ArrayList<>();
+			playerClaimList.add(claim);
+			playerClaimsMap.put(player.getUniqueId().toString(), playerClaimList);
+		} else {
+			playerClaimList = playerClaimsMap.get(player.getUniqueId().toString());
+			playerClaimList.add(claim);
+			playerClaimsMap.put(player.getUniqueId().toString(), playerClaimList);
+		}
 	}
 	
 }
