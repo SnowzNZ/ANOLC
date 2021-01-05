@@ -1,8 +1,7 @@
 package net.minespire.landclaim;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,11 +9,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.tags.ItemTagType;
 
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import java.util.List;
 
 
 public class InventoryClickListener implements Listener {
@@ -144,10 +142,11 @@ public class InventoryClickListener implements Listener {
 		String OwnerPlotsInventoryName = ChatColor.translateAlternateColorCodes('&', LandClaim.plugin.getConfig().getString("GUI.ClaimsList.OwnerPlots.ItemName"));   
 		String MemberPlotsInventoryName = ChatColor.translateAlternateColorCodes('&', LandClaim.plugin.getConfig().getString("GUI.ClaimsList.MemberPlots.ItemName"));   
 		String openInventoryName = player.getOpenInventory().getTitle();
-		if((clickedItem != null) && ((openInventoryName.equals(OwnerRegionsInventoryName) /*|| openInventoryName.equals(MemberRegionsInventoryName)*/ ||
-				openInventoryName.equals(OwnerPlotsInventoryName) /*|| openInventoryName.equals(MemberPlotsInventoryName)*/))){
+		if((clickedItem != null) && ((openInventoryName.equals(OwnerRegionsInventoryName) || openInventoryName.equals(OwnerPlotsInventoryName)))){
 			String clickedItemName = clickedItem.getItemMeta().getDisplayName();
-			if(Claim.playerClaimsMap.get(player.getUniqueId().toString()).contains(clickedItemName)) {
+			List<String> claimList = Claim.playerClaimsMap.get(player.getUniqueId().toString());
+			if(claimList != null && claimList.contains(clickedItemName)) {
+				Bukkit.broadcastMessage(clickedItemName);
 				GUI gui = new GUI();
 				gui.setInventory("Edit " + clickedItemName).setPlayer(player);
 				GUI.GUIItem regionGUIItem = null, backButtonItem, deleteButtonItem, addMemberButtonItem, addOwnerButtonItem;
