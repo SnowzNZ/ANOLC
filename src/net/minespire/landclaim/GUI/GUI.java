@@ -1,12 +1,7 @@
-package net.minespire.landclaim;
+package net.minespire.landclaim.GUI;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import net.minespire.landclaim.Claim.Claim;
+import net.minespire.landclaim.LandClaim;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,7 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.minespire.landclaim.GUI.GUIItem;
+import java.util.*;
 
 public class GUI{
 	private Inventory inventory;
@@ -80,7 +75,20 @@ public class GUI{
 			this.addGUIItem(this.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString("GUI.FillerItem"))).setDisplayName(" ").setMeta());
 		}
 	}
-	
+
+	public static void promptForRemoval(String playerName){
+		if(Claim.awaitingRemovalConfirmation.containsKey(playerName)){
+			GUI gui = new GUI(27);
+			gui.setPlayer(Bukkit.getPlayer(playerName));
+			gui.setInventory("Region Removal");
+			GUIItem button = gui.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString("GUI.RemoveClaimButton.Material")));
+			button.setDisplayName("Remove " + Claim.awaitingRemovalConfirmation.get(playerName).getId() + "?");
+			button.setLore(ChatColor.RED + "Warning:" + ChatColor.WHITE + " This cannot be undone");
+			button.setSlot(13).setMeta();
+			gui.addGUIItem(button);
+			gui.openGUI();
+		}
+	}
 	
 	private void setItemsToSlots() {
 		if(inventory.firstEmpty() < 0) return;

@@ -2,7 +2,7 @@ name: LandClaim
 main: net.minespire.landclaim.LandClaim
 version: 1.1.0
 depend: [Vault, WorldGuard, WorldEdit]
-api-version: 1.13
+api-version: 1.16
 permissions:
   landclaim.*:
     default: op
@@ -21,6 +21,9 @@ permissions:
     default: true
   landclaim.claimregion:
     description: Ability to claim a WGLandClaim region and get charged
+    default: true
+  landclaim.remove:
+    description: Remove your own regions
     default: true
   landclaim.regions.*:
     description: Can have unlimited number of claims

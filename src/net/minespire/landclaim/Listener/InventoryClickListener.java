@@ -1,7 +1,9 @@
-package net.minespire.landclaim;
+package net.minespire.landclaim.Listener;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import org.bukkit.Bukkit;
+import net.minespire.landclaim.Claim.Claim;
+import net.minespire.landclaim.GUI.GUI;
+import net.minespire.landclaim.LandClaim;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,7 +35,7 @@ public class InventoryClickListener implements Listener {
 		ItemStack clickedItem = clickEvent.getCurrentItem();
 		
 		//Click to create region or plot
-		if((clickedItem != null) && ((clickedItem.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', LandClaim.plugin.getConfig().getString("GUI.ClaimRegion.ClaimItem.ItemName"))) 
+		if((clickedItem != null) && ((clickedItem.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', LandClaim.plugin.getConfig().getString("GUI.ClaimRegion.ClaimItem.ItemName")))
 				|| (clickedItem.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', LandClaim.plugin.getConfig().getString("GUI.ClaimPlot.ClaimItem.ItemName"))))))){
 			Claim claim = LandClaim.claimMap.get(player.getUniqueId().toString());
 			claim.saveClaim();
@@ -119,10 +121,10 @@ public class InventoryClickListener implements Listener {
 			String regionName = clickedItem.getItemMeta().getDisplayName().replace("Remove ", "");
 			GUI.GUIItem confirmDeleteButton, backButton;
 			gui.setInventory("Confirm Remove Claim").setPlayer(player);
-			confirmDeleteButton = gui.new GUIItem(Material.STRUCTURE_VOID);
-			backButton = gui.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString("GUI.BackButton.Material")));
+			confirmDeleteButton = gui.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString("GUI.RemoveClaimButton.Material")));
+			//backButton = gui.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString("GUI.BackButton.Material")));
 			gui.addGUIItem(confirmDeleteButton.setDisplayName("Are you sure you want to remove " + regionName).setMeta().setSlot(gui.getNumSlots()/2));
-			gui.addGUIItem(backButton.setDisplayName(LandClaim.plugin.getConfig().getString("GUI.BackButton.ItemName")).setMeta().setSlot(gui.getNumSlots()-5));
+			//gui.addGUIItem(backButton.setDisplayName(LandClaim.plugin.getConfig().getString("GUI.BackButton.ItemName")).setMeta().setSlot(gui.getNumSlots()-5));
 			GUI.saveGUIToPlayerMap(player, gui, false);
 			gui.openGUI();
 			return;
@@ -130,9 +132,7 @@ public class InventoryClickListener implements Listener {
 		
 		//Confirm Delete Button
 		if((clickedItem != null) && ((clickedItem.getItemMeta().getDisplayName().startsWith("Are you sure you want to remove")))){
-			String regionName = clickedItem.getItemMeta().getDisplayName().replace("Are you sure you want to remove ", "");
-			Claim.removeRegion(player, regionName);
-			player.sendMessage("You removed the claim " + regionName + ".");
+			Claim.removeRegion(player);
 			player.getOpenInventory().close();
 		}
 		
@@ -146,7 +146,6 @@ public class InventoryClickListener implements Listener {
 			String clickedItemName = clickedItem.getItemMeta().getDisplayName();
 			List<String> claimList = Claim.playerClaimsMap.get(player.getUniqueId().toString());
 			if(claimList != null && claimList.contains(clickedItemName)) {
-				Bukkit.broadcastMessage(clickedItemName);
 				GUI gui = new GUI();
 				gui.setInventory("Edit " + clickedItemName).setPlayer(player);
 				GUI.GUIItem regionGUIItem = null, backButtonItem, deleteButtonItem, addMemberButtonItem, addOwnerButtonItem;

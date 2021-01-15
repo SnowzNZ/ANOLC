@@ -1,8 +1,10 @@
-package net.minespire.landclaim;
+package net.minespire.landclaim.Command;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import net.minespire.landclaim.Claim.Claim;
+import net.minespire.landclaim.Claim.Claimer;
+import net.minespire.landclaim.GUI.GUI;
+import net.minespire.landclaim.LandClaim;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -10,7 +12,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 
 public class MainCommand implements CommandExecutor {
@@ -32,11 +37,11 @@ public class MainCommand implements CommandExecutor {
     		case "claim": 
     			if (player != null) {
     				if(args[1]==null) return false;
-    				if(!Claimer.permissionToClaimRegion(player)) {
+    				if(!Claimer.permissionToClaimRegion(player) && !player.isOp()) {
     					player.sendMessage("You don't have permission to claim or have claimed too many regions!");
     					return true;
     				}
-    				if(!Claimer.permissionToClaimInWorld(player)) {
+    				if(!Claimer.permissionToClaimInWorld(player) && !player.isOp()) {
     					player.sendMessage("You don't have permission to claim in this world!");
     					return true;
     				}
@@ -47,7 +52,7 @@ public class MainCommand implements CommandExecutor {
                     	return true;
                     }
                     if(!meetsClaimLimits(claim)) return true;
-                    if(LandClaim.econ.getBalance(player)<claim.getClaimCost()) {
+                    if(LandClaim.econ.getBalance(player) < claim.getClaimCost()) {
                     	player.sendMessage("You don't have enough money to claim this region for $" + claim.getClaimCost());
                     	return true;
                     }
@@ -67,11 +72,11 @@ public class MainCommand implements CommandExecutor {
     		case "claimplot": 
     			if (player != null) {
     				if(args[1]==null) return false;
-    				if(!Claimer.permissionToClaimPlot(player)) {
+    				if(!Claimer.permissionToClaimPlot(player) && !player.isOp()) {
     					player.sendMessage("You don't have permission to claim or have claimed too many plots!");
     					return true;
     				}
-    				if(!Claimer.permissionToClaimInWorld(player)) {
+    				if(!Claimer.permissionToClaimInWorld(player) && !player.isOp()) {
     					player.sendMessage("You don't have permission to claim in this world!");
     					return true;
     				}
@@ -105,7 +110,10 @@ public class MainCommand implements CommandExecutor {
     			break;
     		case "list": 
     			if (player != null) {
-    				if(!player.hasPermission("landclaim.list")) return true;
+    				if(!player.hasPermission("landclaim.list") && !player.isOp()){
+    					player.sendMessage(ChatColor.RED + "You don't have permission to use that command.");
+    					return true;
+					}
     				
             		GUI gui = new GUI(LandClaim.plugin.getConfig().getInt("GUI.Slots"));
             		gui.setInventory(LandClaim.plugin.getConfig().getString("GUI.ClaimsList.Title"));
@@ -152,7 +160,7 @@ public class MainCommand implements CommandExecutor {
     			} else sender.sendMessage("You must be a player to use that command!");
     			break;
 			case "reload":
-				if((sender instanceof Player) && !player.hasPermission("landclaim.reload")) {
+				if((sender instanceof Player) && !player.hasPermission("landclaim.reload") && !player.isOp()) {
 					sender.sendMessage("You don't have permission to do that!");
 					return true;
 				}
@@ -160,6 +168,26 @@ public class MainCommand implements CommandExecutor {
 				LandClaim.plugin.getCommand("lc").setTabCompleter(new CommandCompleter());
 				LandClaim.plugin.getCommand("lc").setExecutor(new MainCommand());
 				sender.sendMessage("LandClaim config reloaded!");
+				break;
+			case "remove":
+				if(!(sender instanceof Player)) {
+					sender.sendMessage("You must be a player to do that.");
+					return true;
+				}
+				if(!player.hasPermission("landclaim.remove") && !player.isOp()) {
+					sender.sendMessage("You don't have permission to do that!");
+					return true;
+				}
+				if(args.length < 2) {
+					player.sendMessage("You need to specify the name of the claim you want to remove");
+					return true;
+				}
+				Set<UUID> regionOwners = Claim.getRegionOwners(args[1], player.getWorld().getName());
+				if(regionOwners != null && regionOwners.contains(player.getUniqueId())) {
+					Claim.queueForRemoval(player.getName(), args[1]);
+					GUI.promptForRemoval(player.getDisplayName());
+					return true;
+				} else player.sendMessage("You don't own that region.");
 				break;
     		/*
     		case "blankdeed": 

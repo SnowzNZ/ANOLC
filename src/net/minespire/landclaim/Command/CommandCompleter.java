@@ -1,13 +1,15 @@
-package net.minespire.landclaim;
+package net.minespire.landclaim.Command;
+
+import net.minespire.landclaim.Claim.Claim;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
-import org.bukkit.util.StringUtil;
 
 public class CommandCompleter implements TabCompleter {
 
@@ -21,6 +23,7 @@ public class CommandCompleter implements TabCompleter {
 		COMMANDS.add("claimplot");
 		COMMANDS.add("list");
 		COMMANDS.add("reload");
+		COMMANDS.add("remove");
 		
 		REGIONNAME.add("[RegionName]");
 		PLOTNAME.add("[PlotName]");
@@ -34,11 +37,18 @@ public class CommandCompleter implements TabCompleter {
 			Collections.sort(completions);
 			return completions;
 		}
-		if(args[0].equalsIgnoreCase("claim") && args.length == 2) {
-			if(args[1].length()==0) return REGIONNAME;
+		if(args[0].equalsIgnoreCase("claim")) {
+			if(args.length == 2) return REGIONNAME;
 			else return BLANKLIST;
-		} else if(args[0].equalsIgnoreCase("claimplot") && args.length == 2) {
-			if(args[1].length()==0) return PLOTNAME;
+		} else if(args[0].equalsIgnoreCase("claimplot")) {
+			if(args.length == 2) return PLOTNAME;
+			else return BLANKLIST;
+		} else if(args[0].equalsIgnoreCase("remove")) {
+			if(!(sender instanceof Player)) return BLANKLIST;
+			List<String> rgNames = new ArrayList<>();
+			Claim.getClaimListOwner((Player)sender, false).forEach(region -> rgNames.add(region.getId()));
+			Claim.getClaimListOwner((Player)sender, true).forEach(region -> rgNames.add(region.getId()));
+			if(args.length == 2) return rgNames;
 			else return BLANKLIST;
 		} else return BLANKLIST;
 

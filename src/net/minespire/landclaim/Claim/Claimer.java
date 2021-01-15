@@ -1,9 +1,9 @@
-package net.minespire.landclaim;
-
-import java.util.Set;
+package net.minespire.landclaim.Claim;
 
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+
+import java.util.Set;
 
 public class Claimer {
 

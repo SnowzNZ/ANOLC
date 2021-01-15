@@ -8,16 +8,22 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
+import net.milkbowl.vault.economy.Economy;
+import net.minespire.landclaim.Claim.Claim;
+import net.minespire.landclaim.Command.CommandCompleter;
+import net.minespire.landclaim.Command.MainCommand;
+import net.minespire.landclaim.GUI.GUI;
+import net.minespire.landclaim.Listener.InventoryClickListener;
+import net.minespire.landclaim.Listener.InventoryCloseListener;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
 
-
+//import com.sk89q.worldguard.WorldGuard;
 public class LandClaim extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
     public static LandClaim plugin;

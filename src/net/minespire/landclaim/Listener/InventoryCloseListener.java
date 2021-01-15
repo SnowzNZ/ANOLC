@@ -1,5 +1,7 @@
-package net.minespire.landclaim;
+package net.minespire.landclaim.Listener;
 
+import net.minespire.landclaim.GUI.GUI;
+import net.minespire.landclaim.LandClaim;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

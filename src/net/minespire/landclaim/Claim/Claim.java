@@ -1,14 +1,4 @@
-package net.minespire.landclaim;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
+package net.minespire.landclaim.Claim;
 
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.LocalSession;
@@ -24,6 +14,10 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import net.minespire.landclaim.LandClaim;
+import org.bukkit.Bukkit;
+
+import java.util.*;
 
 public class Claim {
 
@@ -41,6 +35,7 @@ public class Claim {
 	private boolean isPlot = false;
 	private boolean regionAlreadyExists = false;
 	public static Map<String,List<String>> playerClaimsMap = new HashMap<>();
+	public static Map<String, ProtectedRegion> awaitingRemovalConfirmation = new HashMap<>();
 	
 	public Claim(org.bukkit.entity.Player player, String rgName) {
 		this.player = BukkitAdapter.adapt(player);
@@ -79,11 +74,10 @@ public class Claim {
 			bukkitPlayer.sendMessage("You must select two points first!");
 			return false;
 		}
-		
-		
+
 		minPoint = selection.getMinimumPoint();
 		maxPoint = selection.getMaximumPoint();
-		
+
 		if (selection != null) {
 			if(!isPlot) {
 				minPoint = BlockVector3.at(minPoint.getX(), (player.getWorld().getMaxY() + 1), minPoint.getZ());
@@ -98,7 +92,7 @@ public class Claim {
 				return false;
 			}
 		}
-		
+
 		if(!isPlot) region.setFlag(LandClaim.LandClaimRegionFlag, "region");
 		else region.setFlag(LandClaim.LandClaimRegionFlag, "plot");
 		
@@ -106,18 +100,31 @@ public class Claim {
 		calculateClaimCost();
 		return true;
 	}
-	
+
+	public static void queueForRemoval(String playerName, String regionName){
+		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+		RegionManager regions = container.get(BukkitAdapter.adapt(Bukkit.getPlayer(playerName).getWorld()));
+		if(regions!=null) {
+			ProtectedRegion region = regions.getRegion(regionName);
+			awaitingRemovalConfirmation.put(playerName, region);
+		}
+	}
+
 	public void deleteRegion() {
 		rgManager.removeRegion(rgName);
 	}
 	
-	public Set<UUID> getRegionOwners(String regionName, String worldName) {
+	public static Set<UUID> getRegionOwners(String regionName, String worldName) {
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager regions = container.get(BukkitAdapter.adapt(Bukkit.getWorld(worldName)));
 		if(regions!=null) {
 			ProtectedRegion region = regions.getRegion(regionName);
-			DefaultDomain owners = region.getOwners();
-			return owners.getUniqueIds();
+			DefaultDomain owners;
+			if(region != null) {
+				owners = region.getOwners();
+				return owners.getUniqueIds();
+			}
+			return null;
 		} else return null;
 	}
 	
@@ -250,10 +257,12 @@ public class Claim {
 		return null;
 	}
 	
-	public static void removeRegion(org.bukkit.entity.Player player, String regionName) {
+	public static void removeRegion(org.bukkit.entity.Player player) {
 		World world = BukkitAdapter.adapt(player.getWorld());
 		RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+		String regionName = Claim.awaitingRemovalConfirmation.get(player.getDisplayName()).getId();
 		rgManager.removeRegion(regionName);
+		player.sendMessage("You removed your claim " + regionName);
 	}
 	
 	public static String parsePlaceholders(String string, Claim claim) {

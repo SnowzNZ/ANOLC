@@ -12,6 +12,8 @@ Claims:
 GUI:
   Slots: 27
   FillerItem: GLASS_PANE
+  RemoveClaimButton:
+    Material: STRUCTURE_VOID
   BackButton:
     Material: ARROW
     ItemName: '&3Back'

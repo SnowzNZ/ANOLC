@@ -1,10 +1,7 @@
-package net.minespire.landclaim;
+package net.minespire.landclaim.Listener;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
+import net.minespire.landclaim.Claim.Claim;
+import net.minespire.landclaim.LandClaim;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -15,11 +12,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.inventory.meta.tags.ItemTagType;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 
 public class DeedListener implements Listener {

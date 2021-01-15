@@ -1,11 +1,10 @@
-package net.minespire.landclaim;
+package net.minespire.landclaim.Claim;
 
-import java.util.ArrayList;
+import org.bukkit.entity.Player;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.bukkit.entity.Player;
 
 public class ClaimManager {
 	public static Map<String,List<Claim>> playerClaims = new HashMap<>();
