@@ -13,8 +13,11 @@ import net.minespire.landclaim.Claim.Claim;
 import net.minespire.landclaim.Command.CommandCompleter;
 import net.minespire.landclaim.Command.MainCommand;
 import net.minespire.landclaim.GUI.GUI;
+import net.minespire.landclaim.Listener.GUIClick;
 import net.minespire.landclaim.Listener.InventoryClickListener;
 import net.minespire.landclaim.Listener.InventoryCloseListener;
+import net.minespire.landclaim.Listener.PlayerChatListener;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,6 +30,7 @@ import java.util.logging.Logger;
 public class LandClaim extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
     public static LandClaim plugin;
+    public static FileConfiguration config;
     public static WorldEdit we;
     public static WorldGuard wg;
     public static StringFlag LandClaimRegionFlag;
@@ -53,6 +57,8 @@ public class LandClaim extends JavaPlugin {
         plugin = this;
         GUI.inventoryNames.add("");
         getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
+        getServer().getPluginManager().registerEvents(new GUIClick(), this);
+        getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
         //getServer().getPluginManager().registerEvents(new DeedListener(), this);
         this.getCommand("lc").setTabCompleter(new CommandCompleter());
@@ -83,6 +89,7 @@ public class LandClaim extends JavaPlugin {
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
         this.reloadConfig();
+        config = getConfig();
     }
 
     

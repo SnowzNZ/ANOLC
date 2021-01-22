@@ -14,11 +14,8 @@ import java.util.*;
 
 public class GUI{
 	private Inventory inventory;
-	//private String rgName;
 	private Player player;
 	private int guiSlots;
-	//private Claim claim;
-	//public Map<String,GUI> playerMenus = new HashMap<>();
 	public static Map<String, List<GUI>> playersGUIMap = new HashMap<>();
 	private List<GUIItem> guiItems;
 	public static List<String> inventoryNames = new ArrayList<>();;

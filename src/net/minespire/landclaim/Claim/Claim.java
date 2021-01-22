@@ -264,6 +264,13 @@ public class Claim {
 		rgManager.removeRegion(regionName);
 		player.sendMessage("You removed your claim " + regionName);
 	}
+
+	public static void removeRegion(org.bukkit.entity.Player player, String regionName) {
+		World world = BukkitAdapter.adapt(player.getWorld());
+		RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+		rgManager.removeRegion(regionName);
+		player.sendMessage("You removed your claim " + regionName);
+	}
 	
 	public static String parsePlaceholders(String string, Claim claim) {
 		string = string.replace("{RegionCost}",  String.format("$%.2f", claim.getClaimCost()));
@@ -360,6 +367,24 @@ public class Claim {
 			playerClaimList.add(claim);
 			playerClaimsMap.put(player.getUniqueId().toString(), playerClaimList);
 		}
+	}
+
+	public static boolean addOwner(Player checkIfOwner, String personToAdd, ProtectedRegion region){
+		DefaultDomain regionOwners = region.getOwners();
+		if(regionOwners.contains(checkIfOwner.getDisplayName())){
+			regionOwners.addPlayer(personToAdd);
+			region.setOwners(regionOwners);
+			return true;
+		} else return false;
+	}
+
+	public static boolean addMember(Player checkIfOwner, String personToAdd, ProtectedRegion region){
+		DefaultDomain regionMembers = region.getMembers();
+		if(region.getOwners().contains(checkIfOwner.getDisplayName())){
+			regionMembers.addPlayer(personToAdd);
+			region.setOwners(regionMembers);
+			return true;
+		} else return false;
 	}
 	
 }

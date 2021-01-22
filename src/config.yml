@@ -11,6 +11,7 @@ Claims:
     BaseCost: 500          # The lowest price for a plot no matter how small.
 GUI:
   Slots: 27
+  GUITitle: LandClaim GUI
   FillerItem: GLASS_PANE
   RemoveClaimButton:
     Material: STRUCTURE_VOID
