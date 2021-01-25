@@ -112,8 +112,15 @@ public class GUIClick implements Listener {
         if(inventoryTitle.equals("LandClaim Inspector")){
             String regionName = clickEvent.getClickedInventory().getItem(0).getItemMeta().getDisplayName();
             if(itemName.startsWith("Remove")) guiManager.promptForRemoval(player.getDisplayName(), regionName);
-            if(itemName.startsWith("Add Player to Claim")) guiManager.openAddPlayer(player.getDisplayName(), regionName);
+            if(itemName.startsWith("Owners and Members")) guiManager.openOwnersMembersEditor(player, regionName);
             if(itemName.startsWith("Back")) guiManager.openClaimsGUI(player);
+        }
+
+        if(inventoryTitle.equals("Owners/Members Editor")){
+            String regionName = clickEvent.getClickedInventory().getItem(0).getItemMeta().getDisplayName();
+            if(itemName.startsWith("View/Remove Players")) guiManager.openPlayersEditor(player, regionName);
+            if(itemName.startsWith("Add Player to Claim")) guiManager.openAddPlayer(player.getDisplayName(), regionName);
+            if(itemName.startsWith("Back")) guiManager.openClaimInspector(player, regionName);
         }
 
         if(inventoryTitle.equals("LandClaim Claim Removal")){
@@ -126,9 +133,31 @@ public class GUIClick implements Listener {
             }
         }
 
-        if(inventoryTitle.equals("LandClaim Add Player")){
+        if(inventoryTitle.equals("View/Remove Players")){
+            String regionName = clickEvent.getClickedInventory().getItem(0).getItemMeta().getDisplayName();
+
+            ItemMeta clickedItemMeta = clickEvent.getCurrentItem().getItemMeta();
+            if(clickedItemMeta != null && clickedItemMeta.getLore() != null && clickedItemMeta.getLore().get(0).startsWith("UUID")){
+                guiManager.openPlayerRemover(player, clickedItemMeta.getLore().get(0).substring(5), regionName);
+            }
+
+            if(itemName.startsWith("Back")) guiManager.openOwnersMembersEditor(player, regionName);
+        }
+
+        if(inventoryTitle.equals("Remove Player")){
+            String regionName = "";
+            String uuid = "";
+            for (String lorePiece : clickEvent.getClickedInventory().getItem(13).getItemMeta().getLore()){
+                if(lorePiece.startsWith("Claim")) regionName = lorePiece.substring(7);
+                if(lorePiece.startsWith("UUID")) uuid = lorePiece.substring(6);
+            }
+            if(itemName.startsWith("Are you sure")) player.sendMessage("Delete " + uuid);
+            if(itemName.startsWith("Back")) guiManager.openPlayersEditor(player, regionName);
+        }
+
+        if(inventoryTitle.equals("Add Player to Claim")){
+            String regionName = clickEvent.getClickedInventory().getItem(12).getItemMeta().getDisplayName().substring(13);
             if(itemName.startsWith("Add Owner to")){
-                String regionName = clickEvent.getCurrentItem().getItemMeta().getDisplayName().substring(13);
                 World world = BukkitAdapter.adapt(player.getWorld());
                 RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
                 Prompt prompt = new Prompt("Who would you like to add as an owner?"  + ChatColor.RED +
@@ -137,7 +166,6 @@ public class GUIClick implements Listener {
                 player.closeInventory();
             }
             if(itemName.startsWith("Add Member to")){
-                String regionName = clickEvent.getCurrentItem().getItemMeta().getDisplayName().substring(14);
                 World world = BukkitAdapter.adapt(player.getWorld());
                 RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
                 Prompt prompt = new Prompt("Who would you like to add as a member?" + ChatColor.RED +
@@ -145,7 +173,11 @@ public class GUIClick implements Listener {
                 prompt.sendPrompt();
                 player.closeInventory();
             }
-            if(itemName.startsWith("Back")) guiManager.openClaimsGUI(player);
+            if(itemName.startsWith("Back")) guiManager.openOwnersMembersEditor(player, regionName);
         }
+
+
     }
+
+
 }

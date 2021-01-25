@@ -9,6 +9,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
@@ -369,20 +370,25 @@ public class Claim {
 		}
 	}
 
-	public static boolean addOwner(Player checkIfOwner, String personToAdd, ProtectedRegion region){
+	public static boolean addOwner(org.bukkit.entity.Player checkIfOwner, String personToAdd, ProtectedRegion region){
 		DefaultDomain regionOwners = region.getOwners();
-		if(regionOwners.contains(checkIfOwner.getDisplayName())){
+		if(regionOwners.contains(checkIfOwner.getUniqueId())){
+			org.bukkit.entity.Player playerToAdd = Bukkit.getPlayer(personToAdd);
+			if(playerToAdd != null) regionOwners.addPlayer(WorldGuardPlugin.inst().wrapPlayer(playerToAdd));
+			else return false;
 			regionOwners.addPlayer(personToAdd);
 			region.setOwners(regionOwners);
 			return true;
 		} else return false;
 	}
 
-	public static boolean addMember(Player checkIfOwner, String personToAdd, ProtectedRegion region){
+	public static boolean addMember(org.bukkit.entity.Player checkIfOwner, String personToAdd, ProtectedRegion region){
 		DefaultDomain regionMembers = region.getMembers();
-		if(region.getOwners().contains(checkIfOwner.getDisplayName())){
-			regionMembers.addPlayer(personToAdd);
-			region.setOwners(regionMembers);
+		if(region.getOwners().contains(checkIfOwner.getUniqueId())){
+			org.bukkit.entity.Player playerToAdd = Bukkit.getPlayer(personToAdd);
+			if(playerToAdd != null) regionMembers.addPlayer(WorldGuardPlugin.inst().wrapPlayer(playerToAdd));
+			else return false;
+			region.setMembers(regionMembers);
 			return true;
 		} else return false;
 	}

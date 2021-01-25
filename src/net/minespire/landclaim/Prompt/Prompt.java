@@ -3,6 +3,7 @@ package net.minespire.landclaim.Prompt;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.minespire.landclaim.LandClaim;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -35,9 +36,17 @@ public class Prompt {
         playersWithPrompts.add(player.getDisplayName());
         serviceTaskID = Bukkit.getScheduler().runTaskTimer(LandClaim.plugin, () -> {
             ticksPassed += 5;
-            if(answer != null || ticksPassed > 100) {
+            if(ticksPassed == 200-60+1) player.sendMessage(ChatColor.RED + "Prompt expires in..");
+            if(ticksPassed == 200-60+1) player.sendMessage(ChatColor.RED + "3");
+            if(ticksPassed == 200-40+1) player.sendMessage(ChatColor.RED + "2");
+            if(ticksPassed == 200-20+1) player.sendMessage(ChatColor.RED + "1");
+
+            if(answer != null || ticksPassed > 200) {
                 Bukkit.getScheduler().cancelTask(serviceTaskID);
+                playersWithPrompts.remove(player.getDisplayName());
+                playerPrompts.remove(player.getDisplayName());
             }
+            if(answer == null && ticksPassed > 200) player.sendMessage(ChatColor.RED + "Prompt expired.");
 
         }, 1L, 5L).getTaskId();
     }
@@ -58,6 +67,13 @@ public class Prompt {
 
     public void setAnswer(String answer){
         this.answer = answer;
+    }
+
+    public void cancelPrompt(){
+        Bukkit.getScheduler().cancelTask(serviceTaskID);
+        playersWithPrompts.remove(player.getDisplayName());
+        playerPrompts.remove(player.getDisplayName());
+        player.sendMessage(ChatColor.RED + "Prompt cancelled");
     }
 
     public void savePrompt(Prompt prompt){

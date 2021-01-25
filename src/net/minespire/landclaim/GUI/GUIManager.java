@@ -25,7 +25,10 @@ public class GUIManager {
         guiInventoryTitles.add("Member Plots");
         guiInventoryTitles.add("LandClaim Inspector");
         guiInventoryTitles.add("LandClaim Claim Removal");
-        guiInventoryTitles.add("LandClaim Add Player");
+        guiInventoryTitles.add("Add Player to Claim");
+        guiInventoryTitles.add("Owners/Members Editor");
+        guiInventoryTitles.add("View/Remove Players");
+        guiInventoryTitles.add("Remove Player");
         guiButtonTitles.add("Claims");
         guiButtonTitles.add("Wand");
         guiButtonTitles.add("Back");
@@ -187,8 +190,18 @@ public class GUIManager {
         ProtectedRegion region = LandClaim.wg.getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld())).getRegion(regionName);
         NGUI inspectorGUI = new NGUI(9, "LandClaim Inspector");
         inspectorGUI.addItem(Material.BIRCH_SIGN, regionName, createLore("Claim Volume: " + region.volume()), firstSlot++);
-        inspectorGUI.addItem(Material.PLAYER_HEAD, "Add Player to Claim", null, firstSlot++);
+        inspectorGUI.addItem(Material.PLAYER_HEAD, "Owners and Members", null, firstSlot++);
         inspectorGUI.addItem(Material.STRUCTURE_VOID, "Remove " + regionName, null, firstSlot++);
+        inspectorGUI.addItem(Material.ARROW, "Back", null, 8);
+        inspectorGUI.open(player);
+    }
+
+    public void openOwnersMembersEditor(Player player, String regionName){
+        int firstSlot = 0;
+        NGUI inspectorGUI = new NGUI(9, "Owners/Members Editor");
+        inspectorGUI.addItem(Material.BIRCH_SIGN, regionName, null, firstSlot++);
+        inspectorGUI.addItem(Material.PLAYER_HEAD, "View/Remove Players", null, firstSlot++);
+        inspectorGUI.addItem(Material.TOTEM_OF_UNDYING, "Add Player to Claim", null, firstSlot++);
         inspectorGUI.addItem(Material.ARROW, "Back", null, 8);
         inspectorGUI.open(player);
     }
@@ -201,10 +214,35 @@ public class GUIManager {
     }
 
     public void openAddPlayer(String playerName, String regionName){
-        NGUI addPlayer = new NGUI(36, "LandClaim Add Player");
+        NGUI addPlayer = new NGUI(36, "Add Player to Claim");
         addPlayer.addItem(Material.WITHER_SKELETON_SKULL, "Add Owner to " + regionName, createLore("This will give the", "player full permissions", "on this claim"), 12);
         addPlayer.addItem(Material.SKELETON_SKULL, "Add Member to " + regionName, createLore("This will give the", "player partial permissions", "on this claim"), 14);
         addPlayer.addItem(Material.ARROW, "Back", null, 31);
         addPlayer.open(Bukkit.getPlayer(playerName));
+    }
+
+    public void openPlayersEditor(Player player, String regionName) {
+        int firstSlot = 0;
+        NGUI playersEditor = new NGUI(54, "View/Remove Players");
+        playersEditor.addItem(Material.BIRCH_SIGN, regionName, null, firstSlot++);
+
+        Set<UUID> owners = LandClaim.wg.getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld())).getRegion(regionName).getOwners().getPlayerDomain().getUniqueIds();
+        for(UUID uuid : owners){
+            playersEditor.addItem(Material.WITHER_SKELETON_SKULL, Bukkit.getOfflinePlayer(uuid).getName(), createLore("UUID:" + uuid), firstSlot++);
+        }
+        Set<UUID> members = LandClaim.wg.getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld())).getRegion(regionName).getMembers().getPlayerDomain().getUniqueIds();
+        for(UUID uuid : members){
+            playersEditor.addItem(Material.SKELETON_SKULL, Bukkit.getOfflinePlayer(uuid).getName(), createLore("UUID:" + uuid), firstSlot++);
+        }
+
+        playersEditor.addItem(Material.ARROW, "Back", null, 49);
+        playersEditor.open(player);
+    }
+
+    public void openPlayerRemover(Player player, String uuid, String regionName) {
+        NGUI removePlayer = new NGUI(36, "Remove Player");
+        removePlayer.addItem(Material.BARRIER, "Are you sure?", createLore("Remove Player", "Claim: " + regionName, "Player Name: " + Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName(), "UUID: " + uuid), 13);
+        removePlayer.addItem(Material.ARROW, "Back", null, 31);
+        removePlayer.open(player);
     }
 }

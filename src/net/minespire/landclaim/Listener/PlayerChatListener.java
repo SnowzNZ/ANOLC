@@ -1,9 +1,9 @@
 package net.minespire.landclaim.Listener;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import net.minespire.landclaim.Claim.Claim;
 import net.minespire.landclaim.Prompt.Prompt;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,18 +14,20 @@ public class PlayerChatListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
     private void onAnswerPrompt(AsyncPlayerChatEvent chatEvent){
-        Bukkit.broadcastMessage("got here");
         if(!Prompt.hasActivePrompt(chatEvent.getPlayer())) return;
         chatEvent.setCancelled(true);
         Player player = chatEvent.getPlayer();
         Prompt prompt = Prompt.getPrompt(player.getDisplayName());
+        String chatMessage = chatEvent.getMessage();
+        prompt.setAnswer(chatMessage);
         if(prompt.getPromptType().equals("ADDMEMBER")) {
-            if(!Claim.addMember(BukkitAdapter.adapt(player), chatEvent.getMessage(), prompt.getRegion())) player.sendMessage("Could not add member to region");
-            else player.sendMessage("Added new member to claim");
+            if(!Claim.addMember(player, chatMessage, prompt.getRegion())) player.sendMessage(ChatColor.RED + "Could not add member to region. Player must be online.");
+            else player.sendMessage(ChatColor.GOLD + "Added " + ChatColor.AQUA + Bukkit.getPlayer(chatMessage).getDisplayName() + ChatColor.GOLD +  " as new member to claim " + ChatColor.AQUA + prompt.getRegion().getId());
         }
+
         if(prompt.getPromptType().equals("ADDOWNER")) {
-            if(!Claim.addOwner(BukkitAdapter.adapt(player), chatEvent.getMessage(), prompt.getRegion())) player.sendMessage("Could not add owner to region");
-            else player.sendMessage("Added new owner to claim");
+            if(!Claim.addOwner(player, chatMessage, prompt.getRegion())) player.sendMessage(ChatColor.RED + "Could not add owner to region. Player must be online.");
+            else player.sendMessage(ChatColor.RED + "Added " + ChatColor.AQUA + Bukkit.getPlayer(chatMessage).getDisplayName() + ChatColor.GOLD +  " as new owner to claim " + ChatColor.AQUA + prompt.getRegion().getId());
         }
 
     }

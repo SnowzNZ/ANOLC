@@ -6,6 +6,7 @@ import net.minespire.landclaim.Claim.Claimer;
 import net.minespire.landclaim.GUI.GUI;
 import net.minespire.landclaim.GUI.GUIManager;
 import net.minespire.landclaim.LandClaim;
+import net.minespire.landclaim.Prompt.Prompt;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -47,8 +48,14 @@ public class MainCommand implements CommandExecutor {
 							player.sendMessage("You don't have permission to claim in this world!");
 							return true;
 						}
+						if(!ProtectedRegion.isValidId(args[1])){
+							player.sendMessage(ChatColor.RED + "That is not a valid region name.");
+							return true;
+						}
+
 						Claim claim = new Claim(player, args[1]);
 						if(!claim.createClaim()) return true;
+
 						if(claim.overlapsUnownedRegion()) {
 							player.sendMessage("Your selection overlaps a region belonging to someone else!");
 							return true;
@@ -82,9 +89,15 @@ public class MainCommand implements CommandExecutor {
 							player.sendMessage("You don't have permission to claim in this world!");
 							return true;
 						}
-						Claim claim = new Claim(player, args[1], true);
 
+						if(!ProtectedRegion.isValidId(args[1])){
+							player.sendMessage(ChatColor.RED + "That is not a valid plot name.");
+							return true;
+						}
+
+						Claim claim = new Claim(player, args[1], true);
 						if(!claim.createClaim()) return true;
+
 						if(!claim.insideOwnedRegion()) {
 							player.sendMessage("You may only claim a plot inside a region that you own!");
 							return true;
@@ -170,6 +183,15 @@ public class MainCommand implements CommandExecutor {
 					LandClaim.plugin.getCommand("lc").setTabCompleter(new CommandCompleter());
 					LandClaim.plugin.getCommand("lc").setExecutor(new MainCommand());
 					sender.sendMessage("LandClaim config reloaded!");
+					break;
+				case "cancel":
+					if((sender instanceof Player) && !player.hasPermission("landclaim.cancel") && !player.isOp()) {
+						sender.sendMessage("You don't have permission to do that!");
+						return true;
+					}
+					if(Prompt.hasActivePrompt(player)){
+						Prompt.getPrompt(player.getDisplayName()).cancelPrompt();
+					}
 					break;
 				case "remove":
 					if(!(sender instanceof Player)) {
