@@ -24,10 +24,10 @@ public class InventoryClickListener implements Listener {
 	public void onInventoryClick(InventoryClickEvent clickEvent) {
 		boolean LandClaimGUI = false;
 		for(String title : GUI.inventoryNames) {
-			if(clickEvent.getWhoClicked().getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', title))) {
+			if(title != "" && clickEvent.getWhoClicked().getOpenInventory().getTitle().equals(ChatColor.translateAlternateColorCodes('&', title))) {
 				clickEvent.setCancelled(true);
 				LandClaimGUI = true;
-			}
+			} else LandClaimGUI = false;
 		}
 		if(!LandClaimGUI) return;
 			

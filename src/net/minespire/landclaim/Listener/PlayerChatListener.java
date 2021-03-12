@@ -27,7 +27,7 @@ public class PlayerChatListener implements Listener {
 
         if(prompt.getPromptType().equals("ADDOWNER")) {
             if(!Claim.addOwner(player, chatMessage, prompt.getRegion())) player.sendMessage(ChatColor.RED + "Could not add owner to region. Player must be online.");
-            else player.sendMessage(ChatColor.RED + "Added " + ChatColor.AQUA + Bukkit.getPlayer(chatMessage).getDisplayName() + ChatColor.GOLD +  " as new owner to claim " + ChatColor.AQUA + prompt.getRegion().getId());
+            else player.sendMessage(ChatColor.GOLD + "Added " + ChatColor.AQUA + Bukkit.getPlayer(chatMessage).getDisplayName() + ChatColor.GOLD +  " as new owner to claim " + ChatColor.AQUA + prompt.getRegion().getId());
         }
 
     }

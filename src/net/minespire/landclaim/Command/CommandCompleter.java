@@ -21,7 +21,6 @@ public class CommandCompleter implements TabCompleter {
 	public CommandCompleter() {
 		COMMANDS.add("claim");
 		COMMANDS.add("claimplot");
-		COMMANDS.add("list");
 		COMMANDS.add("reload");
 		COMMANDS.add("remove");
 		

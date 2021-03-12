@@ -10,6 +10,7 @@ import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import net.milkbowl.vault.economy.Economy;
 import net.minespire.landclaim.Claim.Claim;
+import net.minespire.landclaim.Claim.VoteFile;
 import net.minespire.landclaim.Command.CommandCompleter;
 import net.minespire.landclaim.Command.MainCommand;
 import net.minespire.landclaim.GUI.GUI;
@@ -55,6 +56,7 @@ public class LandClaim extends JavaPlugin {
     }
     public void onEnable() {
         plugin = this;
+        this.loadConfiguration();
         GUI.inventoryNames.add("");
         getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
         getServer().getPluginManager().registerEvents(new GUIClick(), this);
@@ -65,6 +67,7 @@ public class LandClaim extends JavaPlugin {
         this.getCommand("lc").setExecutor(new MainCommand());
         we = WorldEdit.getInstance();
         wg = WorldGuard.getInstance();
+        VoteFile.load();
         claimMap = new HashMap<>();
         
         if (!setupEconomy() ) {
@@ -72,7 +75,7 @@ public class LandClaim extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        this.loadConfiguration();
+
         this.getLogger().info("LandClaim Enabled.");
     }
 
