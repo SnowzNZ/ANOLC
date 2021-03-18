@@ -18,14 +18,14 @@ public class Prompt {
     private String answer;
     private String promptMessage;
     private int ticksPassed = 1;
-    private String promptType; //ADDMEMBER, ADDOWNER
+    private String promptType; //ADDMEMBER, ADDOWNER, [flagname key fom GUIManager.editableClaimFlags]
     private ProtectedRegion region;
     private static Set<String> playersWithPrompts = new HashSet<>();
     private static Map<String,Prompt> playerPrompts = new HashMap<>();
 
     public Prompt(String message, Player player, String promptType, ProtectedRegion region){
-        this.player = player;
         this.promptMessage = message;
+        this.player = player;
         this.promptType = promptType;
         this.region = region;
     }

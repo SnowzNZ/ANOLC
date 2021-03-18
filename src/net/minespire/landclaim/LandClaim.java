@@ -11,12 +11,10 @@ import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import net.milkbowl.vault.economy.Economy;
 import net.minespire.landclaim.Claim.Claim;
 import net.minespire.landclaim.Claim.VoteFile;
+import net.minespire.landclaim.Claim.VoteRegion;
 import net.minespire.landclaim.Command.CommandCompleter;
 import net.minespire.landclaim.Command.MainCommand;
-import net.minespire.landclaim.GUI.GUI;
 import net.minespire.landclaim.Listener.GUIClick;
-import net.minespire.landclaim.Listener.InventoryClickListener;
-import net.minespire.landclaim.Listener.InventoryCloseListener;
 import net.minespire.landclaim.Listener.PlayerChatListener;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -27,7 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-//import com.sk89q.worldguard.WorldGuard;
 public class LandClaim extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
     public static LandClaim plugin;
@@ -37,7 +34,6 @@ public class LandClaim extends JavaPlugin {
     public static StringFlag LandClaimRegionFlag;
     
     public static Map<String, Claim> claimMap;
-    public static Map<String, GUI> guiMap;
     
     public static Economy econ = null;
 
@@ -57,17 +53,15 @@ public class LandClaim extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         this.loadConfiguration();
-        GUI.inventoryNames.add("");
-        getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
         getServer().getPluginManager().registerEvents(new GUIClick(), this);
         getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
-        getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
         //getServer().getPluginManager().registerEvents(new DeedListener(), this);
         this.getCommand("lc").setTabCompleter(new CommandCompleter());
         this.getCommand("lc").setExecutor(new MainCommand());
         we = WorldEdit.getInstance();
         wg = WorldGuard.getInstance();
         VoteFile.load();
+        VoteRegion.tallyAllVotes();
         claimMap = new HashMap<>();
         
         if (!setupEconomy() ) {

@@ -1,6 +1,7 @@
 package net.minespire.landclaim.Listener;
 
 import net.minespire.landclaim.Claim.Claim;
+import net.minespire.landclaim.GUI.GUIManager;
 import net.minespire.landclaim.Prompt.Prompt;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,6 +29,11 @@ public class PlayerChatListener implements Listener {
         if(prompt.getPromptType().equals("ADDOWNER")) {
             if(!Claim.addOwner(player, chatMessage, prompt.getRegion())) player.sendMessage(ChatColor.RED + "Could not add owner to region. Player must be online.");
             else player.sendMessage(ChatColor.GOLD + "Added " + ChatColor.AQUA + Bukkit.getPlayer(chatMessage).getDisplayName() + ChatColor.GOLD +  " as new owner to claim " + ChatColor.AQUA + prompt.getRegion().getId());
+        }
+
+        if(GUIManager.editableClaimFlags.keySet().contains(prompt.getPromptType())) {
+            prompt.getRegion().setFlag(GUIManager.editableClaimFlags.get(prompt.getPromptType()), prompt.getAnswer());
+            player.sendMessage(ChatColor.GOLD + "The new value for '" + prompt.getPromptType() + "' was set on " + ChatColor.AQUA + prompt.getRegion().getId());
         }
 
     }

@@ -1,52 +1,11 @@
-Version: 1.0 # Do not change this
+Version: 1.1 # Do not change this
   
 Claims:
   Regions:
     MinSize: 500           # In square blocks (lenth x width).
     MaxSize: 10000
-    MaxLWRatio: 4          # This determines the maximum ratio of the longest side to the shortest. Example 400 blocks x 100 blocks = 4. This prevents impractically shaped regions.
+    MaxLWRatio: 4          # This determines the maximum ratio of the longest side to the shortest. Example 400 blocks x 100 blocks = 4. This prevents regions that are too long and narrow.
     PricePerBlock: 1.5     # Area x PricePerBlock = RegionCost
   Plots:
     PricePerBlock: 0.1     # Volume x PricePerBlock = PlotCost
     BaseCost: 500          # The lowest price for a plot no matter how small.
-GUI:
-  Slots: 27
-  GUITitle: LandClaim GUI
-  FillerItem: GLASS_PANE
-  RemoveClaimButton:
-    Material: STRUCTURE_VOID
-  BackButton:
-    Material: ARROW
-    ItemName: '&3Back'
-  ClaimRegion:
-    Title: '        &3Confirm Region Claim'
-    ClaimItem:
-      Material: GRASS_BLOCK
-      Slot: 14
-      ItemName: '&3Are You Sure You Want To Claim This Region?'
-      Lore: '&5Region Name: &f{RegionName}|&5Region Cost: &f{RegionCost}|&5Region Size: &f{RegionLength} x {RegionHeight} x {RegionWidth}|&aClick to confirm purchase.'# Separate lore into new lines with the pipe symbol (|).
-  ClaimPlot:
-    Title: '        &3Confirm Plot Claim'
-    ClaimItem:
-      Material: DIRT
-      Slot: 14
-      ItemName: '&3Are You Sure You Want To Claim This Plot?'
-      Lore: '&5Region Name: &f{RegionName}|&5Region Cost: &f{RegionCost}|&5Region Size: &f{RegionLength} x {RegionHeight} x {RegionWidth}|&aClick to confirm purchase.'
-  ClaimsList:
-    Title: '      &3Your Regions and Plots'
-    OwnerRegions:
-      Material: DIAMOND_BLOCK
-      ItemName: '&3Regions You Own'
-      Slot: 11
-    MemberRegions:
-      Material: DIAMOND_ORE
-      ItemName: '&3Regions You Are a Member Of'
-      Slot: 13
-    OwnerPlots:
-      Material: EMERALD_BLOCK
-      ItemName: '&3Plots You Own'
-      Slot: 15
-    MemberPlots:
-      Material: EMERALD_ORE
-      ItemName: '&3Plots You Are a Member Of'
-      Slot: 17

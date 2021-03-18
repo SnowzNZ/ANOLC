@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class VoteFile {
     private File saveFile;
     private Path votesFilePath;
     private String pathString;
+    public boolean newRegionAdded = false;
     private int indexToWrite;
     private static VoteFile voteFile;
 
@@ -45,6 +47,7 @@ public class VoteFile {
     }
 
     public static VoteFile get(){
+        load();
         return voteFile;
     }
 
@@ -65,8 +68,9 @@ public class VoteFile {
         ConfigurationSection regionSection;
         if((regionSection = yml.getConfigurationSection(regionSectionName)) == null){
             regionSection = yml.createSection(regionSectionName);
+            newRegionAdded = true;
         }
-        regionSection.set(LocalDateTime.now().toString(), playerUUID);
+        regionSection.set(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS).toString(), playerUUID);
         return this;
     }
 

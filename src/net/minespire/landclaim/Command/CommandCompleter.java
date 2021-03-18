@@ -21,8 +21,16 @@ public class CommandCompleter implements TabCompleter {
 	public CommandCompleter() {
 		COMMANDS.add("claim");
 		COMMANDS.add("claimplot");
+		COMMANDS.add("gui");
+		COMMANDS.add("world");
+		COMMANDS.add("inspect");
+		COMMANDS.add("list");
+		COMMANDS.add("nearby");
 		COMMANDS.add("reload");
-		COMMANDS.add("remove");
+		COMMANDS.add("recountvotes");
+		COMMANDS.add("teleport");
+		COMMANDS.add("vote");
+		COMMANDS.add("delete");
 		
 		REGIONNAME.add("[RegionName]");
 		PLOTNAME.add("[PlotName]");
@@ -42,13 +50,21 @@ public class CommandCompleter implements TabCompleter {
 		} else if(args[0].equalsIgnoreCase("claimplot")) {
 			if(args.length == 2) return PLOTNAME;
 			else return BLANKLIST;
-		} else if(args[0].equalsIgnoreCase("remove")) {
+		} else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("inspect")) {
 			if(!(sender instanceof Player)) return BLANKLIST;
 			List<String> rgNames = new ArrayList<>();
-			Claim.getClaimListOwner((Player)sender, false).forEach(region -> rgNames.add(region.getId()));
-			Claim.getClaimListOwner((Player)sender, true).forEach(region -> rgNames.add(region.getId()));
+			Claim.getClaimListOwner((Player)sender, false).forEach(region -> rgNames.add(region));
+			Claim.getClaimListOwner((Player)sender, true).forEach(region -> rgNames.add(region));
 			if(args.length == 2) return rgNames;
 			else return BLANKLIST;
+		} else if(args[0].equalsIgnoreCase("teleport")){
+			if(!(sender instanceof Player)) return BLANKLIST;
+			List<String> rgNames = new ArrayList<>();
+			rgNames.addAll(Claim.getClaimListOwner((Player) sender, false));
+			rgNames.addAll(Claim.getClaimListOwner((Player) sender, true));
+			rgNames.addAll(Claim.getClaimListMember((Player) sender, false));
+			rgNames.addAll(Claim.getClaimListMember((Player) sender, true));
+			return rgNames;
 		} else return BLANKLIST;
 
 	}

@@ -1,5 +1,6 @@
 package net.minespire.landclaim.GUI;
 
+import net.minespire.landclaim.Listener.GUIClick;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -28,7 +29,7 @@ public class NGUI {
     }
 
     public void open(Player player){
-        player.openInventory(inventory);
+        GUIClick.playerLCInventory.put(player.getUniqueId().toString(), player.openInventory(inventory));
     }
 
     public int size(){
