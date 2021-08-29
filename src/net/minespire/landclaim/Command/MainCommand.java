@@ -164,7 +164,7 @@ public class MainCommand implements CommandExecutor {
 					break;
 				case "cancel":
 					if(Prompt.hasActivePrompt(player)){
-						Prompt.getPrompt(player.getDisplayName()).cancelPrompt();
+						Prompt.getPrompt(player.getName()).cancelPrompt();
 					}
 					break;
 				case "nearby":
@@ -174,8 +174,8 @@ public class MainCommand implements CommandExecutor {
 						return true;
 					}
 
-					String playerName = player.getDisplayName();
-					Player nPlayer = Bukkit.getPlayer(player.getDisplayName());
+					String playerName = player.getName();
+					Player nPlayer = Bukkit.getPlayer(player.getName());
 					if(Visualizer.seeNearbyBukkitTask.containsKey(playerName)){
 						if(Visualizer.seeNearbyAsyncService.containsKey(playerName)){
 							Bukkit.getScheduler().cancelTask(Visualizer.seeNearbyBukkitTask.get(playerName));
@@ -196,7 +196,7 @@ public class MainCommand implements CommandExecutor {
 						final Runnable task = () -> {
 							Visualizer.timer.get(playerName).getAndAdd(2);
 							Visualizer.seeNearbyRegions(nPlayer);
-							if (Visualizer.timer.get(playerName).get() == 15) {
+							if (Visualizer.timer.get(playerName).get() >= 14) {
 								Visualizer.seeNearbyAsyncService.get(playerName).shutdown();
 								Visualizer.seeNearbyAsyncService.remove(playerName);
 							}
@@ -233,7 +233,7 @@ public class MainCommand implements CommandExecutor {
 					};
 					bukkitTask.runTaskTimer(LandClaim.plugin, 0, 1);
 					Integer taskID = bukkitTask.getTaskId();
-					Visualizer.seeNearbyBukkitTask.put(player.getDisplayName(),taskID);
+					Visualizer.seeNearbyBukkitTask.put(player.getName(),taskID);
 					break;
 				case "teleport":
 					if(!(sender instanceof Player)) {
@@ -270,7 +270,7 @@ public class MainCommand implements CommandExecutor {
 					Set<UUID> regionOwners = Claim.getRegionOwners(args[1].split(",")[0], args[1].split(",")[1]);
 					if(regionOwners != null) {
 						if(regionOwners.contains(player.getUniqueId()) || player.hasPermission("landclaim.delete.others")){
-							guiManager.promptForRemoval(player.getDisplayName(), args[1].split(",")[0], args[1].split(",")[1]);
+							guiManager.promptForRemoval(player.getName(), args[1].split(",")[0], args[1].split(",")[1]);
 							return true;
 						} else player.sendMessage(ChatColor.RED + "You don't own that region.");
 					} else player.sendMessage(ChatColor.GOLD + "Invalid Region");

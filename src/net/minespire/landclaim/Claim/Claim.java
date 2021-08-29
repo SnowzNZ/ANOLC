@@ -314,7 +314,7 @@ public class Claim {
 	public static void removeRegion(org.bukkit.entity.Player player) {
 		World world = BukkitAdapter.adapt(player.getWorld());
 		RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
-		String regionName = Claim.awaitingRemovalConfirmation.get(player.getDisplayName()).getId();
+		String regionName = Claim.awaitingRemovalConfirmation.get(player.getName()).getId();
 		rgManager.removeRegion(regionName);
 		player.sendMessage(ChatColor.GOLD + "You removed claim " + ChatColor.DARK_PURPLE + regionName);
 	}
@@ -401,7 +401,7 @@ public class Claim {
 	}
 	
 	public String getPlayerName() {
-		return player.getDisplayName();
+		return player.getName();
 	}
 	
 	public String getRegionName() {

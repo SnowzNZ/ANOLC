@@ -92,7 +92,7 @@ public class GUIClick implements Listener {
         if(inventoryTitle.equals("LandClaim Inspector")){
             String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getDisplayName());
             String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getLore().get(0)).substring(7);
-            if(itemName.startsWith("Remove")) guiManager.promptForRemoval(player.getDisplayName(), regionName, worldName);
+            if(itemName.startsWith("Remove")) guiManager.promptForRemoval(player.getName(), regionName, worldName);
             if(itemName.startsWith("Players")) guiManager.openOwnersMembersEditor(player, regionName, worldName);
             if(itemName.startsWith("Flag Editor")) guiManager.openFlagsGUI(player, regionName, worldName);
             if(itemName.startsWith("Teleport")) guiManager.openTeleportGUI(player, regionName, worldName);
@@ -106,7 +106,7 @@ public class GUIClick implements Listener {
             String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getDisplayName());
             String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getLore().get(0)).substring(7);
             if(itemName.startsWith("View/Remove Players")) guiManager.openPlayersEditor(player, regionName, worldName);
-            if(itemName.startsWith("Add Player to Claim")) guiManager.openAddPlayer(player.getDisplayName(), regionName, worldName);
+            if(itemName.startsWith("Add Player to Claim")) guiManager.openAddPlayer(player.getName(), regionName, worldName);
 
             if(ChatColor.stripColor(itemName).equalsIgnoreCase("Back")) guiManager.openClaimInspector(player, regionName, worldName);
             if(ChatColor.stripColor(itemName).equalsIgnoreCase("Close")) player.closeInventory();
@@ -354,7 +354,7 @@ public class GUIClick implements Listener {
                 claim.saveClaim();
                 //DeedListener deed = new DeedListener(player, claim.getRegionName(), claim.getWorld().getName(), true);
                 //player.getInventory().addItem(deed.createDeed());
-                if(claim.isPlot()) player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&6You successfully claimed a region of land for &b$" + claim.getClaimCost() + "&6!"));
+                if(!claim.isPlot()) player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&6You successfully claimed a region of land for &b$" + claim.getClaimCost() + "&6!"));
                 else if(claim.isPlot()) player.sendMessage(ChatColor.translateAlternateColorCodes('&',"&6You successfully claimed a plot of land for &b$" + claim.getClaimCost() + "&6!"));
 
                 LandClaim.econ.withdrawPlayer(player, claim.getClaimCost());

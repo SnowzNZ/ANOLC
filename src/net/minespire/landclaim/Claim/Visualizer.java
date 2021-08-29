@@ -26,7 +26,7 @@ public class Visualizer {
     public static Map<String, AtomicInteger> timer = new HashMap<>();
 
     public static void seeNearbyRegions(org.bukkit.entity.Player player){
-        if(playerParticleCoords.containsKey(player.getDisplayName())) playerParticleCoords.get(player.getDisplayName()).clear();
+        if(playerParticleCoords.containsKey(player.getName())) playerParticleCoords.get(player.getName()).clear();
         Location playerLoc = player.getLocation();
         org.bukkit.World bukkitWorld = player.getWorld();
         World world = BukkitAdapter.adapt(bukkitWorld);
@@ -43,10 +43,10 @@ public class Visualizer {
             //int[][] regionBoundaries = getRegionPerimeters(rg.getMaximumPoint(), rg.getMinimumPoint());
             int[][] regionBoundaries = getRegionSlice(rg.getMaximumPoint(), rg.getMinimumPoint());
             Queue<BlockVector3> particleCoords;
-            if(!playerParticleCoords.containsKey(player.getDisplayName())) {
+            if(!playerParticleCoords.containsKey(player.getName())) {
                 particleCoords = new LinkedList<>();
-                playerParticleCoords.put(player.getDisplayName(), particleCoords);
-            } else particleCoords = playerParticleCoords.get(player.getDisplayName());
+                playerParticleCoords.put(player.getName(), particleCoords);
+            } else particleCoords = playerParticleCoords.get(player.getName());
 
             int countBlocksNear = 0;
             int playerRadius = 50;

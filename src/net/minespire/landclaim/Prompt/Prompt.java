@@ -33,7 +33,7 @@ public class Prompt {
     private void awaitResponse(){
 
         answer = null;
-        playersWithPrompts.add(player.getDisplayName());
+        playersWithPrompts.add(player.getName());
         serviceTaskID = Bukkit.getScheduler().runTaskTimer(LandClaim.plugin, () -> {
             ticksPassed += 5;
             if(ticksPassed == 200-60+1) player.sendMessage(ChatColor.RED + "Prompt expires in..");
@@ -43,8 +43,8 @@ public class Prompt {
 
             if(answer != null || ticksPassed > 200) {
                 Bukkit.getScheduler().cancelTask(serviceTaskID);
-                playersWithPrompts.remove(player.getDisplayName());
-                playerPrompts.remove(player.getDisplayName());
+                playersWithPrompts.remove(player.getName());
+                playerPrompts.remove(player.getName());
             }
             if(answer == null && ticksPassed > 200) player.sendMessage(ChatColor.RED + "Prompt expired.");
 
@@ -52,7 +52,7 @@ public class Prompt {
     }
 
     public static boolean hasActivePrompt(Player player){
-        return playersWithPrompts.contains(player.getDisplayName());
+        return playersWithPrompts.contains(player.getName());
     }
 
     public boolean sendPrompt(){
@@ -71,13 +71,13 @@ public class Prompt {
 
     public void cancelPrompt(){
         Bukkit.getScheduler().cancelTask(serviceTaskID);
-        playersWithPrompts.remove(player.getDisplayName());
-        playerPrompts.remove(player.getDisplayName());
+        playersWithPrompts.remove(player.getName());
+        playerPrompts.remove(player.getName());
         player.sendMessage(ChatColor.RED + "Prompt cancelled");
     }
 
     public void savePrompt(Prompt prompt){
-        playerPrompts.put(player.getDisplayName(), this);
+        playerPrompts.put(player.getName(), this);
     }
 
     public static Prompt getPrompt(String playerName){

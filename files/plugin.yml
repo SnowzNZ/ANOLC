@@ -1,6 +1,6 @@
 name: LandClaim
 main: net.minespire.landclaim.LandClaim
-version: 2.0.0
+version: 2.0.3
 depend: [Vault, WorldGuard, WorldEdit]
 api-version: 1.16
 permissions:
@@ -15,7 +15,7 @@ permissions:
     default: false
   landclaim.basic:
     description: Gives the standard players permissions
-    default: true
+    default: false
     children:
       landclaim.gui: true
       landclaim.nearby: true

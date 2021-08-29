@@ -18,7 +18,7 @@ public class PlayerChatListener implements Listener {
         if(!Prompt.hasActivePrompt(chatEvent.getPlayer())) return;
         chatEvent.setCancelled(true);
         Player player = chatEvent.getPlayer();
-        Prompt prompt = Prompt.getPrompt(player.getDisplayName());
+        Prompt prompt = Prompt.getPrompt(player.getName());
         String chatMessage = chatEvent.getMessage();
         prompt.setAnswer(chatMessage);
         if(prompt.getPromptType().equals("ADDMEMBER")) {
