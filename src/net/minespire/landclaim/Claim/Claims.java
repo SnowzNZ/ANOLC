@@ -3,7 +3,6 @@ package net.minespire.landclaim.Claim;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sun.istack.internal.Nullable;
 import net.minespire.landclaim.LandClaim;
 import org.bukkit.Location;
 
@@ -27,7 +26,6 @@ public class Claims {
         return regionList;
     }
 
-    @Nullable
     public static ProtectedRegion getRegionByName(String name, World world){
         if(!ProtectedRegion.isValidId(name)) return null;
         List<ProtectedRegion> regionList = new ArrayList<>();
