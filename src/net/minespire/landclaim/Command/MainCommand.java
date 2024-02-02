@@ -219,7 +219,7 @@ public class MainCommand implements CommandExecutor {
 									if(particleLocations == null) break;
 									BlockVector3 loc = particleLocations.remove();
 									Location location = Visualizer.getBestSpawnLocation(nPlayer.getWorld(), loc.getX(), loc.getY(), loc.getZ());
-									if(location != null) nPlayer.spawnParticle(Particle.BARRIER, location.getX() + .5, location.getY() + .5, location.getZ() + .5, 1);
+									if(location != null) nPlayer.spawnParticle(Particle.BLOCK_MARKER, location.getX() + .5, location.getY() + .5, location.getZ() + .5, 1, Bukkit.createBlockData(Material.BARRIER));
 								}
 							} else {
 								particleLocations = Visualizer.playerParticleCoords.get(playerName);
