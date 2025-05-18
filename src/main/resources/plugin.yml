@@ -1,4 +1,4 @@
-name: LandClaim
+name: ANOLC
 main: net.minespire.landclaim.LandClaim
 version: '${project.version}'
 depend: [ Vault, WorldGuard, WorldEdit ]

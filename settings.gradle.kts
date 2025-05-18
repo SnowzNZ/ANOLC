@@ -1,1 +1,1 @@
-rootProject.name = "LandClaim-ANOSMP"
+rootProject.name = "ANOLC"
