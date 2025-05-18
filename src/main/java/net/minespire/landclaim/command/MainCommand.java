@@ -3,10 +3,10 @@ package net.minespire.landclaim.command;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import net.minespire.landclaim.LandClaim;
 import net.minespire.landclaim.claim.*;
 import net.minespire.landclaim.gui.GUIManager;
 import net.minespire.landclaim.gui.NGUI;
-import net.minespire.landclaim.LandClaim;
 import net.minespire.landclaim.prompt.Prompt;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -253,7 +253,7 @@ public class MainCommand implements CommandExecutor {
                                         location.getY() + .5,
                                         location.getZ() + .5,
                                         1,
-                                        Bukkit.createBlockData(Material.BARRIER)
+                                        Bukkit.createBlockData(Material.RED_STAINED_GLASS)
                                     );
                                 }
                             } else {
