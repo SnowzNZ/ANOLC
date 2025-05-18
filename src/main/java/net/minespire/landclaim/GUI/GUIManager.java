@@ -81,8 +81,7 @@ public class GUIManager {
         numOwnedPlots = Claim.getClaimListOwner(player, true).size();
         numAllowedRegions = Claimer.getNumAllowedRegions(player);
         numAllowedPlots = Claimer.getNumAllowedPlots(player);
-        String[] claimableWorlds = Claimer.claimableWorlds(player).stream().map(world -> colorize("&9" + world.getName())).collect(
-            Collectors.toList()).toArray(new String[0]);
+        String[] claimableWorlds = Claimer.claimableWorlds(player).stream().map(world -> colorize("&9" + world.getName())).toList().toArray(new String[0]);
         claimLimitsGUI.addItem(
             Material.FILLED_MAP,
             colorize("&3Allowed Claim Worlds"),
