@@ -16,8 +16,8 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import net.minespire.landclaim.gui.GUIManager;
 import net.minespire.landclaim.LandClaim;
+import net.minespire.landclaim.gui.GUIManager;
 import org.bukkit.*;
 
 import java.util.*;
@@ -27,17 +27,17 @@ public class Claim {
     private ProtectedRegion region;
     private BlockVector3 minPoint;
     private BlockVector3 maxPoint;
-    private Player player;
+    private final Player player;
     private World world;
     public static List<org.bukkit.World> worlds = Bukkit.getWorlds();
     private RegionManager rgManager;
-    private String rgName;
-    private org.bukkit.entity.Player bukkitPlayer;
+    private final String rgName;
+    private final org.bukkit.entity.Player bukkitPlayer;
     private double claimCost;
     private int claimArea;
     private int claimVolume;
     private boolean isPlot = false;
-    private boolean regionAlreadyExists = false;
+    private final boolean regionAlreadyExists = false;
     public static Map<String, List<String>> playerClaimsMap = new HashMap<>();
     public static Map<String, ProtectedRegion> awaitingRemovalConfirmation = new HashMap<>();
 
@@ -61,7 +61,11 @@ public class Claim {
         this.world = BukkitAdapter.adapt(Bukkit.getWorld(worldName));
     }
 
-    public static void teleportToClaim(final org.bukkit.entity.Player player, final String regionName, final String worldName) {
+    public static void teleportToClaim(
+        final org.bukkit.entity.Player player,
+        final String regionName,
+        final String worldName
+    ) {
         final org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
         if (bukkitWorld == null) {
             player.sendMessage(GUIManager.colorize("&6That world does not exist."));
@@ -88,7 +92,11 @@ public class Claim {
         } else player.sendMessage(ChatColor.GOLD + "There is no teleport set for this claim.");
     }
 
-    public static void setClaimTeleport(final org.bukkit.entity.Player player, final String regionName, final String worldName) {
+    public static void setClaimTeleport(
+        final org.bukkit.entity.Player player,
+        final String regionName,
+        final String worldName
+    ) {
         if (!player.getWorld().getName().equals(worldName)) {
             player.sendMessage(ChatColor.GOLD + "You must be standing inside the claim to set a teleport.");
             return;
@@ -104,7 +112,11 @@ public class Claim {
 
     }
 
-    public static void removeClaimTeleport(final org.bukkit.entity.Player player, final String regionName, final String worldName) {
+    public static void removeClaimTeleport(
+        final org.bukkit.entity.Player player,
+        final String regionName,
+        final String worldName
+    ) {
         final org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
         if (bukkitWorld == null) {
             player.sendMessage("That world does not exist.");
@@ -292,7 +304,11 @@ public class Claim {
         return false;
     }
 
-    public static String playerIsOwnerOrMember(final org.bukkit.entity.Player player, final String regionName, final String worldName) {
+    public static String playerIsOwnerOrMember(
+        final org.bukkit.entity.Player player,
+        final String regionName,
+        final String worldName
+    ) {
         final org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
         if (bukkitWorld == null) return null;
         final World world = BukkitAdapter.adapt(bukkitWorld);
@@ -309,8 +325,7 @@ public class Claim {
         if (bukkitWorld == null) return false;
         final World world = BukkitAdapter.adapt(bukkitWorld);
         final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
-        if (rgManager.getRegion(regionName) == null) return false;
-        else return true;
+        return rgManager.getRegion(regionName) != null;
     }
 
     public static void removeRegion(final org.bukkit.entity.Player player) {
@@ -321,7 +336,11 @@ public class Claim {
         player.sendMessage(ChatColor.GOLD + "You removed claim " + ChatColor.DARK_PURPLE + regionName);
     }
 
-    public static void removeRegion(final org.bukkit.entity.Player player, final String regionName, final String worldName) {
+    public static void removeRegion(
+        final org.bukkit.entity.Player player,
+        final String regionName,
+        final String worldName
+    ) {
         final org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
         if (bukkitWorld == null) {
             player.sendMessage(ChatColor.GOLD + "That world does not exist.");
@@ -443,7 +462,11 @@ public class Claim {
         }
     }
 
-    public static boolean addOwner(final org.bukkit.entity.Player checkIfOwner, final String personToAdd, final ProtectedRegion region) {
+    public static boolean addOwner(
+        final org.bukkit.entity.Player checkIfOwner,
+        final String personToAdd,
+        final ProtectedRegion region
+    ) {
         final DefaultDomain regionOwners = region.getOwners();
         if (checkIfOwner.hasPermission("landclaim.edit.others") || regionOwners.contains(checkIfOwner.getUniqueId())) {
             final org.bukkit.entity.Player playerToAdd = Bukkit.getPlayer(personToAdd);
@@ -454,7 +477,11 @@ public class Claim {
         } else return false;
     }
 
-    public static boolean addMember(final org.bukkit.entity.Player checkIfOwner, final String personToAdd, final ProtectedRegion region) {
+    public static boolean addMember(
+        final org.bukkit.entity.Player checkIfOwner,
+        final String personToAdd,
+        final ProtectedRegion region
+    ) {
         final DefaultDomain regionMembers = region.getMembers();
         if (checkIfOwner.hasPermission("landclaim.edit.others") || region.getOwners().contains(checkIfOwner.getUniqueId())) {
             final org.bukkit.entity.Player playerToAdd = Bukkit.getPlayer(personToAdd);
@@ -506,7 +533,11 @@ public class Claim {
         }
     }
 
-    public static ProtectedRegion getRegion(final org.bukkit.entity.Player player, final String regionName, final String worldName) {
+    public static ProtectedRegion getRegion(
+        final org.bukkit.entity.Player player,
+        final String regionName,
+        final String worldName
+    ) {
         final World world = BukkitAdapter.adapt(Bukkit.getWorld(worldName));
         final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
         return rgManager.getRegion(regionName);

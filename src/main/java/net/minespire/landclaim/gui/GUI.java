@@ -1,7 +1,7 @@
 package net.minespire.landclaim.gui;
 
-import net.minespire.landclaim.claim.Claim;
 import net.minespire.landclaim.LandClaim;
+import net.minespire.landclaim.claim.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,11 +15,10 @@ import java.util.*;
 public class GUI {
     private Inventory inventory;
     private Player player;
-    private int guiSlots;
+    private final int guiSlots;
     public static Map<String, List<GUI>> playersGUIMap = new HashMap<>();
-    private List<GUIItem> guiItems;
+    private final List<GUIItem> guiItems;
     public static List<String> inventoryNames = new ArrayList<>();
-    ;
 
 
     public GUI(final int guiSlots) {
@@ -109,10 +108,10 @@ public class GUI {
     }
 
     public class GUIItem {
-        private ItemStack item;
-        private ItemMeta guiItemMeta;
-        private String displayName;
-        private List<String> lore;
+        private final ItemStack item;
+        private final ItemMeta guiItemMeta;
+        private final String displayName;
+        private final List<String> lore;
         private int slotNum = -1;
 
         public GUIItem(final Material material) {
@@ -159,7 +158,7 @@ public class GUI {
 
     public static void saveGUIToPlayerMap(final Player player, final GUI gui, final boolean startNewList) {
         final List<GUI> playerGUIList;
-        if (!GUI.playersGUIMap.containsKey(player.getUniqueId().toString()) || startNewList == true) {
+        if (!GUI.playersGUIMap.containsKey(player.getUniqueId().toString()) || startNewList) {
             playerGUIList = new ArrayList<>();
             playerGUIList.add(gui);
             GUI.playersGUIMap.put(player.getUniqueId().toString(), playerGUIList);

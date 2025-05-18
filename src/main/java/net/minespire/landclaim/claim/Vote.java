@@ -10,7 +10,12 @@ public class Vote {
     String playerUUID;
     LocalDateTime voteDateTime;
 
-    public Vote(final String regionName, final String worldName, final String playerUUID, final LocalDateTime voteDateTime) {
+    public Vote(
+        final String regionName,
+        final String worldName,
+        final String playerUUID,
+        final LocalDateTime voteDateTime
+    ) {
         this.regionName = regionName;
         this.worldName = worldName;
         this.playerUUID = playerUUID;

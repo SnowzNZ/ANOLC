@@ -37,7 +37,12 @@ public class CommandCompleter implements TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(final CommandSender sender, final Command cmd, final String label, final String[] args) {
+    public List<String> onTabComplete(
+        final CommandSender sender,
+        final Command cmd,
+        final String label,
+        final String[] args
+    ) {
         if (args.length == 1) {
             final List<String> completions = new ArrayList<>();
             StringUtil.copyPartialMatches(args[0], COMMANDS, completions);

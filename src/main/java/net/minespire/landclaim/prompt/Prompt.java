@@ -13,15 +13,15 @@ import java.util.Set;
 
 public class Prompt {
 
-    private Player player;
+    private final Player player;
     private int serviceTaskID;
     private String answer;
-    private String promptMessage;
+    private final String promptMessage;
     private int ticksPassed = 1;
-    private String promptType; //ADDMEMBER, ADDOWNER, [flagname key fom GUIManager.editableClaimFlags]
-    private ProtectedRegion region;
-    private static Set<String> playersWithPrompts = new HashSet<>();
-    private static Map<String, Prompt> playerPrompts = new HashMap<>();
+    private final String promptType; //ADDMEMBER, ADDOWNER, [flagname key fom GUIManager.editableClaimFlags]
+    private final ProtectedRegion region;
+    private static final Set<String> playersWithPrompts = new HashSet<>();
+    private static final Map<String, Prompt> playerPrompts = new HashMap<>();
 
     public Prompt(final String message, final Player player, final String promptType, final ProtectedRegion region) {
         this.promptMessage = message;

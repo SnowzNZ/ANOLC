@@ -28,7 +28,7 @@ public class MainCommand implements CommandExecutor {
 
     private Player player = null;
     private boolean isPlayer = false;
-    private GUIManager guiManager = GUIManager.getInst();
+    private final GUIManager guiManager = GUIManager.getInst();
 
 
     @Override
@@ -42,7 +42,6 @@ public class MainCommand implements CommandExecutor {
             if (isPlayer) GUIManager.getInst().openMainGUI(player);
             return true;
         }
-        ;
         try {
             switch (args[0].toLowerCase()) {
                 case "gui":
@@ -230,7 +229,7 @@ public class MainCommand implements CommandExecutor {
 
                     final BukkitRunnable bukkitTask = new BukkitRunnable() {
                         Queue<BlockVector3> particleLocations = Visualizer.playerParticleCoords.get(playerName);
-                        int maxSeconds = 15;
+                        final int maxSeconds = 15;
                         int ticks = 0;
 
                         @Override

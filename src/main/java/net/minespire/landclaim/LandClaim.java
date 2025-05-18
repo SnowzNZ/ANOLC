@@ -68,7 +68,6 @@ public class LandClaim extends JavaPlugin {
         if (!setupEconomy()) {
             log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
             getServer().getPluginManager().disablePlugin(this);
-            return;
         }
     }
 

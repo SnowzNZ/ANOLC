@@ -10,13 +10,13 @@ import java.util.List;
 
 public class VoteRegion {
 
-    private String regionCommaWorld;
-    private String regionName;
-    private String regionWorld;
+    private final String regionCommaWorld;
+    private final String regionName;
+    private final String regionWorld;
     private int votesThisYear;
     private int votesThisMonth;
     private int votesToday;
-    private static List<VoteRegion> voteRegionList = new ArrayList<>();
+    private static final List<VoteRegion> voteRegionList = new ArrayList<>();
 
     public VoteRegion(final String regionCommaWorld) {
         this.regionCommaWorld = regionCommaWorld;

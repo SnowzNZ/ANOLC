@@ -16,9 +16,7 @@ public class Claimer {
         if (player.hasPermission("landclaim.claimregion")) {
             if (player.hasPermission("landclaim.regions.*")) return true;
             final int numRegionsAllowed = getNumAllowedRegions(player);
-            if (Claim.getClaimListOwner(player, false).size() >= numRegionsAllowed) {
-                return false;
-            } else return true;
+            return Claim.getClaimListOwner(player, false).size() < numRegionsAllowed;
         } else return false;
 
     }
@@ -41,9 +39,7 @@ public class Claimer {
         if (player.hasPermission("landclaim.claimplot")) {
             if (player.hasPermission("landclaim.plots.*")) return true;
             final int numPlotsAllowed = getNumAllowedPlots(player);
-            if (Claim.getClaimListOwner(player, true).size() >= numPlotsAllowed) {
-                return false;
-            } else return true;
+            return Claim.getClaimListOwner(player, true).size() < numPlotsAllowed;
         } else return false;
     }
 

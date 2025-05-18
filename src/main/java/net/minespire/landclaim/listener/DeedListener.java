@@ -1,7 +1,7 @@
 package net.minespire.landclaim.listener;
 
-import net.minespire.landclaim.claim.Claim;
 import net.minespire.landclaim.LandClaim;
+import net.minespire.landclaim.claim.Claim;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -81,7 +81,7 @@ public class DeedListener implements Listener {
 
     public void activateDeedNewOwner() {
         final Claim claim = new Claim(player, regionName, worldName);
-        final Set<UUID> owners = claim.getRegionOwners(regionName, worldName);
+        final Set<UUID> owners = Claim.getRegionOwners(regionName, worldName);
         for (final UUID owner : owners) {
             if (player.getUniqueId().equals(owner)) {
                 player.sendMessage("You are already an owner of this region!");

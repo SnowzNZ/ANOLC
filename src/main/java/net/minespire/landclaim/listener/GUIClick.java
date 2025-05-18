@@ -8,9 +8,9 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import net.minespire.landclaim.LandClaim;
 import net.minespire.landclaim.claim.Claim;
 import net.minespire.landclaim.gui.GUIManager;
-import net.minespire.landclaim.LandClaim;
 import net.minespire.landclaim.prompt.Prompt;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -322,7 +322,10 @@ public class GUIClick implements Listener {
             if (itemStack.getType().equals(Material.DARK_OAK_SIGN) || itemStack.getType().equals(Material.BIRCH_SIGN))
                 return;
 
-            final boolean nonOwnerInspector = !Claim.getRegionOwners(regionName, worldName).contains(player.getUniqueId());
+            final boolean nonOwnerInspector = !Claim.getRegionOwners(
+                regionName,
+                worldName
+            ).contains(player.getUniqueId());
             final boolean nonOwnerEditor = player.hasPermission("landclaim.edit.others");
 
             if (nonOwnerInspector && !nonOwnerEditor) {
@@ -380,7 +383,10 @@ public class GUIClick implements Listener {
                 player.closeInventory();
                 return;
             }
-            final boolean nonOwnerInspector = !Claim.getRegionOwners(regionName, worldName).contains(player.getUniqueId());
+            final boolean nonOwnerInspector = !Claim.getRegionOwners(
+                regionName,
+                worldName
+            ).contains(player.getUniqueId());
             final boolean nonOwnerEditor = player.hasPermission("landclaim.edit.others");
 
             final String flagName = clickEvent.getClickedInventory().getItem(0).getItemMeta().getDisplayName();
@@ -456,7 +462,6 @@ public class GUIClick implements Listener {
 
                 LandClaim.econ.withdrawPlayer(player, claim.getClaimCost());
                 player.closeInventory();
-                return;
             }
         }
     }

@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class ClaimManager {
     public static Map<String, List<Claim>> playerClaims = new HashMap<>();
-    private Player player;
+    private final Player player;
     private List<Claim> allClaims;
     private List<Claim> ownerRegions;
     private List<Claim> memberRegions;

@@ -11,8 +11,8 @@ import java.util.List;
 
 public class NGUI {
 
-    private Inventory inventory;
-    private int size;
+    private final Inventory inventory;
+    private final int size;
 
     public NGUI(final int size, final String title) {
         this.size = size;

@@ -5,10 +5,10 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.RegionGroup;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import net.minespire.landclaim.LandClaim;
 import net.minespire.landclaim.claim.Claim;
 import net.minespire.landclaim.claim.Claimer;
 import net.minespire.landclaim.claim.VoteRegion;
-import net.minespire.landclaim.LandClaim;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,7 +18,7 @@ import java.util.*;
 
 public class GUIManager {
 
-    private static GUIManager inst = new GUIManager();
+    private static final GUIManager inst = new GUIManager();
     public static Map<String, Flag> editableClaimFlags = new LinkedHashMap<>();
 
 
@@ -83,7 +83,8 @@ public class GUIManager {
         numOwnedPlots = Claim.getClaimListOwner(player, true).size();
         numAllowedRegions = Claimer.getNumAllowedRegions(player);
         numAllowedPlots = Claimer.getNumAllowedPlots(player);
-        final String[] claimableWorlds = Claimer.claimableWorlds(player).stream().map(world -> colorize("&9" + world.getName())).toList().toArray(new String[0]);
+        final String[] claimableWorlds = Claimer.claimableWorlds(player).stream().map(world -> colorize("&9" + world.getName())).toList().toArray(
+            new String[0]);
         claimLimitsGUI.addItem(
             Material.FILLED_MAP,
             colorize("&3Allowed Claim Worlds"),
@@ -331,7 +332,12 @@ public class GUIManager {
         playersEditor.open(player);
     }
 
-    public void openMemberRemover(final Player player, final String uuid, final String regionName, final String worldName) {
+    public void openMemberRemover(
+        final Player player,
+        final String uuid,
+        final String regionName,
+        final String worldName
+    ) {
         final NGUI removeMember = new NGUI(36, "Remove Member");
         removeMember.addItem(
             Material.BARRIER,
@@ -351,7 +357,12 @@ public class GUIManager {
         removeMember.open(player);
     }
 
-    public void openOwnerRemover(final Player player, final String uuid, final String regionName, final String worldName) {
+    public void openOwnerRemover(
+        final Player player,
+        final String uuid,
+        final String regionName,
+        final String worldName
+    ) {
         final NGUI removeOwner = new NGUI(36, "Remove Owner");
         removeOwner.addItem(
             Material.BARRIER,
@@ -424,7 +435,12 @@ public class GUIManager {
         flagEditor.open(player);
     }
 
-    public void openStateFlagEditor(final Player player, final String regionName, final String flagName, final String worldName) {
+    public void openStateFlagEditor(
+        final Player player,
+        final String regionName,
+        final String flagName,
+        final String worldName
+    ) {
         final NGUI flagEditor = new NGUI(18, "LandClaim State Flag Editor");
 
         flagEditor.addItem(Material.DARK_OAK_SIGN, flagName, null, 0);
@@ -485,7 +501,12 @@ public class GUIManager {
         flagEditor.open(player);
     }
 
-    public void openStringFlagEditor(final Player player, final String regionName, final String flagName, final String worldName) {
+    public void openStringFlagEditor(
+        final Player player,
+        final String regionName,
+        final String flagName,
+        final String worldName
+    ) {
         final NGUI flagEditor = new NGUI(18, "LandClaim String Flag Editor");
         final List<String> currentFlagText = new ArrayList<>();
         final ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
