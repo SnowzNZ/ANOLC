@@ -504,7 +504,7 @@ public class GUIManager {
                     countLineLength = 0;
                 }
             }
-            if (stringBuilder.length() > 0) currentFlagText.add(stringBuilder.toString());
+            if (!stringBuilder.isEmpty()) currentFlagText.add(stringBuilder.toString());
         }
         flagEditor.addItem(Material.DARK_OAK_SIGN, flagName, currentFlagText, 0);
         flagEditor.addItem(Material.WRITABLE_BOOK, colorize("&3Enter New Value"), null, 4);

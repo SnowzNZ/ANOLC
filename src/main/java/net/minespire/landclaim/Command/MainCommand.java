@@ -374,7 +374,7 @@ public class MainCommand implements CommandExecutor {
                     }
                     if (args.length < 2) {
                         final List<ProtectedRegion> regionsList = Claims.getRegionsAtLocation(player.getLocation());
-                        if (regionsList.size() == 0) {
+                        if (regionsList.isEmpty()) {
                             player.sendMessage(ChatColor.GOLD + "You are not standing in any regions. /lc vote [REGION] to vote for a region.");
                             return true;
                         }
