@@ -258,7 +258,8 @@ public class MainCommand implements CommandExecutor {
                                         location.getY() + .5,
                                         location.getZ() + .5,
                                         1,
-                                        Bukkit.createBlockData(Material.RED_STAINED_GLASS)
+                                        Bukkit.createBlockData(Material.valueOf(LandClaim.plugin.getConfig().getString(
+                                            "Claims.Regions.NearbyDisplayBlock")))
                                     );
                                 }
                             } else {
