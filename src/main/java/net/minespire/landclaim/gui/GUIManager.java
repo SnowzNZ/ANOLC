@@ -64,8 +64,8 @@ public class GUIManager {
             parseLoreString("&fView and edit your|&fregions and plots")
         );
         mainGUI.addItem(Material.WOODEN_AXE, colorize("&3Wand"), parseLoreString("&fGet a claim wand"));
-        mainGUI.addItem(Material.OBSERVER, colorize("&3Claim Limits"), parseLoreString("&fView your claim limits"));
-        mainGUI.addItem(Material.EMERALD, colorize("&3Popular Regions"), parseLoreString("&fView top-voted regions"));
+//        mainGUI.addItem(Material.OBSERVER, colorize("&3Claim Limits"), parseLoreString("&fView your claim limits"));
+//        mainGUI.addItem(Material.EMERALD, colorize("&3Popular Regions"), parseLoreString("&fView top-voted regions"));
 
         mainGUI.addItem(Material.BIRCH_DOOR, colorize("&6Close"), null, 8);
         mainGUI.open(player);
