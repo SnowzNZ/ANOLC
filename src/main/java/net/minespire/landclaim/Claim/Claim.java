@@ -145,7 +145,7 @@ public class Claim {
         if (selection != null) {
             if (!isPlot) {
                 minPoint = BlockVector3.at(minPoint.x(), (player.getWorld().getMaxY() + 1), minPoint.z());
-                maxPoint = BlockVector3.at(maxPoint.x(), 0, maxPoint.z());
+                maxPoint = BlockVector3.at(maxPoint.x(), -64, maxPoint.z());
                 region = new ProtectedCuboidRegion(rgName, minPoint, maxPoint);
             } else region = new ProtectedCuboidRegion(rgName, minPoint, maxPoint);
         }
