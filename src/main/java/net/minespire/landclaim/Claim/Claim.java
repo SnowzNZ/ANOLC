@@ -226,7 +226,7 @@ public class Claim {
             calculateClaimVolume();
             double tmpCost = LandClaim.plugin.getConfig().getDouble("Claims.Plots.PricePerBlock") * claimVolume;
             double baseCost = LandClaim.plugin.getConfig().getDouble("Claims.Plots.BaseCost");
-            claimCost = tmpCost >= baseCost ? tmpCost : baseCost;
+            claimCost = Math.max(tmpCost, baseCost);
         } else claimCost = claimArea * LandClaim.plugin.getConfig().getDouble("Claims.Regions.PricePerBlock");
     }
 
@@ -249,13 +249,13 @@ public class Claim {
     public int getClaimLength() {
         int side1 = Math.abs(maxPoint.x() - minPoint.x() + 1);
         int side2 = Math.abs(maxPoint.z() - minPoint.z() + 1);
-        return side1 >= side2 ? side1 : side2;
+        return Math.max(side1, side2);
     }
 
     public int getClaimWidth() {
         int side1 = Math.abs(maxPoint.x() - minPoint.x() + 1);
         int side2 = Math.abs(maxPoint.z() - minPoint.z() + 1);
-        return side1 >= side2 ? side2 : side1;
+        return Math.min(side1, side2);
     }
 
     public int getClaimHeight() {

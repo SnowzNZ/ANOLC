@@ -30,7 +30,7 @@ public class Claimer {
         for (PermissionAttachmentInfo perm : playerPermissions) {
             if (perm.getPermission().startsWith("landclaim.regions.")) {
                 permRegions = Integer.valueOf(perm.getPermission().substring(18));
-                numRegionsAllowed = permRegions > numRegionsAllowed ? permRegions : numRegionsAllowed;
+                numRegionsAllowed = Math.max(permRegions, numRegionsAllowed);
             }
         }
         return numRegionsAllowed;
@@ -54,7 +54,7 @@ public class Claimer {
         for (PermissionAttachmentInfo perm : playerPermissions) {
             if (perm.getPermission().startsWith("landclaim.plots.")) {
                 permRegions = Integer.valueOf(perm.getPermission().substring(16));
-                numRegionsAllowed = permRegions > numRegionsAllowed ? permRegions : numRegionsAllowed;
+                numRegionsAllowed = Math.max(permRegions, numRegionsAllowed);
             }
         }
         return numRegionsAllowed;
