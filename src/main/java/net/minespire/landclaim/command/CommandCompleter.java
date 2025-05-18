@@ -1,6 +1,6 @@
-package net.minespire.landclaim.Command;
+package net.minespire.landclaim.command;
 
-import net.minespire.landclaim.Claim.Claim;
+import net.minespire.landclaim.claim.Claim;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

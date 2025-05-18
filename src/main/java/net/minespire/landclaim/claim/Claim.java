@@ -1,4 +1,4 @@
-package net.minespire.landclaim.Claim;
+package net.minespire.landclaim.claim;
 
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.LocalSession;
@@ -16,7 +16,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import net.minespire.landclaim.GUI.GUIManager;
+import net.minespire.landclaim.gui.GUIManager;
 import net.minespire.landclaim.LandClaim;
 import org.bukkit.*;
 

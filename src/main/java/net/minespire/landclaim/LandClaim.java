@@ -9,13 +9,13 @@ import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import net.milkbowl.vault.economy.Economy;
-import net.minespire.landclaim.Claim.Claim;
-import net.minespire.landclaim.Claim.VoteFile;
-import net.minespire.landclaim.Claim.VoteRegion;
-import net.minespire.landclaim.Command.CommandCompleter;
-import net.minespire.landclaim.Command.MainCommand;
-import net.minespire.landclaim.Listener.GUIClick;
-import net.minespire.landclaim.Listener.PlayerChatListener;
+import net.minespire.landclaim.claim.Claim;
+import net.minespire.landclaim.claim.VoteFile;
+import net.minespire.landclaim.claim.VoteRegion;
+import net.minespire.landclaim.command.CommandCompleter;
+import net.minespire.landclaim.command.MainCommand;
+import net.minespire.landclaim.listener.GUIClick;
+import net.minespire.landclaim.listener.PlayerChatListener;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,13 +70,6 @@ public class LandClaim extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-
-        this.getLogger().info("LandClaim Enabled.");
-    }
-
-
-    public void onDisable() {
-        this.getLogger().info("LandClaim Disabled.");
     }
 
     public void loadConfiguration() {

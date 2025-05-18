@@ -1,6 +1,6 @@
-package net.minespire.landclaim.GUI;
+package net.minespire.landclaim.gui;
 
-import net.minespire.landclaim.Listener.GUIClick;
+import net.minespire.landclaim.listener.GUIClick;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

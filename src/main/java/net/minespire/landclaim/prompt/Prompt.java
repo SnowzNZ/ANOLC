@@ -1,4 +1,4 @@
-package net.minespire.landclaim.Prompt;
+package net.minespire.landclaim.prompt;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.minespire.landclaim.LandClaim;

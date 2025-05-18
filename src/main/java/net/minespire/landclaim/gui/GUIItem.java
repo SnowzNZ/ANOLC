@@ -1,4 +1,4 @@
-package net.minespire.landclaim.GUI;
+package net.minespire.landclaim.gui;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;

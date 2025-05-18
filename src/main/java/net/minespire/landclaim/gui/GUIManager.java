@@ -1,13 +1,13 @@
-package net.minespire.landclaim.GUI;
+package net.minespire.landclaim.gui;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.RegionGroup;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import net.minespire.landclaim.Claim.Claim;
-import net.minespire.landclaim.Claim.Claimer;
-import net.minespire.landclaim.Claim.VoteRegion;
+import net.minespire.landclaim.claim.Claim;
+import net.minespire.landclaim.claim.Claimer;
+import net.minespire.landclaim.claim.VoteRegion;
 import net.minespire.landclaim.LandClaim;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,7 +15,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GUIManager {
 

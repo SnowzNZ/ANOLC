@@ -1,8 +1,8 @@
-package net.minespire.landclaim.Listener;
+package net.minespire.landclaim.listener;
 
-import net.minespire.landclaim.Claim.Claim;
-import net.minespire.landclaim.GUI.GUIManager;
-import net.minespire.landclaim.Prompt.Prompt;
+import net.minespire.landclaim.claim.Claim;
+import net.minespire.landclaim.gui.GUIManager;
+import net.minespire.landclaim.prompt.Prompt;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package net.minespire.landclaim.Claim;
+package net.minespire.landclaim.claim;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.world.World;

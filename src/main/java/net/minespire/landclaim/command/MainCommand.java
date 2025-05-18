@@ -1,13 +1,13 @@
-package net.minespire.landclaim.Command;
+package net.minespire.landclaim.command;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import net.minespire.landclaim.Claim.*;
-import net.minespire.landclaim.GUI.GUIManager;
-import net.minespire.landclaim.GUI.NGUI;
+import net.minespire.landclaim.claim.*;
+import net.minespire.landclaim.gui.GUIManager;
+import net.minespire.landclaim.gui.NGUI;
 import net.minespire.landclaim.LandClaim;
-import net.minespire.landclaim.Prompt.Prompt;
+import net.minespire.landclaim.prompt.Prompt;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

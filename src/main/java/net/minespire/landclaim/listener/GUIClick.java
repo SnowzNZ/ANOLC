@@ -1,4 +1,4 @@
-package net.minespire.landclaim.Listener;
+package net.minespire.landclaim.listener;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.world.World;
@@ -8,10 +8,10 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import net.minespire.landclaim.Claim.Claim;
-import net.minespire.landclaim.GUI.GUIManager;
+import net.minespire.landclaim.claim.Claim;
+import net.minespire.landclaim.gui.GUIManager;
 import net.minespire.landclaim.LandClaim;
-import net.minespire.landclaim.Prompt.Prompt;
+import net.minespire.landclaim.prompt.Prompt;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

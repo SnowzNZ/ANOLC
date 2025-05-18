@@ -1,4 +1,4 @@
-package net.minespire.landclaim.Economy;
+package net.minespire.landclaim.economy;
 
 public class FlagCost {
     private String flag;

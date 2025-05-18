@@ -1,4 +1,4 @@
-package net.minespire.landclaim.Claim;
+package net.minespire.landclaim.claim;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

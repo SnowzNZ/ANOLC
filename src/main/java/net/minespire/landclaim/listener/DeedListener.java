@@ -1,6 +1,6 @@
-package net.minespire.landclaim.Listener;
+package net.minespire.landclaim.listener;
 
-import net.minespire.landclaim.Claim.Claim;
+import net.minespire.landclaim.claim.Claim;
 import net.minespire.landclaim.LandClaim;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
