@@ -71,8 +71,7 @@ public class Visualizer {
     }
 
     public static double getDistance(final int[] point1, final int[] point2) {
-        final double distance = Math.sqrt((squareInts(point1[0] - point2[0]) + squareInts(point1[1] - point2[2])));
-        return distance;
+        return Math.sqrt((squareInts(point1[0] - point2[0]) + squareInts(point1[1] - point2[2])));
     }
 
     public static int squareInts(final int toSquare) {

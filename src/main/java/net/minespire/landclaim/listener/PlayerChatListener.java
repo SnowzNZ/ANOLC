@@ -13,7 +13,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PlayerChatListener implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.HIGH)
     private void onAnswerPrompt(final AsyncPlayerChatEvent chatEvent) {
         if (!Prompt.hasActivePrompt(chatEvent.getPlayer())) return;
         chatEvent.setCancelled(true);

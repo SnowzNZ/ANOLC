@@ -71,7 +71,7 @@ public class GUIClick implements Listener {
                     || mat.equals(Material.IRON_ORE)) guiManager.openClaimInspector(
                     player,
                     itemName,
-                    ChatColor.stripColor(itemMeta.getLore().get(0)).substring(7)
+                    ChatColor.stripColor(itemMeta.getLore().getFirst()).substring(7)
                 );
             }
             if (itemName.equals("Next Page")) {
@@ -87,102 +87,104 @@ public class GUIClick implements Listener {
             return;
         }
 
-        if (inventoryTitle.equals("LandClaim Claim Limits")) {
-            if (itemName.equalsIgnoreCase("Back")) guiManager.openMainGUI(player);
-            if (itemName.equalsIgnoreCase("Close")) player.closeInventory();
-            return;
-        }
-
-        if (inventoryTitle.equals("LandClaim Inspector")) {
-            final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getLore().get(
-                0)).substring(7);
-            if (itemName.startsWith("Remove")) guiManager.promptForRemoval(player.getName(), regionName, worldName);
-            if (itemName.startsWith("Players")) guiManager.openOwnersMembersEditor(player, regionName, worldName);
-            if (itemName.startsWith("Flag Editor")) guiManager.openFlagsGUI(player, regionName, worldName);
-            if (itemName.startsWith("Teleport")) guiManager.openTeleportGUI(player, regionName, worldName);
-
-            if (ChatColor.stripColor(itemName).equalsIgnoreCase("Back")) guiManager.openAllClaimsGUI(player);
-            if (ChatColor.stripColor(itemName).equalsIgnoreCase("Close")) player.closeInventory();
-            return;
-        }
-
-        if (inventoryTitle.equals("Owners/Members Editor")) {
-            final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getLore().get(
-                0)).substring(7);
-            if (itemName.startsWith("View/Remove Players")) guiManager.openPlayersEditor(player, regionName, worldName);
-            if (itemName.startsWith("Add Player to Claim")) guiManager.openAddPlayer(
-                player.getName(),
-                regionName,
-                worldName
-            );
-
-            if (ChatColor.stripColor(itemName).equalsIgnoreCase("Back")) guiManager.openClaimInspector(
-                player,
-                regionName,
-                worldName
-            );
-            if (ChatColor.stripColor(itemName).equalsIgnoreCase("Close")) player.closeInventory();
-            return;
-        }
-
-        if (inventoryTitle.equals("LandClaim Claim Removal")) {
-            final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getLore().get(
-                0)).substring(7);
-            if (itemName.startsWith("Remove")) {
-                Claim.removeRegion(player, regionName, worldName);
-                guiManager.openAllClaimsGUI(player);
-            }
-
-            if (ChatColor.stripColor(itemName).equalsIgnoreCase("Back")) guiManager.openClaimInspector(
-                player,
-                regionName,
-                worldName
-            );
-            if (ChatColor.stripColor(itemName).equalsIgnoreCase("Close")) player.closeInventory();
-            return;
-        }
-
-        if (inventoryTitle.equals("View/Remove Players")) {
-            final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(47).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(47).getItemMeta().getLore().get(
-                0)).substring(7);
-            if (itemName.equalsIgnoreCase("Back")) {
-                guiManager.openOwnersMembersEditor(player, regionName, worldName);
+        switch (inventoryTitle) {
+            case "LandClaim Claim Limits" -> {
+                if (itemName.equalsIgnoreCase("Back")) guiManager.openMainGUI(player);
+                if (itemName.equalsIgnoreCase("Close")) player.closeInventory();
                 return;
             }
-            if (itemName.equalsIgnoreCase("Close")) {
-                player.closeInventory();
+            case "LandClaim Inspector" -> {
+                final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getDisplayName());
+                final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getLore().get(
+                    0)).substring(7);
+                if (itemName.startsWith("Remove")) guiManager.promptForRemoval(player.getName(), regionName, worldName);
+                if (itemName.startsWith("Players")) guiManager.openOwnersMembersEditor(player, regionName, worldName);
+                if (itemName.startsWith("Flag Editor")) guiManager.openFlagsGUI(player, regionName, worldName);
+                if (itemName.startsWith("Teleport")) guiManager.openTeleportGUI(player, regionName, worldName);
+
+                if (ChatColor.stripColor(itemName).equalsIgnoreCase("Back")) guiManager.openAllClaimsGUI(player);
+                if (ChatColor.stripColor(itemName).equalsIgnoreCase("Close")) player.closeInventory();
                 return;
             }
+            case "Owners/Members Editor" -> {
+                final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getDisplayName());
+                final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getLore().get(
+                    0)).substring(7);
+                if (itemName.startsWith("View/Remove Players")) guiManager.openPlayersEditor(
+                    player,
+                    regionName,
+                    worldName
+                );
+                if (itemName.startsWith("Add Player to Claim")) guiManager.openAddPlayer(
+                    player.getName(),
+                    regionName,
+                    worldName
+                );
 
-            if (player.hasPermission("landclaim.removeplayer")) {
-                final ItemMeta clickedItemMeta = clickEvent.getCurrentItem().getItemMeta();
-                String firstLore = "";
-                if (clickedItemMeta.getLore() != null)
-                    firstLore = ChatColor.stripColor(clickedItemMeta.getLore().get(0));
-                if (clickedItemMeta != null && firstLore.startsWith("UUID")) {
-                    final String ownerOrMember = Claim.playerIsOwnerOrMember(player, regionName, worldName);
-                    if ((ownerOrMember != null && ownerOrMember.equalsIgnoreCase("Owner")) || player.hasPermission(
-                        "landclaim.edit.others")) {
-                        if (itemStack.getType().equals(Material.WITHER_SKELETON_SKULL)) {
-                            guiManager.openOwnerRemover(player, firstLore.substring(5), regionName, worldName);
-                        }
-                        if (itemStack.getType().equals(Material.SKELETON_SKULL)) {
-                            guiManager.openMemberRemover(player, firstLore.substring(5), regionName, worldName);
-                        }
-                    } else player.sendMessage(ChatColor.GOLD + "Only claim owners can remove players from claims.");
+                if (ChatColor.stripColor(itemName).equalsIgnoreCase("Back")) guiManager.openClaimInspector(
+                    player,
+                    regionName,
+                    worldName
+                );
+                if (ChatColor.stripColor(itemName).equalsIgnoreCase("Close")) player.closeInventory();
+                return;
+            }
+            case "LandClaim Claim Removal" -> {
+                final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getDisplayName());
+                final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getLore().get(
+                    0)).substring(7);
+                if (itemName.startsWith("Remove")) {
+                    Claim.removeRegion(player, regionName, worldName);
+                    guiManager.openAllClaimsGUI(player);
                 }
+
+                if (ChatColor.stripColor(itemName).equalsIgnoreCase("Back")) guiManager.openClaimInspector(
+                    player,
+                    regionName,
+                    worldName
+                );
+                if (ChatColor.stripColor(itemName).equalsIgnoreCase("Close")) player.closeInventory();
+                return;
             }
-            return;
+            case "View/Remove Players" -> {
+                final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(47).getItemMeta().getDisplayName());
+                final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(47).getItemMeta().getLore().get(
+                    0)).substring(7);
+                if (itemName.equalsIgnoreCase("Back")) {
+                    guiManager.openOwnersMembersEditor(player, regionName, worldName);
+                    return;
+                }
+                if (itemName.equalsIgnoreCase("Close")) {
+                    player.closeInventory();
+                    return;
+                }
+
+                if (player.hasPermission("landclaim.removeplayer")) {
+                    final ItemMeta clickedItemMeta = clickEvent.getCurrentItem().getItemMeta();
+                    String firstLore = "";
+                    if (clickedItemMeta.getLore() != null)
+                        firstLore = ChatColor.stripColor(clickedItemMeta.getLore().get(0));
+                    if (clickedItemMeta != null && firstLore.startsWith("UUID")) {
+                        final String ownerOrMember = Claim.playerIsOwnerOrMember(player, regionName, worldName);
+                        if ((ownerOrMember != null && ownerOrMember.equalsIgnoreCase("Owner")) || player.hasPermission(
+                            "landclaim.edit.others")) {
+                            if (itemStack.getType().equals(Material.WITHER_SKELETON_SKULL)) {
+                                guiManager.openOwnerRemover(player, firstLore.substring(5), regionName, worldName);
+                            }
+                            if (itemStack.getType().equals(Material.SKELETON_SKULL)) {
+                                guiManager.openMemberRemover(player, firstLore.substring(5), regionName, worldName);
+                            }
+                        } else player.sendMessage(ChatColor.GOLD + "Only claim owners can remove players from claims.");
+                    }
+                }
+                return;
+            }
         }
 
         if (inventoryTitle.equalsIgnoreCase("Remove Member")) {
             final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getLore().get(
-                0)).substring(7);
+            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getLore().getFirst(
+            )).substring(7);
             final String uuid = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(13).getItemMeta().getLore().get(
                 1)).substring(6);
             final String playerToRemoveName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(13).getItemMeta().getLore().get(
@@ -206,8 +208,8 @@ public class GUIClick implements Listener {
 
         if (inventoryTitle.equalsIgnoreCase("Remove Owner")) {
             final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getLore().get(
-                0)).substring(7);
+            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getLore().getFirst(
+            )).substring(7);
             final String uuid = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(13).getItemMeta().getLore().get(
                 1)).substring(6);
             final String playerToRemoveName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(13).getItemMeta().getLore().get(
@@ -229,202 +231,201 @@ public class GUIClick implements Listener {
             return;
         }
 
-        if (inventoryTitle.equals("Add Player to Claim")) {
-            final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getLore().get(
-                0)).substring(7);
-            if (itemName.startsWith("Add Owner to")) {
-                final World world = BukkitAdapter.adapt(Bukkit.getWorld(worldName));
-                final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
-                final Prompt prompt = new Prompt(
-                    ChatColor.GOLD + "Who would you like to add as an owner? " + ChatColor.RED +
-                        "/lc cancel" + ChatColor.GOLD + " to cancel",
-                    player,
-                    "ADDOWNER",
-                    rgManager.getRegion(regionName)
-                );
-                prompt.sendPrompt();
-                player.closeInventory();
+        switch (inventoryTitle) {
+            case "Add Player to Claim" -> {
+                final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getDisplayName());
+                final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getLore().get(
+                    0)).substring(7);
+                if (itemName.startsWith("Add Owner to")) {
+                    final World world = BukkitAdapter.adapt(Bukkit.getWorld(worldName));
+                    final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+                    final Prompt prompt = new Prompt(
+                        ChatColor.GOLD + "Who would you like to add as an owner? " + ChatColor.RED +
+                            "/lc cancel" + ChatColor.GOLD + " to cancel",
+                        player,
+                        "ADDOWNER",
+                        rgManager.getRegion(regionName)
+                    );
+                    prompt.sendPrompt();
+                    player.closeInventory();
+                }
+                if (itemName.startsWith("Add Member to")) {
+                    final World world = BukkitAdapter.adapt(Bukkit.getWorld(worldName));
+                    final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+                    final Prompt prompt = new Prompt(
+                        ChatColor.GOLD + "Who would you like to add as a member? " + ChatColor.RED +
+                            "/lc cancel" + ChatColor.GOLD + " to cancel",
+                        player,
+                        "ADDMEMBER",
+                        rgManager.getRegion(regionName)
+                    );
+                    prompt.sendPrompt();
+                    player.closeInventory();
+                }
+                if (itemName.startsWith("Back")) guiManager.openOwnersMembersEditor(player, regionName, worldName);
+                if (itemName.startsWith("Close")) player.closeInventory();
+                return;
             }
-            if (itemName.startsWith("Add Member to")) {
-                final World world = BukkitAdapter.adapt(Bukkit.getWorld(worldName));
-                final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
-                final Prompt prompt = new Prompt(
-                    ChatColor.GOLD + "Who would you like to add as a member? " + ChatColor.RED +
-                        "/lc cancel" + ChatColor.GOLD + " to cancel",
-                    player,
-                    "ADDMEMBER",
-                    rgManager.getRegion(regionName)
-                );
-                prompt.sendPrompt();
-                player.closeInventory();
+            case "LandClaim Teleport" -> {
+                final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getDisplayName());
+                final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getLore().get(
+                    0)).substring(7);
+                if (itemName.startsWith("Teleport to ")) Claim.teleportToClaim(player, regionName, worldName);
+                if (itemName.equalsIgnoreCase("Set Teleport Point")) {
+                    Claim.setClaimTeleport(player, regionName, worldName);
+                }
+                if (itemName.equalsIgnoreCase("Remove Teleport Point")) {
+                    Claim.removeClaimTeleport(player, regionName, worldName);
+                }
+                if (itemName.startsWith("Back")) guiManager.openClaimInspector(player, regionName, worldName);
+                if (itemName.startsWith("Close")) player.closeInventory();
+                return;
             }
-            if (itemName.startsWith("Back")) guiManager.openOwnersMembersEditor(player, regionName, worldName);
-            if (itemName.startsWith("Close")) player.closeInventory();
-            return;
-        }
-
-        if (inventoryTitle.equals("LandClaim Teleport")) {
-            final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(29).getItemMeta().getLore().get(
-                0)).substring(7);
-            if (itemName.startsWith("Teleport to ")) Claim.teleportToClaim(player, regionName, worldName);
-            if (itemName.equalsIgnoreCase("Set Teleport Point")) {
-                Claim.setClaimTeleport(player, regionName, worldName);
-            }
-            if (itemName.equalsIgnoreCase("Remove Teleport Point")) {
-                Claim.removeClaimTeleport(player, regionName, worldName);
-            }
-            if (itemName.startsWith("Back")) guiManager.openClaimInspector(player, regionName, worldName);
-            if (itemName.startsWith("Close")) player.closeInventory();
-            return;
-        }
-
-        if (inventoryTitle.equals("LandClaim Flags")) {
-            final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(38).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(38).getItemMeta().getLore().get(
-                0)).substring(7);
-            if (itemStack.getType().equals(Material.LIME_BANNER) || itemStack.getType().equals(Material.GRAY_BANNER)) {
-                if (GUIManager.editableClaimFlags.get(itemName) instanceof StateFlag) guiManager.openStateFlagEditor(
+            case "LandClaim Flags" -> {
+                final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(38).getItemMeta().getDisplayName());
+                final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(38).getItemMeta().getLore().get(
+                    0)).substring(7);
+                if (itemStack.getType().equals(Material.LIME_BANNER) || itemStack.getType().equals(Material.GRAY_BANNER)) {
+                    if (GUIManager.editableClaimFlags.get(itemName) instanceof StateFlag)
+                        guiManager.openStateFlagEditor(
+                            player,
+                            regionName,
+                            itemName,
+                            worldName
+                        );
+                    if (GUIManager.editableClaimFlags.get(itemName) instanceof StringFlag)
+                        guiManager.openStringFlagEditor(
+                            player,
+                            regionName,
+                            itemName,
+                            worldName
+                        );
+                }
+                if (ChatColor.stripColor(itemName).startsWith("Back")) guiManager.openClaimInspector(
                     player,
                     regionName,
-                    itemName,
                     worldName
                 );
-                if (GUIManager.editableClaimFlags.get(itemName) instanceof StringFlag) guiManager.openStringFlagEditor(
-                    player,
+                if (ChatColor.stripColor(itemName).startsWith("Close")) player.closeInventory();
+                return;
+            }
+            case "LandClaim State Flag Editor" -> {
+                final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getDisplayName());
+                final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getLore().get(
+                    0)).substring(7);
+                if (itemName.equalsIgnoreCase("Back")) {
+                    guiManager.openFlagsGUI(player, regionName, worldName);
+                    return;
+                }
+                if (itemName.equalsIgnoreCase("Close")) {
+                    player.closeInventory();
+                    return;
+                }
+                if (itemStack.getType().equals(Material.DARK_OAK_SIGN) || itemStack.getType().equals(Material.BIRCH_SIGN))
+                    return;
+
+                final boolean nonOwnerInspector = !Claim.getRegionOwners(
                     regionName,
-                    itemName,
                     worldName
-                );
-            }
-            if (ChatColor.stripColor(itemName).startsWith("Back")) guiManager.openClaimInspector(
-                player,
-                regionName,
-                worldName
-            );
-            if (ChatColor.stripColor(itemName).startsWith("Close")) player.closeInventory();
-            return;
-        }
+                ).contains(player.getUniqueId());
+                final boolean nonOwnerEditor = player.hasPermission("landclaim.edit.others");
 
-        if (inventoryTitle.equals("LandClaim State Flag Editor")) {
-            final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getLore().get(
-                0)).substring(7);
-            if (itemName.equalsIgnoreCase("Back")) {
-                guiManager.openFlagsGUI(player, regionName, worldName);
-                return;
-            }
-            if (itemName.equalsIgnoreCase("Close")) {
-                player.closeInventory();
-                return;
-            }
-            if (itemStack.getType().equals(Material.DARK_OAK_SIGN) || itemStack.getType().equals(Material.BIRCH_SIGN))
-                return;
-
-            final boolean nonOwnerInspector = !Claim.getRegionOwners(
-                regionName,
-                worldName
-            ).contains(player.getUniqueId());
-            final boolean nonOwnerEditor = player.hasPermission("landclaim.edit.others");
-
-            if (nonOwnerInspector && !nonOwnerEditor) {
-                player.sendMessage(ChatColor.GOLD + "You cannot edit this claim");
-                return;
-            }
-
-            final Flag flag = GUIManager.editableClaimFlags.get(clickEvent.getClickedInventory().getItem(0).getItemMeta().getDisplayName());
-            final ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
-
-            if (itemName.equalsIgnoreCase("Delete Flag")) region.setFlag(flag, null);
-
-            if (itemName.equalsIgnoreCase("Allow")) region.setFlag(flag, StateFlag.State.ALLOW);
-            if (itemName.equalsIgnoreCase("Deny")) region.setFlag(flag, StateFlag.State.DENY);
-
-            if (itemName.equalsIgnoreCase("Set for everyone")) region.setFlag(
-                flag.getRegionGroupFlag(),
-                RegionGroup.ALL
-            );
-            if (itemName.equalsIgnoreCase("Set for members")) region.setFlag(
-                flag.getRegionGroupFlag(),
-                RegionGroup.MEMBERS
-            );
-            if (itemName.equalsIgnoreCase("Set for owners")) region.setFlag(
-                flag.getRegionGroupFlag(),
-                RegionGroup.OWNERS
-            );
-            if (itemName.equalsIgnoreCase("Set for non-members")) region.setFlag(
-                flag.getRegionGroupFlag(),
-                RegionGroup.NON_MEMBERS
-            );
-            if (itemName.equalsIgnoreCase("Set for non-owners")) region.setFlag(
-                flag.getRegionGroupFlag(),
-                RegionGroup.NON_OWNERS
-            );
-
-            guiManager.openStateFlagEditor(
-                player,
-                regionName,
-                clickEvent.getClickedInventory().getItem(0).getItemMeta().getDisplayName(),
-                worldName
-            );
-            return;
-        }
-
-        if (inventoryTitle.equals("LandClaim String Flag Editor")) {
-            final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getDisplayName());
-            final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getLore().get(
-                0)).substring(7);
-            if (itemName.equalsIgnoreCase("Back")) {
-                guiManager.openFlagsGUI(player, regionName, worldName);
-                return;
-            }
-            if (itemName.equalsIgnoreCase("Close")) {
-                player.closeInventory();
-                return;
-            }
-            final boolean nonOwnerInspector = !Claim.getRegionOwners(
-                regionName,
-                worldName
-            ).contains(player.getUniqueId());
-            final boolean nonOwnerEditor = player.hasPermission("landclaim.edit.others");
-
-            final String flagName = clickEvent.getClickedInventory().getItem(0).getItemMeta().getDisplayName();
-            final Flag flag = GUIManager.editableClaimFlags.get(flagName);
-            final ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
-
-            if (itemName.equalsIgnoreCase("Enter New Value")) {
                 if (nonOwnerInspector && !nonOwnerEditor) {
                     player.sendMessage(ChatColor.GOLD + "You cannot edit this claim");
                     return;
                 }
-                player.closeInventory();
-                new Prompt(
-                    ChatColor.GOLD + "Enter a new value for the '" + flagName + "' flag",
+
+                final Flag flag = GUIManager.editableClaimFlags.get(clickEvent.getClickedInventory().getItem(0).getItemMeta().getDisplayName());
+                final ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
+
+                if (itemName.equalsIgnoreCase("Delete Flag")) region.setFlag(flag, null);
+
+                if (itemName.equalsIgnoreCase("Allow")) region.setFlag(flag, StateFlag.State.ALLOW);
+                if (itemName.equalsIgnoreCase("Deny")) region.setFlag(flag, StateFlag.State.DENY);
+
+                if (itemName.equalsIgnoreCase("Set for everyone")) region.setFlag(
+                    flag.getRegionGroupFlag(),
+                    RegionGroup.ALL
+                );
+                if (itemName.equalsIgnoreCase("Set for members")) region.setFlag(
+                    flag.getRegionGroupFlag(),
+                    RegionGroup.MEMBERS
+                );
+                if (itemName.equalsIgnoreCase("Set for owners")) region.setFlag(
+                    flag.getRegionGroupFlag(),
+                    RegionGroup.OWNERS
+                );
+                if (itemName.equalsIgnoreCase("Set for non-members")) region.setFlag(
+                    flag.getRegionGroupFlag(),
+                    RegionGroup.NON_MEMBERS
+                );
+                if (itemName.equalsIgnoreCase("Set for non-owners")) region.setFlag(
+                    flag.getRegionGroupFlag(),
+                    RegionGroup.NON_OWNERS
+                );
+
+                guiManager.openStateFlagEditor(
                     player,
-                    flagName,
-                    region
-                ).sendPrompt();
+                    regionName,
+                    clickEvent.getClickedInventory().getItem(0).getItemMeta().getDisplayName(),
+                    worldName
+                );
+                return;
             }
-            if (itemName.equalsIgnoreCase("Delete Flag")) {
-                if (nonOwnerInspector && !nonOwnerEditor) {
-                    player.sendMessage(ChatColor.GOLD + "You cannot edit this claim");
+            case "LandClaim String Flag Editor" -> {
+                final String regionName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getDisplayName());
+                final String worldName = ChatColor.stripColor(clickEvent.getClickedInventory().getItem(11).getItemMeta().getLore().get(
+                    0)).substring(7);
+                if (itemName.equalsIgnoreCase("Back")) {
+                    guiManager.openFlagsGUI(player, regionName, worldName);
                     return;
                 }
-                region.setFlag(flag, null);
-                player.sendMessage(ChatColor.GOLD + "Removed flag '" + flagName + "' from " + ChatColor.AQUA + regionName);
+                if (itemName.equalsIgnoreCase("Close")) {
+                    player.closeInventory();
+                    return;
+                }
+                final boolean nonOwnerInspector = !Claim.getRegionOwners(
+                    regionName,
+                    worldName
+                ).contains(player.getUniqueId());
+                final boolean nonOwnerEditor = player.hasPermission("landclaim.edit.others");
+
+                final String flagName = clickEvent.getClickedInventory().getItem(0).getItemMeta().getDisplayName();
+                final Flag flag = GUIManager.editableClaimFlags.get(flagName);
+                final ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
+
+                if (itemName.equalsIgnoreCase("Enter New Value")) {
+                    if (nonOwnerInspector && !nonOwnerEditor) {
+                        player.sendMessage(ChatColor.GOLD + "You cannot edit this claim");
+                        return;
+                    }
+                    player.closeInventory();
+                    new Prompt(
+                        ChatColor.GOLD + "Enter a new value for the '" + flagName + "' flag",
+                        player,
+                        flagName,
+                        region
+                    ).sendPrompt();
+                }
+                if (itemName.equalsIgnoreCase("Delete Flag")) {
+                    if (nonOwnerInspector && !nonOwnerEditor) {
+                        player.sendMessage(ChatColor.GOLD + "You cannot edit this claim");
+                        return;
+                    }
+                    region.setFlag(flag, null);
+                    player.sendMessage(ChatColor.GOLD + "Removed flag '" + flagName + "' from " + ChatColor.AQUA + regionName);
+                }
+                return;
             }
-            return;
-        }
+            case "LandClaim Top Regions" -> {
+                if (itemName.endsWith("Year")) guiManager.openTopYearRegions(player);
+                if (itemName.endsWith("Month")) guiManager.openTopMonthRegions(player);
+                if (itemName.endsWith("Day")) guiManager.openTopDayRegions(player);
 
-        if (inventoryTitle.equals("LandClaim Top Regions")) {
-            if (itemName.endsWith("Year")) guiManager.openTopYearRegions(player);
-            if (itemName.endsWith("Month")) guiManager.openTopMonthRegions(player);
-            if (itemName.endsWith("Day")) guiManager.openTopDayRegions(player);
-
-            if (itemName.startsWith("Back")) guiManager.openMainGUI(player);
-            if (itemName.startsWith("Close")) player.closeInventory();
-            return;
+                if (itemName.startsWith("Back")) guiManager.openMainGUI(player);
+                if (itemName.startsWith("Close")) player.closeInventory();
+                return;
+            }
         }
 
         if (inventoryTitle.equalsIgnoreCase("LandClaim Top Regions - Year") ||
@@ -434,8 +435,8 @@ public class GUIClick implements Listener {
             if (itemName.startsWith("Back")) guiManager.openTopRegionsGUI(player);
             if (itemName.startsWith("Close")) player.closeInventory();
             if (itemStack.getType().equals(Material.EMERALD)) {
-                final String regionName = ChatColor.stripColor(itemMeta.getLore().get(0)).split(",")[0];
-                final String worldName = ChatColor.stripColor(itemMeta.getLore().get(0)).split(",")[1];
+                final String regionName = ChatColor.stripColor(itemMeta.getLore().getFirst()).split(",")[0];
+                final String worldName = ChatColor.stripColor(itemMeta.getLore().getFirst()).split(",")[1];
                 Claim.teleportToClaim(player, regionName, worldName);
             }
             return;

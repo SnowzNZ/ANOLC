@@ -23,7 +23,7 @@ public class Claimer {
 
     public static int getNumAllowedRegions(final Player player) {
         final Set<PermissionAttachmentInfo> playerPermissions = player.getEffectivePermissions();
-        int permRegions = 0;
+        int permRegions;
         int numRegionsAllowed = 0;
         for (final PermissionAttachmentInfo perm : playerPermissions) {
             if (perm.getPermission().startsWith("landclaim.regions.")) {
@@ -45,7 +45,7 @@ public class Claimer {
 
     public static int getNumAllowedPlots(final Player player) {
         final Set<PermissionAttachmentInfo> playerPermissions = player.getEffectivePermissions();
-        int permRegions = 0;
+        int permRegions;
         int numRegionsAllowed = 0;
         for (final PermissionAttachmentInfo perm : playerPermissions) {
             if (perm.getPermission().startsWith("landclaim.plots.")) {

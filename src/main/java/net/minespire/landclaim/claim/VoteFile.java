@@ -1,5 +1,6 @@
 package net.minespire.landclaim.claim;
 
+import net.minespire.landclaim.LandClaim;
 import org.bukkit.configuration.ConfigurationOptions;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,7 +38,7 @@ public class VoteFile {
             try {
                 Files.createFile(voteFile.votesFilePath);
             } catch (final IOException e) {
-                e.printStackTrace();
+                LandClaim.plugin.getLogger().severe("Could not create vote file: " + e.getMessage());
             }
         }
         voteFile.saveFile = new File(voteFile.pathString);
@@ -57,7 +58,7 @@ public class VoteFile {
             yml.options().copyDefaults(true);
             yml.save(saveFile);
         } catch (final IOException e) {
-            e.printStackTrace();
+            LandClaim.plugin.getLogger().severe("Could not save vote file: " + e.getMessage());
         }
     }
 
@@ -88,7 +89,7 @@ public class VoteFile {
 
         if (previousVotes.isEmpty()) return null;
 
-        String newestTimeStamp = previousVotes.get(0);
+        String newestTimeStamp = previousVotes.getFirst();
         for (final String timeStamp : previousVotes) {
             if (LocalDateTime.parse(timeStamp).isAfter(LocalDateTime.parse(newestTimeStamp))) {
                 newestTimeStamp = timeStamp;

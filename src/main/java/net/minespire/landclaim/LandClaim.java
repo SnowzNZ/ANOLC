@@ -23,10 +23,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class LandClaim extends JavaPlugin {
-    private static final Logger log = Logger.getLogger("Minecraft");
     public static LandClaim plugin;
     public static FileConfiguration config;
     public static WorldEdit we;
@@ -66,7 +64,7 @@ public class LandClaim extends JavaPlugin {
         claimMap = new HashMap<>();
 
         if (!setupEconomy()) {
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            getLogger().severe("Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
         }
     }

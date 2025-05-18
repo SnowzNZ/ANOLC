@@ -14,6 +14,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Queue;
@@ -32,7 +33,12 @@ public class MainCommand implements CommandExecutor {
 
 
     @Override
-    public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
+    public boolean onCommand(
+        final @NotNull CommandSender sender,
+        final @NotNull Command cmd,
+        final @NotNull String label,
+        final String @NotNull [] args
+    ) {
         if (sender instanceof Player) {
             player = (Player) sender;
             isPlayer = true;
@@ -224,7 +230,7 @@ public class MainCommand implements CommandExecutor {
                             TimeUnit.SECONDS
                         );
                     } catch (final Throwable t) {
-                        t.printStackTrace();
+                        LandClaim.plugin.getLogger().warning("Error while trying to run async task: " + t.getMessage());
                     }
 
                     final BukkitRunnable bukkitTask = new BukkitRunnable() {
@@ -380,7 +386,7 @@ public class MainCommand implements CommandExecutor {
                         if (regionsList.size() == 1) {
                             final VoteFile voteFile = VoteFile.get();
                             final Vote lastVote = voteFile.getLatestVote(
-                                regionsList.get(0).getId(),
+                                regionsList.getFirst().getId(),
                                 player.getWorld().getName(),
                                 player.getUniqueId().toString()
                             );
@@ -389,11 +395,11 @@ public class MainCommand implements CommandExecutor {
                                 return true;
                             }
                             VoteFile.get().addVote(
-                                regionsList.get(0).getId(),
+                                regionsList.getFirst().getId(),
                                 player.getWorld().getName(),
                                 player.getUniqueId().toString()
                             ).save();
-                            VoteRegion.addVote(regionsList.get(0).getId() + "," + player.getWorld().getName());
+                            VoteRegion.addVote(regionsList.getFirst().getId() + "," + player.getWorld().getName());
                             player.sendMessage(ChatColor.GOLD + "Vote registered successfully!");
                             return true;
                         }
@@ -464,7 +470,7 @@ public class MainCommand implements CommandExecutor {
             } else if (area > LandClaim.plugin.getConfig().getInt("Claims.Regions.MaxSize")) {
                 player.sendMessage(ChatColor.GOLD + "Your selection is too large!");
                 return false;
-            } else if ((length / width) > LandClaim.plugin.getConfig().getDouble("Claims.Regions.MaxLWRatio") || (width / length) > LandClaim.plugin.getConfig().getDouble(
+            } else if (((double) length / width) > LandClaim.plugin.getConfig().getDouble("Claims.Regions.MaxLWRatio") || (width / length) > LandClaim.plugin.getConfig().getDouble(
                 "Claims.Regions.MaxLWRatio")) {
                 player.sendMessage(ChatColor.GOLD + "Your selection doesn't meet proportion requirements!");
                 return false;
