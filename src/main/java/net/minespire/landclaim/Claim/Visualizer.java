@@ -25,33 +25,35 @@ public class Visualizer {
     public static Map<String, ScheduledExecutorService> seeNearbyAsyncService = new HashMap<>();
     public static Map<String, AtomicInteger> timer = new HashMap<>();
 
-    public static void seeNearbyRegions(org.bukkit.entity.Player player) {
+    public static void seeNearbyRegions(final org.bukkit.entity.Player player) {
         if (playerParticleCoords.containsKey(player.getName())) playerParticleCoords.get(player.getName()).clear();
-        Location playerLoc = player.getLocation();
-        org.bukkit.World bukkitWorld = player.getWorld();
-        World world = BukkitAdapter.adapt(bukkitWorld);
-        RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
-        int playerX, playerY, playerZ;
+        final Location playerLoc = player.getLocation();
+        final org.bukkit.World bukkitWorld = player.getWorld();
+        final World world = BukkitAdapter.adapt(bukkitWorld);
+        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final int playerX;
+        int playerY;
+        final int playerZ;
         playerX = playerLoc.getBlockX();
         playerY = playerLoc.getBlockY();
         playerZ = playerLoc.getBlockZ();
-        int[] playerPoint = new int[]{ playerX, playerY, playerZ };
-        BlockVector3 point1 = BlockVector3.at(playerX - 50, playerY, playerZ - 50);
-        BlockVector3 point2 = BlockVector3.at(playerX + 50, playerY, playerZ + 50);
-        ProtectedCuboidRegion regionToCheck = new ProtectedCuboidRegion("_dummy342513", point1, point2);
+        final int[] playerPoint = new int[]{ playerX, playerY, playerZ };
+        final BlockVector3 point1 = BlockVector3.at(playerX - 50, playerY, playerZ - 50);
+        final BlockVector3 point2 = BlockVector3.at(playerX + 50, playerY, playerZ + 50);
+        final ProtectedCuboidRegion regionToCheck = new ProtectedCuboidRegion("_dummy342513", point1, point2);
         regionToCheck.getIntersectingRegions(rgManager.getRegions().values()).forEach(rg -> {
             //int[][] regionBoundaries = getRegionPerimeters(rg.getMaximumPoint(), rg.getMinimumPoint());
-            int[][] regionBoundaries = getRegionSlice(rg.getMaximumPoint(), rg.getMinimumPoint());
-            Queue<BlockVector3> particleCoords;
+            final int[][] regionBoundaries = getRegionSlice(rg.getMaximumPoint(), rg.getMinimumPoint());
+            final Queue<BlockVector3> particleCoords;
             if (!playerParticleCoords.containsKey(player.getName())) {
                 particleCoords = new LinkedList<>();
                 playerParticleCoords.put(player.getName(), particleCoords);
             } else particleCoords = playerParticleCoords.get(player.getName());
 
-            int countBlocksNear = 0;
-            int playerRadius = 50;
-            Queue<BlockVector3> regionPerimeterCoords = new LinkedList<>();
-            for (int[] coord : regionBoundaries) {
+            final int countBlocksNear = 0;
+            final int playerRadius = 50;
+            final Queue<BlockVector3> regionPerimeterCoords = new LinkedList<>();
+            for (final int[] coord : regionBoundaries) {
                 if (getDistance(
                     coord,
                     playerPoint
@@ -68,17 +70,23 @@ public class Visualizer {
 
     }
 
-    public static double getDistance(int[] point1, int[] point2) {
-        double distance = Math.sqrt((squareInts(point1[0] - point2[0]) + squareInts(point1[1] - point2[2])));
+    public static double getDistance(final int[] point1, final int[] point2) {
+        final double distance = Math.sqrt((squareInts(point1[0] - point2[0]) + squareInts(point1[1] - point2[2])));
         return distance;
     }
 
-    public static int squareInts(int toSquare) {
+    public static int squareInts(final int toSquare) {
         return toSquare * toSquare;
     }
 
-    public static int[][] getRegionSlice(BlockVector3 maxPoint, BlockVector3 minPoint) {
-        int x1, x2, z1, z2, length, width, surfaceArea;
+    public static int[][] getRegionSlice(final BlockVector3 maxPoint, final BlockVector3 minPoint) {
+        final int x1;
+        int x2;
+        int z1;
+        int z2;
+        int length;
+        int width;
+        final int surfaceArea;
         x1 = maxPoint.x();
         z1 = maxPoint.z();
         x2 = minPoint.x();
@@ -86,7 +94,7 @@ public class Visualizer {
         length = x1 - x2;
         width = z1 - z2;
         surfaceArea = length * width;
-        int[][] coordinateArray = new int[surfaceArea][2];
+        final int[][] coordinateArray = new int[surfaceArea][2];
         int arrayIndex = 0;
         for (int i = x2; i < x1; i++) {
             for (int j = z2; j < z1; j++) {
@@ -96,8 +104,17 @@ public class Visualizer {
         return coordinateArray;
     }
 
-    public static int[][] getRegionPerimeters(BlockVector3 maxPoint, BlockVector3 minPoint) {
-        int x1, x2, y1, y2, z1, z2, length, width, height, surfaceArea;
+    public static int[][] getRegionPerimeters(final BlockVector3 maxPoint, final BlockVector3 minPoint) {
+        final int x1;
+        int x2;
+        int y1;
+        int y2;
+        int z1;
+        int z2;
+        int length;
+        int width;
+        int height;
+        final int surfaceArea;
         x1 = maxPoint.x();
         y1 = maxPoint.y();
         z1 = maxPoint.z();
@@ -108,7 +125,7 @@ public class Visualizer {
         width = z1 - z2;
         height = y1 - y2;
         surfaceArea = (2 * length * width) + (2 * length * height) + (2 * height * width);
-        int[][] coordinateArray = new int[surfaceArea][3];
+        final int[][] coordinateArray = new int[surfaceArea][3];
         int arrayIndex = 0;
         int tempX = x2;
         int tempY = y2;
@@ -137,7 +154,7 @@ public class Visualizer {
         return coordinateArray;
     }
 
-    public static Location getBestSpawnLocation(org.bukkit.World world, int x, int y, int z) {
+    public static Location getBestSpawnLocation(final org.bukkit.World world, final int x, final int y, final int z) {
         Block block;
         if (world.getBlockAt(x, y, z).getType().equals(Material.AIR)) {
             if (world.getBlockAt(x, y - 1, z).getType().equals(Material.AIR)) {

@@ -18,7 +18,7 @@ public class VoteRegion {
     private int votesToday;
     private static List<VoteRegion> voteRegionList = new ArrayList<>();
 
-    public VoteRegion(String regionCommaWorld) {
+    public VoteRegion(final String regionCommaWorld) {
         this.regionCommaWorld = regionCommaWorld;
         this.regionName = regionCommaWorld.split(",")[0];
         this.regionWorld = regionCommaWorld.split(",")[1];
@@ -28,32 +28,32 @@ public class VoteRegion {
     }
 
     public static void tallyAllVotes() {
-        VoteFile voteFile = VoteFile.get();
+        final VoteFile voteFile = VoteFile.get();
         voteRegionList.clear();
-        for (String region : voteFile.getYml().getKeys(false)) {
-            ConfigurationSection regionSection = voteFile.getYml().getConfigurationSection(region);
-            VoteRegion voteRegion = new VoteRegion(region);
-            for (String vote : regionSection.getConfigurationSection("votes").getKeys(false)) {
+        for (final String region : voteFile.getYml().getKeys(false)) {
+            final ConfigurationSection regionSection = voteFile.getYml().getConfigurationSection(region);
+            final VoteRegion voteRegion = new VoteRegion(region);
+            for (final String vote : regionSection.getConfigurationSection("votes").getKeys(false)) {
                 countVotes(voteRegion, vote);
             }
             voteRegionList.add(voteRegion);
         }
     }
 
-    public static void tallyVotesFor(String regionCommaWorld) {
-        VoteFile voteFile = VoteFile.get();
-        ConfigurationSection regionSection = voteFile.getYml().getConfigurationSection(regionCommaWorld);
-        VoteRegion voteRegion = voteRegionList
+    public static void tallyVotesFor(final String regionCommaWorld) {
+        final VoteFile voteFile = VoteFile.get();
+        final ConfigurationSection regionSection = voteFile.getYml().getConfigurationSection(regionCommaWorld);
+        final VoteRegion voteRegion = voteRegionList
             .stream()
             .filter(a -> a.getRegionCommaWorld().equals(regionCommaWorld))
             .findFirst()
             .orElseGet(() -> {
-                VoteRegion vRegion = new VoteRegion(regionCommaWorld);
+                final VoteRegion vRegion = new VoteRegion(regionCommaWorld);
                 voteRegionList.add(vRegion);
                 return vRegion;
             });
         voteRegion.clearVotes();
-        for (String vote : regionSection.getConfigurationSection("votes").getKeys(false)) {
+        for (final String vote : regionSection.getConfigurationSection("votes").getKeys(false)) {
             countVotes(voteRegion, vote);
         }
     }
@@ -64,13 +64,13 @@ public class VoteRegion {
         votesThisYear = 0;
     }
 
-    public static void addVote(String regionCommaWorld) {
-        VoteRegion voteRegion = voteRegionList
+    public static void addVote(final String regionCommaWorld) {
+        final VoteRegion voteRegion = voteRegionList
             .stream()
             .filter(a -> a.getRegionCommaWorld().equals(regionCommaWorld))
             .findFirst()
             .orElseGet(() -> {
-                VoteRegion vRegion = new VoteRegion(regionCommaWorld);
+                final VoteRegion vRegion = new VoteRegion(regionCommaWorld);
                 voteRegionList.add(vRegion);
                 return vRegion;
             });
@@ -79,9 +79,9 @@ public class VoteRegion {
         voteRegion.votesToday++;
     }
 
-    private static void countVotes(VoteRegion voteRegion, String vote) {
-        LocalDateTime voteDateTime = LocalDateTime.parse(vote);
-        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+    private static void countVotes(final VoteRegion voteRegion, final String vote) {
+        final LocalDateTime voteDateTime = LocalDateTime.parse(vote);
+        final LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         if (Duration.between(voteDateTime, now).toDays() < 1) {
             voteRegion.votesToday++;
             voteRegion.votesThisMonth++;

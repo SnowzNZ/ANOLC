@@ -35,7 +35,7 @@ public class DeedListener implements Listener {
     public DeedListener() {
     }
 
-    public DeedListener(Player player, String regionName, String worldName, boolean newRegion) {
+    public DeedListener(final Player player, final String regionName, final String worldName, final boolean newRegion) {
         itemInHand = new ItemStack(Material.PAPER);
         this.player = player;
         this.worldName = worldName;
@@ -44,7 +44,7 @@ public class DeedListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onDeedClick(PlayerInteractEvent click) {
+    public void onDeedClick(final PlayerInteractEvent click) {
 
 
         if (!click.getAction().equals(Action.RIGHT_CLICK_AIR) && !click.getAction().equals(Action.RIGHT_CLICK_BLOCK))
@@ -63,7 +63,7 @@ public class DeedListener implements Listener {
     }
 
     public boolean isDeed() {
-        ItemMeta itemToCheckMeta = itemInHand.getItemMeta();
+        final ItemMeta itemToCheckMeta = itemInHand.getItemMeta();
         if (itemToCheckMeta.getCustomTagContainer().hasCustomTag(regionNameKey, ItemTagType.STRING)) {
             regionName = itemToCheckMeta.getCustomTagContainer().getCustomTag(regionNameKey, ItemTagType.STRING);
             worldName = itemToCheckMeta.getCustomTagContainer().getCustomTag(worldNameKey, ItemTagType.STRING);
@@ -72,7 +72,7 @@ public class DeedListener implements Listener {
     }
 
     public boolean isBlankDeed() {
-        ItemMeta itemToCheckMeta = itemInHand.getItemMeta();
+        final ItemMeta itemToCheckMeta = itemInHand.getItemMeta();
         if (itemToCheckMeta.getCustomTagContainer().hasCustomTag(regionNameKey, ItemTagType.STRING)) {
             regionName = itemToCheckMeta.getCustomTagContainer().getCustomTag(blankDeedKey, ItemTagType.STRING);
             return true;
@@ -80,9 +80,9 @@ public class DeedListener implements Listener {
     }
 
     public void activateDeedNewOwner() {
-        Claim claim = new Claim(player, regionName, worldName);
-        Set<UUID> owners = claim.getRegionOwners(regionName, worldName);
-        for (UUID owner : owners) {
+        final Claim claim = new Claim(player, regionName, worldName);
+        final Set<UUID> owners = claim.getRegionOwners(regionName, worldName);
+        for (final UUID owner : owners) {
             if (player.getUniqueId().equals(owner)) {
                 player.sendMessage("You are already an owner of this region!");
                 return;
@@ -95,12 +95,12 @@ public class DeedListener implements Listener {
     }
 
     public ItemStack createDeed() {
-        ItemMeta newDeedItemMeta = itemInHand.getItemMeta();
+        final ItemMeta newDeedItemMeta = itemInHand.getItemMeta();
         if (blankDeed) newDeedItemMeta.getCustomTagContainer().removeCustomTag(blankDeedKey);
         newDeedItemMeta.getCustomTagContainer().setCustomTag(regionNameKey, ItemTagType.STRING, regionName);
         newDeedItemMeta.getCustomTagContainer().setCustomTag(worldNameKey, ItemTagType.STRING, worldName);
         newDeedItemMeta.setDisplayName("Property Deed For Region: " + regionName);
-        List<String> itemLore = new ArrayList<>();
+        final List<String> itemLore = new ArrayList<>();
         itemLore.add("Owner: " + player.getName());
         itemLore.add("World: " + worldName);
         newDeedItemMeta.setLore(itemLore);
@@ -109,8 +109,8 @@ public class DeedListener implements Listener {
     }
 
     public static ItemStack getBlankDeed() {
-        ItemStack newBlankDeed = new ItemStack(Material.PAPER);
-        ItemMeta newBlankDeedItemMeta = newBlankDeed.getItemMeta();
+        final ItemStack newBlankDeed = new ItemStack(Material.PAPER);
+        final ItemMeta newBlankDeedItemMeta = newBlankDeed.getItemMeta();
         newBlankDeedItemMeta.setDisplayName("Blank Property Deed");
         newBlankDeedItemMeta.getCustomTagContainer().setCustomTag(blankDeedKey, ItemTagType.STRING, "blank");
         newBlankDeed.setItemMeta(newBlankDeedItemMeta);

@@ -37,7 +37,7 @@ public class CommandCompleter implements TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+    public List<String> onTabComplete(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if (args.length == 1) {
             final List<String> completions = new ArrayList<>();
             StringUtil.copyPartialMatches(args[0], COMMANDS, completions);
@@ -52,14 +52,14 @@ public class CommandCompleter implements TabCompleter {
             else return BLANKLIST;
         } else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("inspect")) {
             if (!(sender instanceof Player)) return BLANKLIST;
-            List<String> rgNames = new ArrayList<>();
+            final List<String> rgNames = new ArrayList<>();
             rgNames.addAll(Claim.getClaimListOwner((Player) sender, false));
             rgNames.addAll(Claim.getClaimListOwner((Player) sender, true));
             if (args.length == 2) return rgNames;
             else return BLANKLIST;
         } else if (args[0].equalsIgnoreCase("teleport")) {
             if (!(sender instanceof Player)) return BLANKLIST;
-            List<String> rgNames = new ArrayList<>();
+            final List<String> rgNames = new ArrayList<>();
             rgNames.addAll(Claim.getClaimListOwner((Player) sender, false));
             rgNames.addAll(Claim.getClaimListOwner((Player) sender, true));
             rgNames.addAll(Claim.getClaimListMember((Player) sender, false));

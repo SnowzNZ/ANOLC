@@ -38,13 +38,13 @@ public class LandClaim extends JavaPlugin {
     public static Economy econ = null;
 
     public void onLoad() {
-        FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+        final FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
-            StringFlag regionFlag = new StringFlag("land-claim-region", "region");
+            final StringFlag regionFlag = new StringFlag("land-claim-region", "region");
             registry.register(regionFlag);
             LandClaimRegionFlag = regionFlag;
-        } catch (FlagConflictException e) {
-            Flag<?> existing = registry.get("land-claim-region");
+        } catch (final FlagConflictException e) {
+            final Flag<?> existing = registry.get("land-claim-region");
             if (existing instanceof StateFlag) {
                 LandClaimRegionFlag = (StringFlag) existing;
             }
@@ -80,7 +80,7 @@ public class LandClaim extends JavaPlugin {
     }
 
     public void loadConfiguration() {
-        File pluginFolder = this.getDataFolder();
+        final File pluginFolder = this.getDataFolder();
         if (!pluginFolder.exists()) {
             pluginFolder.mkdir();
         }
@@ -95,7 +95,7 @@ public class LandClaim extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        final RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
             return false;
         }

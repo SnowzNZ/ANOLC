@@ -11,10 +11,10 @@ class GUIItem {
     private GUIItem() {
     }
 
-    public static ItemStack make(Material material, String title, List<String> lore) {
-        ItemStack itemStack;
+    public static ItemStack make(final Material material, final String title, final List<String> lore) {
+        final ItemStack itemStack;
         itemStack = new ItemStack(material);
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        final ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         itemMeta.setDisplayName(title);
         itemMeta.setLore(lore);

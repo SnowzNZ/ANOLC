@@ -23,7 +23,7 @@ public class Prompt {
     private static Set<String> playersWithPrompts = new HashSet<>();
     private static Map<String, Prompt> playerPrompts = new HashMap<>();
 
-    public Prompt(String message, Player player, String promptType, ProtectedRegion region) {
+    public Prompt(final String message, final Player player, final String promptType, final ProtectedRegion region) {
         this.promptMessage = message;
         this.player = player;
         this.promptType = promptType;
@@ -53,7 +53,7 @@ public class Prompt {
         ).getTaskId();
     }
 
-    public static boolean hasActivePrompt(Player player) {
+    public static boolean hasActivePrompt(final Player player) {
         return playersWithPrompts.contains(player.getName());
     }
 
@@ -67,7 +67,7 @@ public class Prompt {
         }
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(final String answer) {
         this.answer = answer;
     }
 
@@ -78,11 +78,11 @@ public class Prompt {
         player.sendMessage(ChatColor.RED + "Prompt cancelled");
     }
 
-    public void savePrompt(Prompt prompt) {
+    public void savePrompt(final Prompt prompt) {
         playerPrompts.put(player.getName(), this);
     }
 
-    public static Prompt getPrompt(String playerName) {
+    public static Prompt getPrompt(final String playerName) {
         return playerPrompts.get(playerName);
     }
 

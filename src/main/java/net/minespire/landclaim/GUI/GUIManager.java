@@ -57,8 +57,8 @@ public class GUIManager {
         return inst;
     }
 
-    public void openMainGUI(Player player) {
-        NGUI mainGUI = new NGUI(9, "LandClaim Main Menu");
+    public void openMainGUI(final Player player) {
+        final NGUI mainGUI = new NGUI(9, "LandClaim Main Menu");
         mainGUI.addItem(
             Material.GRASS_BLOCK,
             colorize("&3Claims"),
@@ -72,16 +72,19 @@ public class GUIManager {
         mainGUI.open(player);
     }
 
-    public void openClaimLimitsGUI(Player player) {
-        NGUI claimLimitsGUI = new NGUI(36, "LandClaim Claim Limits");
+    public void openClaimLimitsGUI(final Player player) {
+        final NGUI claimLimitsGUI = new NGUI(36, "LandClaim Claim Limits");
         claimLimitsGUI.addItem(Material.ARROW, ChatColor.GOLD + "Back", null, 31);
         claimLimitsGUI.addItem(Material.BIRCH_DOOR, ChatColor.GOLD + "Close", null, 33);
-        int numOwnedRegions, numOwnedPlots, numAllowedRegions, numAllowedPlots;
+        final int numOwnedRegions;
+        int numOwnedPlots;
+        int numAllowedRegions;
+        final int numAllowedPlots;
         numOwnedRegions = Claim.getClaimListOwner(player, false).size();
         numOwnedPlots = Claim.getClaimListOwner(player, true).size();
         numAllowedRegions = Claimer.getNumAllowedRegions(player);
         numAllowedPlots = Claimer.getNumAllowedPlots(player);
-        String[] claimableWorlds = Claimer.claimableWorlds(player).stream().map(world -> colorize("&9" + world.getName())).toList().toArray(new String[0]);
+        final String[] claimableWorlds = Claimer.claimableWorlds(player).stream().map(world -> colorize("&9" + world.getName())).toList().toArray(new String[0]);
         claimLimitsGUI.addItem(
             Material.FILLED_MAP,
             colorize("&3Allowed Claim Worlds"),
@@ -105,22 +108,22 @@ public class GUIManager {
 
     }
 
-    public void openAllClaimsGUI(Player player) {
+    public void openAllClaimsGUI(final Player player) {
         openAllClaimsGUI(player, 0);
     }
 
-    public void openAllClaimsGUI(Player player, int numRegionsToSkip) {
+    public void openAllClaimsGUI(final Player player, final int numRegionsToSkip) {
         int nextSlot = 9;
-        List<String> allClaims = new LinkedList<>();
-        List<String> ownerRegions = Claim.getClaimListOwner(player, false);
-        List<String> ownerPlots = Claim.getClaimListOwner(player, true);
+        final List<String> allClaims = new LinkedList<>();
+        final List<String> ownerRegions = Claim.getClaimListOwner(player, false);
+        final List<String> ownerPlots = Claim.getClaimListOwner(player, true);
         Collections.sort(ownerRegions);
         Collections.sort(ownerPlots);
         allClaims.addAll(ownerRegions);
         allClaims.addAll(ownerPlots);
 
-        List<String> memberRegions = Claim.getClaimListMember(player, false);
-        List<String> memberPlots = Claim.getClaimListMember(player, true);
+        final List<String> memberRegions = Claim.getClaimListMember(player, false);
+        final List<String> memberPlots = Claim.getClaimListMember(player, true);
 
         memberRegions.removeIf(allClaims::contains);
         memberPlots.removeIf(allClaims::contains);
@@ -134,12 +137,12 @@ public class GUIManager {
         int totalSlots = ((int) Math.ceil(allClaims.size() / 7d) + 2) * 9;
         if (totalSlots > 54) totalSlots = 54;
 
-        NGUI allClaimsGUI = new NGUI(totalSlots, "LandClaim Claims - Page " + (numRegionsToSkip / 28 + 1));
+        final NGUI allClaimsGUI = new NGUI(totalSlots, "LandClaim Claims - Page " + (numRegionsToSkip / 28 + 1));
         if (numRegionsToSkip > 0) allClaimsGUI.addItem(Material.PAPER, ChatColor.GOLD + "Previous Page", null, 48);
         int loopCounter = 0;
-        for (String rg : allClaims) {
-            String rgName = rg.split(",")[0];
-            String rgWorld = rg.split(",")[1];
+        for (final String rg : allClaims) {
+            final String rgName = rg.split(",")[0];
+            final String rgWorld = rg.split(",")[1];
             if (loopCounter++ < numRegionsToSkip) continue;
             if (++nextSlot > 43) {
                 allClaimsGUI.addItem(Material.PAPER, ChatColor.GOLD + "Next Page", null, 50);
@@ -179,41 +182,41 @@ public class GUIManager {
         allClaimsGUI.open(player);
     }
 
-    public void handleWandClick(Player player) {
+    public void handleWandClick(final Player player) {
         Bukkit.dispatchCommand(player, "/wand");
     }
 
-    public List<String> createLore(String... lorePieces) {
-        List<String> completedLore = new ArrayList<>();
-        for (String lore : lorePieces) {
+    public List<String> createLore(final String... lorePieces) {
+        final List<String> completedLore = new ArrayList<>();
+        for (final String lore : lorePieces) {
             completedLore.add(ChatColor.translateAlternateColorCodes('&', lore));
         }
         return completedLore;
     }
 
-    public List<String> parseLoreString(String loreString) {
-        String[] loreArray = loreString.split("\\|");
-        List<String> loreList = new ArrayList<>();
+    public List<String> parseLoreString(final String loreString) {
+        final String[] loreArray = loreString.split("\\|");
+        final List<String> loreList = new ArrayList<>();
         for (int x = 0; x < loreArray.length; x++) {
             loreList.add(x, ChatColor.translateAlternateColorCodes('&', loreArray[x]));
         }
         return loreList;
     }
 
-    public static String colorize(String s) {
+    public static String colorize(final String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    public void openClaimInspector(Player player, String regionName, String worldName) {
+    public void openClaimInspector(final Player player, final String regionName, final String worldName) {
         //ProtectedRegion region = LandClaim.wg.getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld())).getRegion(regionName);
-        NGUI inspectorGUI = new NGUI(18, "LandClaim Inspector");
+        final NGUI inspectorGUI = new NGUI(18, "LandClaim Inspector");
 
         inspectorGUI.addItem(Material.PLAYER_HEAD, colorize("&3Players"), null);
         if (player.hasPermission("landclaim.teleport") || player.hasPermission("landclaim.inspect.others"))
             inspectorGUI.addItem(Material.ENDER_PEARL, colorize("&3Teleport"), null);
         String ownerOrMember = Claim.playerIsOwnerOrMember(player, regionName, worldName);
         if (ownerOrMember == null) ownerOrMember = "";
-        boolean isOwner = ownerOrMember.equalsIgnoreCase("Owner");
+        final boolean isOwner = ownerOrMember.equalsIgnoreCase("Owner");
         if ((isOwner && player.hasPermission("landclaim.flageditor")) || player.hasPermission("landclaim.inspect.others"))
             inspectorGUI.addItem(Material.CYAN_BANNER, colorize("&3Flag Editor"), null);
         if ((isOwner && player.hasPermission("landclaim.remove.own")) || player.hasPermission("landclaim.edit.others"))
@@ -230,12 +233,12 @@ public class GUIManager {
         inspectorGUI.open(player);
     }
 
-    public void openOwnersMembersEditor(Player player, String regionName, String worldName) {
+    public void openOwnersMembersEditor(final Player player, final String regionName, final String worldName) {
         int firstSlot = 0;
-        NGUI inspectorGUI = new NGUI(18, "Owners/Members Editor");
+        final NGUI inspectorGUI = new NGUI(18, "Owners/Members Editor");
 
         inspectorGUI.addItem(Material.PLAYER_HEAD, colorize("&3View/Remove Players"), null, firstSlot++);
-        String ownerOrMember = Claim.playerIsOwnerOrMember(player, regionName, worldName);
+        final String ownerOrMember = Claim.playerIsOwnerOrMember(player, regionName, worldName);
         if ((ownerOrMember != null && ownerOrMember.equalsIgnoreCase("Owner") && player.hasPermission(
             "landclaim.addplayer")) || player.hasPermission("landclaim.edit.others"))
             inspectorGUI.addItem(Material.TOTEM_OF_UNDYING, colorize("&3Add Player to Claim"), null, firstSlot++);
@@ -251,8 +254,8 @@ public class GUIManager {
         inspectorGUI.open(player);
     }
 
-    public void promptForRemoval(String playerName, String regionName, String worldName) {
-        NGUI removalPrompt = new NGUI(36, "LandClaim Claim Removal");
+    public void promptForRemoval(final String playerName, final String regionName, final String worldName) {
+        final NGUI removalPrompt = new NGUI(36, "LandClaim Claim Removal");
         removalPrompt.addItem(
             Material.STRUCTURE_VOID,
             colorize("&3Remove &5" + regionName + "&3?"),
@@ -271,8 +274,8 @@ public class GUIManager {
         removalPrompt.open(Bukkit.getPlayer(playerName));
     }
 
-    public void openAddPlayer(String playerName, String regionName, String worldName) {
-        NGUI addPlayer = new NGUI(36, "Add Player to Claim");
+    public void openAddPlayer(final String playerName, final String regionName, final String worldName) {
+        final NGUI addPlayer = new NGUI(36, "Add Player to Claim");
         addPlayer.addItem(
             Material.WITHER_SKELETON_SKULL,
             colorize("&3Add Owner to &5" + regionName),
@@ -297,20 +300,20 @@ public class GUIManager {
         addPlayer.open(Bukkit.getPlayer(playerName));
     }
 
-    public void openPlayersEditor(Player player, String regionName, String worldName) {
-        NGUI playersEditor = new NGUI(54, "View/Remove Players");
-        Set<UUID> owners = LandClaim.wg.getPlatform().getRegionContainer().get(BukkitAdapter.adapt(Bukkit.getWorld(
+    public void openPlayersEditor(final Player player, final String regionName, final String worldName) {
+        final NGUI playersEditor = new NGUI(54, "View/Remove Players");
+        final Set<UUID> owners = LandClaim.wg.getPlatform().getRegionContainer().get(BukkitAdapter.adapt(Bukkit.getWorld(
             worldName))).getRegion(regionName).getOwners().getPlayerDomain().getUniqueIds();
-        for (UUID uuid : owners) {
+        for (final UUID uuid : owners) {
             playersEditor.addItem(
                 Material.WITHER_SKELETON_SKULL,
                 colorize("&b" + Bukkit.getOfflinePlayer(uuid).getName()),
                 parseLoreString("&7UUID:" + uuid)
             );
         }
-        Set<UUID> members = LandClaim.wg.getPlatform().getRegionContainer().get(BukkitAdapter.adapt(Bukkit.getWorld(
+        final Set<UUID> members = LandClaim.wg.getPlatform().getRegionContainer().get(BukkitAdapter.adapt(Bukkit.getWorld(
             worldName))).getRegion(regionName).getMembers().getPlayerDomain().getUniqueIds();
-        for (UUID uuid : members) {
+        for (final UUID uuid : members) {
             playersEditor.addItem(
                 Material.SKELETON_SKULL,
                 colorize("&b" + Bukkit.getOfflinePlayer(uuid).getName()),
@@ -329,8 +332,8 @@ public class GUIManager {
         playersEditor.open(player);
     }
 
-    public void openMemberRemover(Player player, String uuid, String regionName, String worldName) {
-        NGUI removeMember = new NGUI(36, "Remove Member");
+    public void openMemberRemover(final Player player, final String uuid, final String regionName, final String worldName) {
+        final NGUI removeMember = new NGUI(36, "Remove Member");
         removeMember.addItem(
             Material.BARRIER,
             colorize("&3Are you sure?"),
@@ -349,8 +352,8 @@ public class GUIManager {
         removeMember.open(player);
     }
 
-    public void openOwnerRemover(Player player, String uuid, String regionName, String worldName) {
-        NGUI removeOwner = new NGUI(36, "Remove Owner");
+    public void openOwnerRemover(final Player player, final String uuid, final String regionName, final String worldName) {
+        final NGUI removeOwner = new NGUI(36, "Remove Owner");
         removeOwner.addItem(
             Material.BARRIER,
             ChatColor.RED + "Are you sure?",
@@ -369,9 +372,9 @@ public class GUIManager {
         removeOwner.open(player);
     }
 
-    public void openTeleportGUI(Player player, String regionName, String worldName) {
-        NGUI teleportGUI = new NGUI(36, "LandClaim Teleport");
-        String ownerOrMember = Claim.playerIsOwnerOrMember(player, regionName, worldName);
+    public void openTeleportGUI(final Player player, final String regionName, final String worldName) {
+        final NGUI teleportGUI = new NGUI(36, "LandClaim Teleport");
+        final String ownerOrMember = Claim.playerIsOwnerOrMember(player, regionName, worldName);
         if ((ownerOrMember != null && ownerOrMember.equalsIgnoreCase("Owner")) || player.hasPermission(
             "landclaim.edit.others")) teleportGUI.addItem(
             Material.FURNACE,
@@ -398,9 +401,9 @@ public class GUIManager {
         teleportGUI.open(player);
     }
 
-    public void openFlagsGUI(Player player, String regionName, String worldName) {
-        NGUI flagEditor = new NGUI(45, "LandClaim Flags");
-        ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
+    public void openFlagsGUI(final Player player, final String regionName, final String worldName) {
+        final NGUI flagEditor = new NGUI(45, "LandClaim Flags");
+        final ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
 
         editableClaimFlags.forEach((flagName, flag) -> {
             if (player.hasPermission("landclaim.flag." + flagName)) {
@@ -422,12 +425,12 @@ public class GUIManager {
         flagEditor.open(player);
     }
 
-    public void openStateFlagEditor(Player player, String regionName, String flagName, String worldName) {
-        NGUI flagEditor = new NGUI(18, "LandClaim State Flag Editor");
+    public void openStateFlagEditor(final Player player, final String regionName, final String flagName, final String worldName) {
+        final NGUI flagEditor = new NGUI(18, "LandClaim State Flag Editor");
 
         flagEditor.addItem(Material.DARK_OAK_SIGN, flagName, null, 0);
 
-        ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
+        final ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
 
         if (region.getFlags().containsKey(editableClaimFlags.get(flagName))) {
             if (region.getFlag(editableClaimFlags.get(flagName)).toString().equalsIgnoreCase("ALLOW")) {
@@ -439,7 +442,7 @@ public class GUIManager {
             }
 
             flagEditor.addItem(Material.BARRIER, ChatColor.RED + "Delete Flag", null);
-            RegionGroup regionGroup = region.getFlag(editableClaimFlags.get(flagName).getRegionGroupFlag());
+            final RegionGroup regionGroup = region.getFlag(editableClaimFlags.get(flagName).getRegionGroupFlag());
 
             if (regionGroup == null || regionGroup.equals(RegionGroup.ALL)) {
                 flagEditor.addItem(Material.EMERALD_BLOCK, ChatColor.AQUA + "Set for everyone", null);
@@ -483,16 +486,16 @@ public class GUIManager {
         flagEditor.open(player);
     }
 
-    public void openStringFlagEditor(Player player, String regionName, String flagName, String worldName) {
-        NGUI flagEditor = new NGUI(18, "LandClaim String Flag Editor");
-        List<String> currentFlagText = new ArrayList<>();
-        ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
+    public void openStringFlagEditor(final Player player, final String regionName, final String flagName, final String worldName) {
+        final NGUI flagEditor = new NGUI(18, "LandClaim String Flag Editor");
+        final List<String> currentFlagText = new ArrayList<>();
+        final ProtectedRegion region = Claim.getRegion(player, regionName, worldName);
         if (region.getFlags().containsKey(editableClaimFlags.get(flagName))) {
             currentFlagText.add(colorize("&fCurrent Flag Text:"));
-            String[] flagTextTokens = region.getFlag(editableClaimFlags.get(flagName)).toString().split(" ");
+            final String[] flagTextTokens = region.getFlag(editableClaimFlags.get(flagName)).toString().split(" ");
             int countLineLength = 0;
-            StringBuilder stringBuilder = new StringBuilder(50);
-            for (String token : flagTextTokens) {
+            final StringBuilder stringBuilder = new StringBuilder(50);
+            for (final String token : flagTextTokens) {
                 countLineLength += token.length() + 1;
                 stringBuilder.append(token).append(" ");
                 if (countLineLength > 28) {
@@ -519,8 +522,8 @@ public class GUIManager {
         flagEditor.open(player);
     }
 
-    public void openTopRegionsGUI(Player player) {
-        NGUI topRegionsGUI = new NGUI(9, "LandClaim Top Regions");
+    public void openTopRegionsGUI(final Player player) {
+        final NGUI topRegionsGUI = new NGUI(9, "LandClaim Top Regions");
 
         topRegionsGUI.addItem(Material.EMERALD, colorize("&5Top Regions &f- &6Year"), null);
         topRegionsGUI.addItem(Material.EMERALD, colorize("&5Top Regions &f- &6Month"), null);
@@ -531,13 +534,13 @@ public class GUIManager {
         topRegionsGUI.open(player);
     }
 
-    public void openTopYearRegions(Player player) {
-        NGUI topYearRegions = new NGUI(36, "LandClaim Top Regions - Year");
+    public void openTopYearRegions(final Player player) {
+        final NGUI topYearRegions = new NGUI(36, "LandClaim Top Regions - Year");
         doGlassPattern1(topYearRegions);
-        List<VoteRegion> voteRegions = VoteRegion.getVoteRegionList();
+        final List<VoteRegion> voteRegions = VoteRegion.getVoteRegionList();
         voteRegions.sort(Comparator.comparingInt(VoteRegion::getVotesThisYear).reversed());
         int countRegions = 1;
-        for (VoteRegion region : voteRegions) {
+        for (final VoteRegion region : voteRegions) {
             topYearRegions.addItem(
                 Material.EMERALD, colorize("&6#" + countRegions++ + " &5Region of the Year"),
                 parseLoreString("&5" + region.getRegionCommaWorld().split(",")[0] + "&7,&9" + region.getRegionCommaWorld().split(
@@ -551,13 +554,13 @@ public class GUIManager {
         topYearRegions.open(player);
     }
 
-    public void openTopMonthRegions(Player player) {
-        NGUI topMonthRegions = new NGUI(36, "LandClaim Top Regions - Month");
+    public void openTopMonthRegions(final Player player) {
+        final NGUI topMonthRegions = new NGUI(36, "LandClaim Top Regions - Month");
         doGlassPattern1(topMonthRegions);
-        List<VoteRegion> voteRegions = VoteRegion.getVoteRegionList();
+        final List<VoteRegion> voteRegions = VoteRegion.getVoteRegionList();
         voteRegions.sort(Comparator.comparingInt(VoteRegion::getVotesThisMonth).reversed());
         int countRegions = 1;
-        for (VoteRegion region : voteRegions) {
+        for (final VoteRegion region : voteRegions) {
             topMonthRegions.addItem(
                 Material.EMERALD, colorize("&6#" + countRegions++ + " &5Region of the Month"),
                 parseLoreString("&5" + region.getRegionCommaWorld().split(",")[0] + "&7,&9" + region.getRegionCommaWorld().split(
@@ -571,13 +574,13 @@ public class GUIManager {
         topMonthRegions.open(player);
     }
 
-    public void openTopDayRegions(Player player) {
-        NGUI topDayRegions = new NGUI(36, "LandClaim Top Regions - Day");
+    public void openTopDayRegions(final Player player) {
+        final NGUI topDayRegions = new NGUI(36, "LandClaim Top Regions - Day");
         doGlassPattern1(topDayRegions);
-        List<VoteRegion> voteRegions = VoteRegion.getVoteRegionList();
+        final List<VoteRegion> voteRegions = VoteRegion.getVoteRegionList();
         voteRegions.sort(Comparator.comparingInt(VoteRegion::getVotesToday).reversed());
         int countRegions = 1;
-        for (VoteRegion region : voteRegions) {
+        for (final VoteRegion region : voteRegions) {
             topDayRegions.addItem(
                 Material.EMERALD, colorize("&6#" + countRegions++ + " &5Region of the Day"),
                 parseLoreString("&5" + region.getRegionCommaWorld().split(",")[0] + "&7,&9" + region.getRegionCommaWorld().split(
@@ -591,7 +594,7 @@ public class GUIManager {
         topDayRegions.open(player);
     }
 
-    private void doGlassPattern1(NGUI topYearRegions) {
+    private void doGlassPattern1(final NGUI topYearRegions) {
         for (int i = 0; i < 27; i++) {
             if (i == 10) i += 7;
             topYearRegions.addItem(Material.GLASS_PANE, " ", null, i);

@@ -15,7 +15,7 @@ public class ClaimManager {
     private List<Claim> ownerPlots;
     private List<Claim> memberPlots;
 
-    public ClaimManager(Player player) {
+    public ClaimManager(final Player player) {
         this.player = player;
     }
 

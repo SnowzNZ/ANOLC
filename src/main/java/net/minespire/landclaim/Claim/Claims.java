@@ -11,8 +11,8 @@ import java.util.List;
 
 public class Claims {
 
-    public static List<ProtectedRegion> getRegionsAtLocation(Location loc) {
-        List<ProtectedRegion> regionList = new ArrayList<>();
+    public static List<ProtectedRegion> getRegionsAtLocation(final Location loc) {
+        final List<ProtectedRegion> regionList = new ArrayList<>();
         LandClaim.wg.getPlatform().getRegionContainer()
             .get(BukkitAdapter.adapt(loc.getWorld()))
             .getApplicableRegions(BukkitAdapter.asBlockVector(loc))
@@ -26,10 +26,10 @@ public class Claims {
         return regionList;
     }
 
-    public static ProtectedRegion getRegionByName(String name, World world) {
+    public static ProtectedRegion getRegionByName(final String name, final World world) {
         if (!ProtectedRegion.isValidId(name)) return null;
-        List<ProtectedRegion> regionList = new ArrayList<>();
-        ProtectedRegion region = LandClaim.wg.getPlatform().getRegionContainer()
+        final List<ProtectedRegion> regionList = new ArrayList<>();
+        final ProtectedRegion region = LandClaim.wg.getPlatform().getRegionContainer()
             .get(world)
             .getRegion(name);
         if (region != null) {

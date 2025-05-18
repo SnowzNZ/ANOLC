@@ -14,12 +14,12 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class PlayerChatListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
-    private void onAnswerPrompt(AsyncPlayerChatEvent chatEvent) {
+    private void onAnswerPrompt(final AsyncPlayerChatEvent chatEvent) {
         if (!Prompt.hasActivePrompt(chatEvent.getPlayer())) return;
         chatEvent.setCancelled(true);
-        Player player = chatEvent.getPlayer();
-        Prompt prompt = Prompt.getPrompt(player.getName());
-        String chatMessage = chatEvent.getMessage();
+        final Player player = chatEvent.getPlayer();
+        final Prompt prompt = Prompt.getPrompt(player.getName());
+        final String chatMessage = chatEvent.getMessage();
         prompt.setAnswer(chatMessage);
         if (prompt.getPromptType().equals("ADDMEMBER")) {
             if (!Claim.addMember(player, chatMessage, prompt.getRegion()))

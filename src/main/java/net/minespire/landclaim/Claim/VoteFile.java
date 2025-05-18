@@ -36,13 +36,13 @@ public class VoteFile {
         if (!Files.exists(voteFile.votesFilePath)) {
             try {
                 Files.createFile(voteFile.votesFilePath);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         }
         voteFile.saveFile = new File(voteFile.pathString);
         voteFile.yml = YamlConfiguration.loadConfiguration(voteFile.saveFile);
-        ConfigurationOptions configOptions = voteFile.yml.options();
+        final ConfigurationOptions configOptions = voteFile.yml.options();
         configOptions.pathSeparator('|');
         voteFile.save();
     }
@@ -56,7 +56,7 @@ public class VoteFile {
         try {
             yml.options().copyDefaults(true);
             yml.save(saveFile);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }
@@ -65,8 +65,8 @@ public class VoteFile {
         return yml;
     }
 
-    public VoteFile addVote(String regionName, String worldName, String playerUUID) {
-        String regionSectionName = regionName + "," + worldName + "|votes";
+    public VoteFile addVote(final String regionName, final String worldName, final String playerUUID) {
+        final String regionSectionName = regionName + "," + worldName + "|votes";
         ConfigurationSection regionSection;
         if ((regionSection = yml.getConfigurationSection(regionSectionName)) == null) {
             regionSection = yml.createSection(regionSectionName);
@@ -76,12 +76,12 @@ public class VoteFile {
         return this;
     }
 
-    public Vote getLatestVote(String regionName, String worldName, String playerUUID) {
-        String regionSectionName = regionName + "," + worldName + "|votes";
-        ConfigurationSection regionSection;
+    public Vote getLatestVote(final String regionName, final String worldName, final String playerUUID) {
+        final String regionSectionName = regionName + "," + worldName + "|votes";
+        final ConfigurationSection regionSection;
         if ((regionSection = yml.getConfigurationSection(regionSectionName)) == null) return null;
 
-        List<String> previousVotes = new ArrayList<>();
+        final List<String> previousVotes = new ArrayList<>();
         regionSection.getValues(false).forEach((timeStamp, voteUUID) -> {
             if (voteUUID.equals(playerUUID)) previousVotes.add(timeStamp);
         });
@@ -89,7 +89,7 @@ public class VoteFile {
         if (previousVotes.isEmpty()) return null;
 
         String newestTimeStamp = previousVotes.get(0);
-        for (String timeStamp : previousVotes) {
+        for (final String timeStamp : previousVotes) {
             if (LocalDateTime.parse(timeStamp).isAfter(LocalDateTime.parse(newestTimeStamp))) {
                 newestTimeStamp = timeStamp;
             }
