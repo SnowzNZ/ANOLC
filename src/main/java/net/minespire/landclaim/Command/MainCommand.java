@@ -243,9 +243,9 @@ public class MainCommand implements CommandExecutor {
                                     BlockVector3 loc = particleLocations.remove();
                                     Location location = Visualizer.getBestSpawnLocation(
                                         nPlayer.getWorld(),
-                                        loc.getX(),
-                                        loc.getY(),
-                                        loc.getZ()
+                                        loc.x(),
+                                        loc.y(),
+                                        loc.z()
                                     );
                                     if (location != null) nPlayer.spawnParticle(
                                         Particle.BLOCK_MARKER,

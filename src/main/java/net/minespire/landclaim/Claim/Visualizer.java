@@ -79,10 +79,10 @@ public class Visualizer {
 
     public static int[][] getRegionSlice(BlockVector3 maxPoint, BlockVector3 minPoint) {
         int x1, x2, z1, z2, length, width, surfaceArea;
-        x1 = maxPoint.getX();
-        z1 = maxPoint.getZ();
-        x2 = minPoint.getX();
-        z2 = minPoint.getZ();
+        x1 = maxPoint.x();
+        z1 = maxPoint.z();
+        x2 = minPoint.x();
+        z2 = minPoint.z();
         length = x1 - x2;
         width = z1 - z2;
         surfaceArea = length * width;
@@ -98,12 +98,12 @@ public class Visualizer {
 
     public static int[][] getRegionPerimeters(BlockVector3 maxPoint, BlockVector3 minPoint) {
         int x1, x2, y1, y2, z1, z2, length, width, height, surfaceArea;
-        x1 = maxPoint.getX();
-        y1 = maxPoint.getY();
-        z1 = maxPoint.getZ();
-        x2 = minPoint.getX();
-        y2 = minPoint.getY();
-        z2 = minPoint.getZ();
+        x1 = maxPoint.x();
+        y1 = maxPoint.y();
+        z1 = maxPoint.z();
+        x2 = minPoint.x();
+        y2 = minPoint.y();
+        z2 = minPoint.z();
         length = x1 - x2;
         width = z1 - z2;
         height = y1 - y2;

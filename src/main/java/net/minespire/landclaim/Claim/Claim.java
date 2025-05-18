@@ -144,8 +144,8 @@ public class Claim {
 
         if (selection != null) {
             if (!isPlot) {
-                minPoint = BlockVector3.at(minPoint.getX(), (player.getWorld().getMaxY() + 1), minPoint.getZ());
-                maxPoint = BlockVector3.at(maxPoint.getX(), 0, maxPoint.getZ());
+                minPoint = BlockVector3.at(minPoint.x(), (player.getWorld().getMaxY() + 1), minPoint.z());
+                maxPoint = BlockVector3.at(maxPoint.x(), 0, maxPoint.z());
                 region = new ProtectedCuboidRegion(rgName, minPoint, maxPoint);
             } else region = new ProtectedCuboidRegion(rgName, minPoint, maxPoint);
         }
@@ -231,11 +231,11 @@ public class Claim {
     }
 
     private void calculateClaimArea() {
-        claimArea = (maxPoint.getX() - minPoint.getX() + 1) * (maxPoint.getZ() - minPoint.getZ() + 1);
+        claimArea = (maxPoint.x() - minPoint.x() + 1) * (maxPoint.z() - minPoint.z() + 1);
     }
 
     private void calculateClaimVolume() {
-        claimVolume = (maxPoint.getX() - minPoint.getX() + 1) * (maxPoint.getY() - minPoint.getY() + 1) * (maxPoint.getZ() - minPoint.getZ() + 1);
+        claimVolume = (maxPoint.x() - minPoint.x() + 1) * (maxPoint.y() - minPoint.y() + 1) * (maxPoint.z() - minPoint.z() + 1);
     }
 
     public int getClaimArea() {
@@ -247,29 +247,29 @@ public class Claim {
     }
 
     public int getClaimLength() {
-        int side1 = Math.abs(maxPoint.getX() - minPoint.getX() + 1);
-        int side2 = Math.abs(maxPoint.getZ() - minPoint.getZ() + 1);
+        int side1 = Math.abs(maxPoint.x() - minPoint.x() + 1);
+        int side2 = Math.abs(maxPoint.z() - minPoint.z() + 1);
         return side1 >= side2 ? side1 : side2;
     }
 
     public int getClaimWidth() {
-        int side1 = Math.abs(maxPoint.getX() - minPoint.getX() + 1);
-        int side2 = Math.abs(maxPoint.getZ() - minPoint.getZ() + 1);
+        int side1 = Math.abs(maxPoint.x() - minPoint.x() + 1);
+        int side2 = Math.abs(maxPoint.z() - minPoint.z() + 1);
         return side1 >= side2 ? side2 : side1;
     }
 
     public int getClaimHeight() {
-        return Math.abs(maxPoint.getY() - minPoint.getY() + 1);
+        return Math.abs(maxPoint.y() - minPoint.y() + 1);
     }
 
     public boolean insideOwnedRegion() {
         Collection<ProtectedRegion> regionCollection = rgManager.getRegions().values();
         for (ProtectedRegion rg : region.getIntersectingRegions(regionCollection)) {
             if (rg.getOwners().contains(player.getUniqueId())) {
-                if (rg.contains(minPoint.getX(), 30, minPoint.getZ()) &&
-                    rg.contains(minPoint.getX(), 30, maxPoint.getZ()) &&
-                    rg.contains(maxPoint.getX(), 30, minPoint.getZ()) &&
-                    rg.contains(maxPoint.getX(), 30, maxPoint.getZ())) {
+                if (rg.contains(minPoint.x(), 30, minPoint.z()) &&
+                    rg.contains(minPoint.x(), 30, maxPoint.z()) &&
+                    rg.contains(maxPoint.x(), 30, minPoint.z()) &&
+                    rg.contains(maxPoint.x(), 30, maxPoint.z())) {
                     return true;
                 }
             }
