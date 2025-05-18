@@ -158,8 +158,8 @@ public class Claim {
             if (!isPlot) {
                 minPoint = BlockVector3.at(minPoint.x(), (player.getWorld().getMaxY() + 1), minPoint.z());
                 maxPoint = BlockVector3.at(maxPoint.x(), -64, maxPoint.z());
-                region = new ProtectedCuboidRegion(rgName, minPoint, maxPoint);
-            } else region = new ProtectedCuboidRegion(rgName, minPoint, maxPoint);
+            }
+            region = new ProtectedCuboidRegion(rgName, minPoint, maxPoint);
         }
 
         for (final ProtectedRegion rg : regions.values()) {
@@ -202,8 +202,8 @@ public class Claim {
                 owners = region.getOwners();
                 return owners.getUniqueIds();
             }
-            return null;
-        } else return null;
+        }
+        return null;
     }
 
     public void setNewOwner() {

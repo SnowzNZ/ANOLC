@@ -471,7 +471,7 @@ public class MainCommand implements CommandExecutor {
             } else if (area > LandClaim.plugin.getConfig().getInt("Claims.Regions.MaxSize")) {
                 player.sendMessage(ChatColor.GOLD + "Your selection is too large!");
                 return false;
-            } else if (((double) length / width) > LandClaim.plugin.getConfig().getDouble("Claims.Regions.MaxLWRatio") || (width / length) > LandClaim.plugin.getConfig().getDouble(
+            } else if (((double) length / width) > LandClaim.plugin.getConfig().getDouble("Claims.Regions.MaxLWRatio") || ((double) width / length) > LandClaim.plugin.getConfig().getDouble(
                 "Claims.Regions.MaxLWRatio")) {
                 player.sendMessage(ChatColor.GOLD + "Your selection doesn't meet proportion requirements!");
                 return false;
