@@ -53,8 +53,8 @@ public class CommandCompleter implements TabCompleter {
         } else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("inspect")) {
             if (!(sender instanceof Player)) return BLANKLIST;
             List<String> rgNames = new ArrayList<>();
-            Claim.getClaimListOwner((Player) sender, false).forEach(region -> rgNames.add(region));
-            Claim.getClaimListOwner((Player) sender, true).forEach(region -> rgNames.add(region));
+            rgNames.addAll(Claim.getClaimListOwner((Player) sender, false));
+            rgNames.addAll(Claim.getClaimListOwner((Player) sender, true));
             if (args.length == 2) return rgNames;
             else return BLANKLIST;
         } else if (args[0].equalsIgnoreCase("teleport")) {

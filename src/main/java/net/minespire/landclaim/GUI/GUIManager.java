@@ -495,7 +495,7 @@ public class GUIManager {
             StringBuilder stringBuilder = new StringBuilder(50);
             for (String token : flagTextTokens) {
                 countLineLength += token.length() + 1;
-                stringBuilder.append(token + " ");
+                stringBuilder.append(token).append(" ");
                 if (countLineLength > 28) {
                     currentFlagText.add(stringBuilder.toString());
                     stringBuilder.setLength(0);
