@@ -2,7 +2,7 @@ Version: 1.1 # Do not change this
 
 Claims:
   Regions:
-    MinSize: 500           # In square blocks (lenth x width).
+    MinSize: 500           # In square blocks (length x width).
     MaxSize: 10000
     MaxLWRatio: 4          # This determines the maximum ratio of the longest side to the shortest. Example 400 blocks x 100 blocks = 4. This prevents regions that are too long and narrow.
     PricePerBlock: 1.5     # Area x PricePerBlock = RegionCost
