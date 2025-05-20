@@ -1,7 +1,7 @@
-package net.minespire.landclaim.gui;
+package dev.snowz.anolc.gui;
 
-import net.minespire.landclaim.LandClaim;
-import net.minespire.landclaim.claim.Claim;
+import dev.snowz.anolc.ANOLC;
+import dev.snowz.anolc.claim.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -12,7 +12,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public class GUI {
+public final class GUI {
+
     private Inventory inventory;
     private Player player;
     private final int guiSlots;
@@ -20,20 +21,16 @@ public class GUI {
     private final List<GUIItem> guiItems;
     public static List<String> inventoryNames = new ArrayList<>();
 
-
     public GUI(final int guiSlots) {
         final int slotCountModifier = guiSlots % 9;
         if (slotCountModifier != 0) {
             this.guiSlots = (9 - slotCountModifier) + guiSlots;
         } else this.guiSlots = guiSlots;
-        //playerMenus.put("list", null);
-        //playerMenus.put("listByCategory", null);
-        //playerMenus.put("editClaim", null);
         guiItems = new ArrayList<>();
     }
 
     public GUI() {
-        this(LandClaim.plugin.getConfig().getInt("GUI.Slots"));
+        this(ANOLC.getInstance().getConfig().getInt("GUI.Slots"));
     }
 
     public int getNumSlots() {
@@ -69,7 +66,7 @@ public class GUI {
     private void createFillerItems() {
         final int slotsToFill = this.getNumSlots() - this.getNumGUIItems();
         for (int x = 0; x < slotsToFill; x++) {
-            this.addGUIItem(this.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString(
+            this.addGUIItem(new GUIItem(Material.getMaterial(ANOLC.getInstance().getConfig().getString(
                 "GUI.FillerItem"))).setDisplayName(" ").setMeta());
         }
     }
@@ -79,7 +76,7 @@ public class GUI {
             final GUI gui = new GUI(27);
             gui.setPlayer(Bukkit.getPlayer(playerName));
             gui.setInventory("Region Removal");
-            final GUIItem button = gui.new GUIItem(Material.getMaterial(LandClaim.plugin.getConfig().getString(
+            final GUIItem button = new GUIItem(Material.getMaterial(ANOLC.getInstance().getConfig().getString(
                 "GUI.RemoveClaimButton.Material")));
             button.setDisplayName("Remove " + Claim.awaitingRemovalConfirmation.get(playerName).getId() + "?");
             button.setLore(ChatColor.RED + "Warning:" + ChatColor.WHITE + " This cannot be undone");
@@ -107,7 +104,7 @@ public class GUI {
         }
     }
 
-    public class GUIItem {
+    public static final class GUIItem {
         private final ItemStack item;
         private final ItemMeta guiItemMeta;
         private final String displayName;
@@ -167,7 +164,5 @@ public class GUI {
             playerGUIList.add(gui);
             GUI.playersGUIMap.put(player.getUniqueId().toString(), playerGUIList);
         }
-
     }
-
 }

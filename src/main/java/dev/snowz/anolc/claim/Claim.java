@@ -1,4 +1,4 @@
-package net.minespire.landclaim.claim;
+package dev.snowz.anolc.claim;
 
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.LocalSession;
@@ -16,26 +16,32 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import net.minespire.landclaim.LandClaim;
-import net.minespire.landclaim.gui.GUIManager;
+import dev.snowz.anolc.ANOLC;
+import dev.snowz.anolc.gui.GUIManager;
+import lombok.Getter;
 import org.bukkit.*;
 
 import java.util.*;
 
-public class Claim {
+public final class Claim {
 
     private ProtectedRegion region;
     private BlockVector3 minPoint;
     private BlockVector3 maxPoint;
     private final Player player;
+    @Getter
     private World world;
     public static List<org.bukkit.World> worlds = Bukkit.getWorlds();
     private RegionManager rgManager;
     private final String rgName;
     private final org.bukkit.entity.Player bukkitPlayer;
+    @Getter
     private double claimCost;
+    @Getter
     private int claimArea;
+    @Getter
     private int claimVolume;
+    @Getter
     private boolean isPlot = false;
     private final boolean regionAlreadyExists = false;
     public static Map<String, List<String>> playerClaimsMap = new HashMap<>();
@@ -54,26 +60,14 @@ public class Claim {
         this.isPlot = isPlot;
     }
 
-    public Claim(final org.bukkit.entity.Player player, final String rgName, final String worldName) {
-        this.player = BukkitAdapter.adapt(player);
-        this.bukkitPlayer = player;
-        this.rgName = rgName;
-        this.world = BukkitAdapter.adapt(Bukkit.getWorld(worldName));
-    }
-
     public static void teleportToClaim(
         final org.bukkit.entity.Player player,
-        final String regionName,
-        final String worldName
+        final String regionName
     ) {
-        final org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
-        if (bukkitWorld == null) {
-            player.sendMessage(GUIManager.colorize("&6That world does not exist."));
-            return;
-        }
+        final org.bukkit.World bukkitWorld = player.getWorld();
         final World world = BukkitAdapter.adapt(bukkitWorld);
 
-        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
         final ProtectedRegion region = rgManager.getRegion(regionName);
         if (region == null) {
             player.sendMessage(GUIManager.colorize("&6That region does not exist."));
@@ -94,15 +88,14 @@ public class Claim {
 
     public static void setClaimTeleport(
         final org.bukkit.entity.Player player,
-        final String regionName,
-        final String worldName
+        final String regionName
     ) {
-        if (!player.getWorld().getName().equals(worldName)) {
+        if (!player.getWorld().getName().equals(player.getWorld().getName())) {
             player.sendMessage(ChatColor.GOLD + "You must be standing inside the claim to set a teleport.");
             return;
         }
-        final World world = BukkitAdapter.adapt(Bukkit.getWorld(worldName));
-        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final World world = BukkitAdapter.adapt(player.getWorld());
+        final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
         final ProtectedRegion region = rgManager.getRegion(regionName);
         final Location loc = player.getLocation();
         if (region.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
@@ -114,16 +107,11 @@ public class Claim {
 
     public static void removeClaimTeleport(
         final org.bukkit.entity.Player player,
-        final String regionName,
-        final String worldName
+        final String regionName
     ) {
-        final org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
-        if (bukkitWorld == null) {
-            player.sendMessage("That world does not exist.");
-            return;
-        }
-        final World world = BukkitAdapter.adapt(Bukkit.getWorld(worldName));
-        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final org.bukkit.World bukkitWorld = player.getWorld();
+        final World world = BukkitAdapter.adapt(bukkitWorld);
+        final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
         final ProtectedRegion region = rgManager.getRegion(regionName);
         if (region.getFlag(Flags.TELE_LOC) == null) {
             player.sendMessage(ChatColor.GOLD + "There was no teleport set for this claim.");
@@ -136,7 +124,7 @@ public class Claim {
 
     public boolean createClaim() {
         world = this.player.getWorld();
-        rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
 
         if (rgManager == null) return false;
         final Map<String, ProtectedRegion> regions = rgManager.getRegions();
@@ -154,13 +142,11 @@ public class Claim {
         minPoint = selection.getMinimumPoint();
         maxPoint = selection.getMaximumPoint();
 
-        if (selection != null) {
-            if (!isPlot) {
-                minPoint = BlockVector3.at(minPoint.x(), (player.getWorld().getMaxY() + 1), minPoint.z());
-                maxPoint = BlockVector3.at(maxPoint.x(), -64, maxPoint.z());
-            }
-            region = new ProtectedCuboidRegion(rgName, minPoint, maxPoint);
+        if (!isPlot) {
+            minPoint = BlockVector3.at(minPoint.x(), (player.getWorld().getMaxY() + 1), minPoint.z());
+            maxPoint = BlockVector3.at(maxPoint.x(), -64, maxPoint.z());
         }
+        region = new ProtectedCuboidRegion(rgName, minPoint, maxPoint);
 
         for (final ProtectedRegion rg : regions.values()) {
             if (rg.getId().equals(region.getId())) {
@@ -169,8 +155,8 @@ public class Claim {
             }
         }
 
-        if (!isPlot) region.setFlag(LandClaim.LandClaimRegionFlag, "region");
-        else region.setFlag(LandClaim.LandClaimRegionFlag, "plot");
+        if (!isPlot) region.setFlag(ANOLC.LAND_CLAIM_REGION_FLAG, "region");
+        else region.setFlag(ANOLC.LAND_CLAIM_REGION_FLAG, "plot");
 
         calculateClaimArea();
         calculateClaimCost();
@@ -190,10 +176,9 @@ public class Claim {
         rgManager.removeRegion(rgName);
     }
 
-    public static Set<UUID> getRegionOwners(final String regionName, final String worldName) {
+    public static Set<UUID> getRegionOwners(final org.bukkit.entity.Player player, final String regionName) {
         final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        final org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
-        if (bukkitWorld == null) return null;
+        final org.bukkit.World bukkitWorld = player.getWorld();
         final RegionManager regions = container.get(BukkitAdapter.adapt(bukkitWorld));
         if (regions != null) {
             final ProtectedRegion region = regions.getRegion(regionName);
@@ -236,10 +221,10 @@ public class Claim {
     private void calculateClaimCost() {
         if (isPlot) {
             calculateClaimVolume();
-            final double tmpCost = LandClaim.plugin.getConfig().getDouble("Claims.Plots.PricePerBlock") * claimVolume;
-            final double baseCost = LandClaim.plugin.getConfig().getDouble("Claims.Plots.BaseCost");
+            final double tmpCost = ANOLC.getInstance().getConfig().getDouble("Claims.Plots.PricePerBlock") * claimVolume;
+            final double baseCost = ANOLC.getInstance().getConfig().getDouble("Claims.Plots.BaseCost");
             claimCost = Math.max(tmpCost, baseCost);
-        } else claimCost = claimArea * LandClaim.plugin.getConfig().getDouble("Claims.Regions.PricePerBlock");
+        } else claimCost = claimArea * ANOLC.getInstance().getConfig().getDouble("Claims.Regions.PricePerBlock");
     }
 
     private void calculateClaimArea() {
@@ -248,14 +233,6 @@ public class Claim {
 
     private void calculateClaimVolume() {
         claimVolume = (maxPoint.x() - minPoint.x() + 1) * (maxPoint.y() - minPoint.y() + 1) * (maxPoint.z() - minPoint.z() + 1);
-    }
-
-    public int getClaimArea() {
-        return claimArea;
-    }
-
-    public int getClaimVolume() {
-        return claimVolume;
     }
 
     public int getClaimLength() {
@@ -289,14 +266,15 @@ public class Claim {
         return false;
     }
 
-    public static boolean regionIsPlot(final org.bukkit.World bukkitWorld, final String regionName) {
+    public static boolean regionIsPlot(final org.bukkit.entity.Player player, final String regionName) {
+        final org.bukkit.World bukkitWorld = player.getWorld();
         final World world = BukkitAdapter.adapt(bukkitWorld);
-        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
         final Collection<ProtectedRegion> regionCollection = rgManager.getRegions().values();
         for (final ProtectedRegion rg : regionCollection) {
             if (rg.getId().equals(regionName)) {
-                if (rg.getFlag(LandClaim.LandClaimRegionFlag) != null) {
-                    if (rg.getFlag(LandClaim.LandClaimRegionFlag).equals("plot")) return true;
+                if (rg.getFlag(ANOLC.LAND_CLAIM_REGION_FLAG) != null) {
+                    if (rg.getFlag(ANOLC.LAND_CLAIM_REGION_FLAG).equals("plot")) return true;
                 } else return false;
 
             }
@@ -306,13 +284,11 @@ public class Claim {
 
     public static String playerIsOwnerOrMember(
         final org.bukkit.entity.Player player,
-        final String regionName,
-        final String worldName
+        final String regionName
     ) {
-        final org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
-        if (bukkitWorld == null) return null;
+        final org.bukkit.World bukkitWorld = player.getWorld();
         final World world = BukkitAdapter.adapt(bukkitWorld);
-        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
         final ProtectedRegion region = rgManager.getRegion(regionName);
         if (region == null) return null;
         if (region.getOwners().contains(player.getUniqueId())) return "Owner";
@@ -320,17 +296,16 @@ public class Claim {
         return null;
     }
 
-    public static boolean exists(final String regionName, final String worldName) {
-        final org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
-        if (bukkitWorld == null) return false;
+    public static boolean exists(final org.bukkit.entity.Player player, final String regionName) {
+        final org.bukkit.World bukkitWorld = player.getWorld();
         final World world = BukkitAdapter.adapt(bukkitWorld);
-        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
         return rgManager.getRegion(regionName) != null;
     }
 
     public static void removeRegion(final org.bukkit.entity.Player player) {
         final World world = BukkitAdapter.adapt(player.getWorld());
-        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
         final String regionName = Claim.awaitingRemovalConfirmation.get(player.getName()).getId();
         rgManager.removeRegion(regionName);
         player.sendMessage(ChatColor.GOLD + "You removed claim " + ChatColor.DARK_PURPLE + regionName);
@@ -338,16 +313,11 @@ public class Claim {
 
     public static void removeRegion(
         final org.bukkit.entity.Player player,
-        final String regionName,
-        final String worldName
+        final String regionName
     ) {
-        final org.bukkit.World bukkitWorld = Bukkit.getWorld(worldName);
-        if (bukkitWorld == null) {
-            player.sendMessage(ChatColor.GOLD + "That world does not exist.");
-            return;
-        }
+        final org.bukkit.World bukkitWorld = player.getWorld();
         final World world = BukkitAdapter.adapt(bukkitWorld);
-        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
         rgManager.removeRegion(regionName);
         player.sendMessage(ChatColor.GOLD + "You removed claim " + ChatColor.DARK_PURPLE + regionName);
     }
@@ -369,20 +339,20 @@ public class Claim {
 
         for (final org.bukkit.World bukkitWorld : worlds) {
             final World world = BukkitAdapter.adapt(bukkitWorld);
-            final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+            final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
             final Collection<ProtectedRegion> regionCollection = rgManager.getRegions().values();
 
             for (final ProtectedRegion rg : regionCollection) {
                 if (rg.getOwners().contains(player.getUniqueId())) {
                     if (getPlots) {
-                        if (rg.getFlag(LandClaim.LandClaimRegionFlag) != null) {
-                            if (rg.getFlag(LandClaim.LandClaimRegionFlag).equals("plot"))
-                                claimPlotList.add(rg.getId() + "," + bukkitWorld.getName());
+                        if (rg.getFlag(ANOLC.LAND_CLAIM_REGION_FLAG) != null) {
+                            if (rg.getFlag(ANOLC.LAND_CLAIM_REGION_FLAG).equals("plot"))
+                                claimPlotList.add(rg.getId());
                         }
                     } else {
-                        if (rg.getFlag(LandClaim.LandClaimRegionFlag) != null) {
-                            if (rg.getFlag(LandClaim.LandClaimRegionFlag).equals("region"))
-                                claimRegionList.add(rg.getId() + "," + bukkitWorld.getName());
+                        if (rg.getFlag(ANOLC.LAND_CLAIM_REGION_FLAG) != null) {
+                            if (rg.getFlag(ANOLC.LAND_CLAIM_REGION_FLAG).equals("region"))
+                                claimRegionList.add(rg.getId());
                         }
                     }
                 }
@@ -398,20 +368,20 @@ public class Claim {
 
         for (final org.bukkit.World bukkitWorld : worlds) {
             final World world = BukkitAdapter.adapt(bukkitWorld);
-            final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+            final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
             final Collection<ProtectedRegion> regionCollection = rgManager.getRegions().values();
 
             for (final ProtectedRegion rg : regionCollection) {
                 if (rg.getMembers().contains(player.getUniqueId())) {
                     if (getPlots) {
-                        if (rg.getFlag(LandClaim.LandClaimRegionFlag) != null) {
-                            if (rg.getFlag(LandClaim.LandClaimRegionFlag).equals("plot"))
-                                claimPlotList.add(rg.getId() + "," + bukkitWorld.getName());
+                        if (rg.getFlag(ANOLC.LAND_CLAIM_REGION_FLAG) != null) {
+                            if (rg.getFlag(ANOLC.LAND_CLAIM_REGION_FLAG).equals("plot"))
+                                claimPlotList.add(rg.getId());
                         }
                     } else {
-                        if (rg.getFlag(LandClaim.LandClaimRegionFlag) != null) {
-                            if (rg.getFlag(LandClaim.LandClaimRegionFlag).equals("region"))
-                                claimRegionList.add(rg.getId() + "," + bukkitWorld.getName());
+                        if (rg.getFlag(ANOLC.LAND_CLAIM_REGION_FLAG) != null) {
+                            if (rg.getFlag(ANOLC.LAND_CLAIM_REGION_FLAG).equals("region"))
+                                claimRegionList.add(rg.getId());
                         }
                     }
                 }
@@ -419,10 +389,6 @@ public class Claim {
         }
         if (getPlots) return claimPlotList;
         else return claimRegionList;
-    }
-
-    public double getClaimCost() {
-        return claimCost;
     }
 
     public String getPlayerName() {
@@ -437,29 +403,19 @@ public class Claim {
         return regionAlreadyExists;
     }
 
-    public World getWorld() {
-        return world;
-    }
-
     public void setClaimAsPlot() {
         this.isPlot = true;
-    }
-
-    public boolean isPlot() {
-        return isPlot;
     }
 
     public static void saveClaimToPlayerMap(final org.bukkit.entity.Player player, final String claim) {
         final List<String> playerClaimList;
         if (!playerClaimsMap.containsKey(player.getUniqueId().toString())) {
             playerClaimList = new ArrayList<>();
-            playerClaimList.add(claim);
-            playerClaimsMap.put(player.getUniqueId().toString(), playerClaimList);
         } else {
             playerClaimList = playerClaimsMap.get(player.getUniqueId().toString());
-            playerClaimList.add(claim);
-            playerClaimsMap.put(player.getUniqueId().toString(), playerClaimList);
         }
+        playerClaimList.add(claim);
+        playerClaimsMap.put(player.getUniqueId().toString(), playerClaimList);
     }
 
     public static boolean addOwner(
@@ -501,9 +457,8 @@ public class Claim {
         final UUID uuid = UUID.fromString(personToRemoveUUID);
         if (checkIfOwner.hasPermission("landclaim.edit.others") || region.getOwners().contains(checkIfOwner.getUniqueId())) {
             final OfflinePlayer playerToRemove = Bukkit.getOfflinePlayer(uuid);
-            if (playerToRemove != null) regionMembers.removePlayer(WorldGuardPlugin.inst().wrapOfflinePlayer(
+            regionMembers.removePlayer(WorldGuardPlugin.inst().wrapOfflinePlayer(
                 playerToRemove));
-            else return false;
             region.setMembers(regionMembers);
             return true;
         } else {
@@ -522,9 +477,8 @@ public class Claim {
         if (region.getOwners().contains(checkIfOwner.getUniqueId()) || checkIfOwner.hasPermission(
             "landclaim.edit.others")) {
             final OfflinePlayer playerToRemove = Bukkit.getOfflinePlayer(uuid);
-            if (playerToRemove != null) regionOwners.removePlayer(WorldGuardPlugin.inst().wrapOfflinePlayer(
+            regionOwners.removePlayer(WorldGuardPlugin.inst().wrapOfflinePlayer(
                 playerToRemove));
-            else return false;
             region.setOwners(regionOwners);
             return true;
         } else {
@@ -535,12 +489,10 @@ public class Claim {
 
     public static ProtectedRegion getRegion(
         final org.bukkit.entity.Player player,
-        final String regionName,
-        final String worldName
+        final String regionName
     ) {
-        final World world = BukkitAdapter.adapt(Bukkit.getWorld(worldName));
-        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final World world = BukkitAdapter.adapt(player.getWorld());
+        final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
         return rgManager.getRegion(regionName);
     }
-
 }

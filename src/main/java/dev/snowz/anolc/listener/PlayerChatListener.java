@@ -1,8 +1,8 @@
-package net.minespire.landclaim.listener;
+package dev.snowz.anolc.listener;
 
-import net.minespire.landclaim.claim.Claim;
-import net.minespire.landclaim.gui.GUIManager;
-import net.minespire.landclaim.prompt.Prompt;
+import dev.snowz.anolc.claim.Claim;
+import dev.snowz.anolc.gui.GUIManager;
+import dev.snowz.anolc.prompt.Prompt;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class PlayerChatListener implements Listener {
+public final class PlayerChatListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     private void onAnswerPrompt(final AsyncPlayerChatEvent chatEvent) {
@@ -39,6 +39,5 @@ public class PlayerChatListener implements Listener {
             prompt.getRegion().setFlag(GUIManager.editableClaimFlags.get(prompt.getPromptType()), prompt.getAnswer());
             player.sendMessage(ChatColor.GOLD + "The new value for '" + prompt.getPromptType() + "' was set on " + ChatColor.AQUA + prompt.getRegion().getId());
         }
-
     }
 }

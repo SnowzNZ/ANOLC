@@ -1,6 +1,6 @@
-package net.minespire.landclaim.gui;
+package dev.snowz.anolc.gui;
 
-import net.minespire.landclaim.listener.GUIClickListener;
+import dev.snowz.anolc.listener.GUIClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.List;
 
-public class NGUI {
+public final class NGUI {
 
     private final Inventory inventory;
     private final int size;
@@ -35,5 +35,4 @@ public class NGUI {
     public int size() {
         return size;
     }
-
 }

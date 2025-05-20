@@ -1,11 +1,11 @@
-package net.minespire.landclaim.claim;
+package dev.snowz.anolc.claim;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
-import net.minespire.landclaim.LandClaim;
+import dev.snowz.anolc.ANOLC;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,8 +17,7 @@ import java.util.Queue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Visualizer {
-
+public final class Visualizer {
 
     public static Map<String, Queue<BlockVector3>> playerParticleCoords = new HashMap<>(50);
     public static Map<String, Integer> seeNearbyBukkitTask = new HashMap<>();
@@ -30,7 +29,7 @@ public class Visualizer {
         final Location playerLoc = player.getLocation();
         final org.bukkit.World bukkitWorld = player.getWorld();
         final World world = BukkitAdapter.adapt(bukkitWorld);
-        final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
+        final RegionManager rgManager = ANOLC.getWg().getPlatform().getRegionContainer().get(world);
         final int playerX;
         final int playerY;
         final int playerZ;
@@ -66,8 +65,6 @@ public class Visualizer {
             }
             particleCoords.addAll(regionPerimeterCoords);
         });
-
-
     }
 
     public static double getDistance(final int[] point1, final int[] point2) {

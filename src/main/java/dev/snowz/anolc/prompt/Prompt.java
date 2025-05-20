@@ -1,7 +1,9 @@
-package net.minespire.landclaim.prompt;
+package dev.snowz.anolc.prompt;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import net.minespire.landclaim.LandClaim;
+import dev.snowz.anolc.ANOLC;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,14 +13,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Prompt {
+public final class Prompt {
 
     private final Player player;
     private int serviceTaskID;
+    @Setter
+    @Getter
     private String answer;
     private final String promptMessage;
     private int ticksPassed = 1;
+    @Getter
     private final String promptType; //ADDMEMBER, ADDOWNER, [flagname key fom GUIManager.editableClaimFlags]
+    @Getter
     private final ProtectedRegion region;
     private static final Set<String> playersWithPrompts = new HashSet<>();
     private static final Map<String, Prompt> playerPrompts = new HashMap<>();
@@ -35,7 +41,7 @@ public class Prompt {
         answer = null;
         playersWithPrompts.add(player.getName());
         serviceTaskID = Bukkit.getScheduler().runTaskTimer(
-            LandClaim.plugin, () -> {
+            ANOLC.getInstance(), () -> {
                 ticksPassed += 5;
                 if (ticksPassed == 200 - 60 + 1) player.sendMessage(ChatColor.RED + "Prompt expires in..");
                 if (ticksPassed == 200 - 60 + 1) player.sendMessage(ChatColor.RED + "3");
@@ -67,10 +73,6 @@ public class Prompt {
         }
     }
 
-    public void setAnswer(final String answer) {
-        this.answer = answer;
-    }
-
     public void cancelPrompt() {
         Bukkit.getScheduler().cancelTask(serviceTaskID);
         playersWithPrompts.remove(player.getName());
@@ -84,17 +86,5 @@ public class Prompt {
 
     public static Prompt getPrompt(final String playerName) {
         return playerPrompts.get(playerName);
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public String getPromptType() {
-        return promptType;
-    }
-
-    public ProtectedRegion getRegion() {
-        return region;
     }
 }

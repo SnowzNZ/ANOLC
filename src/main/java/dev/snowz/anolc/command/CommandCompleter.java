@@ -1,6 +1,6 @@
-package net.minespire.landclaim.command;
+package dev.snowz.anolc.command;
 
-import net.minespire.landclaim.claim.Claim;
+import dev.snowz.anolc.claim.Claim;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandCompleter implements TabCompleter {
+public final class CommandCompleter implements TabCompleter {
 
     private static final List<String> COMMANDS = new ArrayList<>();
     private static final List<String> REGIONNAME = new ArrayList<>();
@@ -23,14 +23,11 @@ public class CommandCompleter implements TabCompleter {
         COMMANDS.add("claim");
         COMMANDS.add("claimplot");
         COMMANDS.add("gui");
-        COMMANDS.add("world");
         COMMANDS.add("inspect");
         COMMANDS.add("list");
         COMMANDS.add("nearby");
         COMMANDS.add("reload");
-        COMMANDS.add("recountvotes");
         COMMANDS.add("teleport");
-        COMMANDS.add("vote");
         COMMANDS.add("delete");
 
         REGIONNAME.add("[RegionName]");
@@ -63,7 +60,7 @@ public class CommandCompleter implements TabCompleter {
             rgNames.addAll(Claim.getClaimListOwner((Player) sender, true));
             if (args.length == 2) return rgNames;
             else return BLANKLIST;
-        } else if (args[0].equalsIgnoreCase("teleport")) {
+        } else if (args[0].equalsIgnoreCase("teleport")) { // TODO: only show claims in the same world
             if (!(sender instanceof Player)) return BLANKLIST;
             final List<String> rgNames = new ArrayList<>();
             rgNames.addAll(Claim.getClaimListOwner((Player) sender, false));
@@ -72,7 +69,5 @@ public class CommandCompleter implements TabCompleter {
             rgNames.addAll(Claim.getClaimListMember((Player) sender, true));
             return rgNames;
         } else return BLANKLIST;
-
     }
-
 }

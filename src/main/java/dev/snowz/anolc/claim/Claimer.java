@@ -1,4 +1,4 @@
-package net.minespire.landclaim.claim;
+package dev.snowz.anolc.claim;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Claimer {
-
+public final class Claimer {
 
     public static boolean permToOwnAnotherRegion(final Player player) {
         if (player.hasPermission("landclaim.claimregion")) {
@@ -18,7 +17,6 @@ public class Claimer {
             final int numRegionsAllowed = getNumAllowedRegions(player);
             return Claim.getClaimListOwner(player, false).size() < numRegionsAllowed;
         } else return false;
-
     }
 
     public static int getNumAllowedRegions(final Player player) {
@@ -33,7 +31,6 @@ public class Claimer {
         }
         return numRegionsAllowed;
     }
-
 
     public static boolean permToOwnAnotherPlot(final Player player) {
         if (player.hasPermission("landclaim.claimplot")) {

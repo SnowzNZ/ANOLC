@@ -1,8 +1,8 @@
 name: ANOLC
-main: net.minespire.landclaim.LandClaim
+main: dev.snowz.anolc.ANOLC
 version: '${project.version}'
 authors: [ BradBouquio, Snowz ]
-depend: [ Vault, WorldGuard, WorldEdit ]
+depend: [ WorldEdit, WorldGuard ]
 api-version: 1.21
 permissions:
   landclaim.world.*:
