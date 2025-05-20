@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "net.minespire.landclaim"
-version = "2.0.5"
+version = "2.0.6"
 
 repositories {
     mavenCentral()
