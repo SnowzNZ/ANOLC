@@ -76,8 +76,8 @@ public class GUIManager {
         claimLimitsGUI.addItem(Material.ARROW, ChatColor.GOLD + "Back", null, 31);
         claimLimitsGUI.addItem(Material.BIRCH_DOOR, ChatColor.GOLD + "Close", null, 33);
         final int numOwnedRegions;
-        int numOwnedPlots;
-        int numAllowedRegions;
+        final int numOwnedPlots;
+        final int numAllowedRegions;
         final int numAllowedPlots;
         numOwnedRegions = Claim.getClaimListOwner(player, false).size();
         numOwnedPlots = Claim.getClaimListOwner(player, true).size();

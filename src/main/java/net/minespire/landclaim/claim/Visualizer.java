@@ -32,7 +32,7 @@ public class Visualizer {
         final World world = BukkitAdapter.adapt(bukkitWorld);
         final RegionManager rgManager = LandClaim.wg.getPlatform().getRegionContainer().get(world);
         final int playerX;
-        int playerY;
+        final int playerY;
         final int playerZ;
         playerX = playerLoc.getBlockX();
         playerY = playerLoc.getBlockY();
@@ -80,11 +80,11 @@ public class Visualizer {
 
     public static int[][] getRegionSlice(final BlockVector3 maxPoint, final BlockVector3 minPoint) {
         final int x1;
-        int x2;
-        int z1;
-        int z2;
-        int length;
-        int width;
+        final int x2;
+        final int z1;
+        final int z2;
+        final int length;
+        final int width;
         final int surfaceArea;
         x1 = maxPoint.x();
         z1 = maxPoint.z();
@@ -105,14 +105,14 @@ public class Visualizer {
 
     public static int[][] getRegionPerimeters(final BlockVector3 maxPoint, final BlockVector3 minPoint) {
         final int x1;
-        int x2;
-        int y1;
-        int y2;
-        int z1;
-        int z2;
-        int length;
-        int width;
-        int height;
+        final int x2;
+        final int y1;
+        final int y2;
+        final int z1;
+        final int z2;
+        final int length;
+        final int width;
+        final int height;
         final int surfaceArea;
         x1 = maxPoint.x();
         y1 = maxPoint.y();

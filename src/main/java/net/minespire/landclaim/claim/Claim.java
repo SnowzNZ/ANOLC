@@ -143,7 +143,7 @@ public class Claim {
 
         final LocalSession session = WorldEdit.getInstance().getSessionManager().get(player);
 
-        Region selection;
+        final Region selection;
         try {
             selection = session.getSelection(this.player.getWorld());
         } catch (final IncompleteRegionException e) {
