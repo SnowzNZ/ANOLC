@@ -27,7 +27,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GUIClick implements Listener {
+public class GUIClickListener implements Listener {
 
     public static Map<String, InventoryView> playerLCInventory = new HashMap<>();
 
@@ -468,7 +468,7 @@ public class GUIClick implements Listener {
     }
 
     public static boolean isLandClaimGui(final Player player) {
-        return player.getOpenInventory().equals(GUIClick.playerLCInventory.get(player.getUniqueId().toString()));
+        return player.getOpenInventory().equals(GUIClickListener.playerLCInventory.get(player.getUniqueId().toString()));
     }
 
 

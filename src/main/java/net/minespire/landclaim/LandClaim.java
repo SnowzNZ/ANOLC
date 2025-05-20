@@ -14,7 +14,8 @@ import net.minespire.landclaim.claim.VoteFile;
 import net.minespire.landclaim.claim.VoteRegion;
 import net.minespire.landclaim.command.CommandCompleter;
 import net.minespire.landclaim.command.MainCommand;
-import net.minespire.landclaim.listener.GUIClick;
+import net.minespire.landclaim.listener.BypassListener;
+import net.minespire.landclaim.listener.GUIClickListener;
 import net.minespire.landclaim.listener.PlayerChatListener;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -22,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LandClaim extends JavaPlugin {
@@ -52,9 +54,14 @@ public class LandClaim extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         this.loadConfiguration();
-        getServer().getPluginManager().registerEvents(new GUIClick(), this);
-        getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
-        //getServer().getPluginManager().registerEvents(new DeedListener(), this);
+
+        // Listeners
+        List.of(
+            new BypassListener(),
+            new GUIClickListener(),
+            new PlayerChatListener()
+        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
+
         this.getCommand("lc").setTabCompleter(new CommandCompleter());
         this.getCommand("lc").setExecutor(new MainCommand());
         we = WorldEdit.getInstance();
