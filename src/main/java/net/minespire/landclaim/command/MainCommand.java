@@ -56,11 +56,11 @@ public class MainCommand implements CommandExecutor {
                 case "claim":
                     if (player != null) {
                         if (args[1] == null) return false;
-                        if (!Claimer.permToOwnAnotherRegion(player) || !player.isOp()) {
+                        if (!Claimer.permToOwnAnotherRegion(player) && !player.isOp()) {
                             player.sendMessage(ChatColor.RED + "You don't have permission to claim or have claimed too many regions.");
                             return true;
                         }
-                        if (!Claimer.permissionToClaimInWorld(player) || !player.isOp()) {
+                        if (!Claimer.permissionToClaimInWorld(player) && !player.isOp()) {
                             player.sendMessage(ChatColor.RED + "You don't have permission to claim in this world.");
                             return true;
                         }
@@ -116,11 +116,11 @@ public class MainCommand implements CommandExecutor {
                 case "claimplot":
                     if (player != null) {
                         if (args[1] == null) return false;
-                        if (!Claimer.permToOwnAnotherPlot(player) || !player.isOp()) {
+                        if (!Claimer.permToOwnAnotherPlot(player) && !player.isOp()) {
                             player.sendMessage(ChatColor.RED + "You don't have permission to claim or have claimed too many plots.");
                             return true;
                         }
-                        if (!Claimer.permissionToClaimInWorld(player) || !player.isOp()) {
+                        if (!Claimer.permissionToClaimInWorld(player) && !player.isOp()) {
                             player.sendMessage(ChatColor.RED + "You don't have permission to claim in this world.");
                             return true;
                         }
@@ -175,7 +175,7 @@ public class MainCommand implements CommandExecutor {
                     } else sender.sendMessage("You must be a player to use that command!");
                     break;
                 case "reload":
-                    if ((sender instanceof Player) && !player.hasPermission("landclaim.reload") || !player.isOp()) {
+                    if ((sender instanceof Player) && !player.hasPermission("landclaim.reload") && !player.isOp()) {
                         sender.sendMessage(ChatColor.RED + "You don't have permission to do that!");
                         return true;
                     }
@@ -325,7 +325,7 @@ public class MainCommand implements CommandExecutor {
                     guiManager.openAllClaimsGUI(player);
                     break;
                 case "recountvotes":
-                    if (!player.hasPermission("landclaim.recountvotes") || !player.isOp()) {
+                    if (!player.hasPermission("landclaim.recountvotes") && !player.isOp()) {
                         sender.sendMessage(ChatColor.RED + "You don't have permission to do that!");
                         return true;
                     }
@@ -333,7 +333,7 @@ public class MainCommand implements CommandExecutor {
                     player.sendMessage(GUIManager.colorize("&6Recounted votes."));
                     break;
                 case "world":
-                    if (!player.hasPermission("landclaim.getworld") || !player.isOp()) {
+                    if (!player.hasPermission("landclaim.getworld") && !player.isOp()) {
                         sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
                         return true;
                     } else
@@ -344,7 +344,7 @@ public class MainCommand implements CommandExecutor {
                         sender.sendMessage("You must be a player to do that.");
                         return true;
                     }
-                    if (!player.hasPermission("landclaim.inspect.own") || !player.isOp()) {
+                    if (!player.hasPermission("landclaim.inspect.own") && !player.isOp()) {
                         sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
                         return true;
                     }
@@ -374,7 +374,7 @@ public class MainCommand implements CommandExecutor {
                         sender.sendMessage(ChatColor.GOLD + "You must be a player to do that.");
                         return true;
                     }
-                    if (!player.hasPermission("landclaim.vote") || !player.isOp()) {
+                    if (!player.hasPermission("landclaim.vote") && !player.isOp()) {
                         sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
                         return true;
                     }
