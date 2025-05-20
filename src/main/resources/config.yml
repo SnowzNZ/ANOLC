@@ -3,8 +3,4 @@ Claims:
     MinSize: 500                            # In square blocks (length x width).
     MaxSize: 10000
     MaxLWRatio: 4                           # This determines the maximum ratio of the longest side to the shortest. Example 400 blocks x 100 blocks = 4. This prevents regions that are too long and narrow.
-    PricePerBlock: 1.5                      # Area x PricePerBlock = RegionCost
     NearbyDisplayBlock: RED_STAINED_GLASS   # List of blocks: https://jd.papermc.io/paper/1.21.4/org/bukkit/Material.html
-  Plots:
-    PricePerBlock: 0.1                      # Volume x PricePerBlock = PlotCost
-    BaseCost: 500                           # The lowest price for a plot no matter how small.

@@ -409,11 +409,11 @@ public final class GUIClickListener implements Listener {
                 claim.saveClaim();
                 if (!claim.isPlot()) player.sendMessage(ChatColor.translateAlternateColorCodes(
                     '&',
-                    "&6You successfully claimed a region of land for &b$" + claim.getClaimCost() + "&6!"
+                    "&6You successfully claimed a region of land&6!"
                 ));
                 else if (claim.isPlot()) player.sendMessage(ChatColor.translateAlternateColorCodes(
                     '&',
-                    "&6You successfully claimed a plot of land for &b$" + claim.getClaimCost() + "&6!"
+                    "&6You successfully claimed a plot of land&6!"
                 ));
 
                 player.closeInventory();

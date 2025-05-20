@@ -36,8 +36,6 @@ public final class Claim {
     private final String rgName;
     private final org.bukkit.entity.Player bukkitPlayer;
     @Getter
-    private double claimCost;
-    @Getter
     private int claimArea;
     @Getter
     private int claimVolume;
@@ -159,7 +157,6 @@ public final class Claim {
         else region.setFlag(ANOLC.LAND_CLAIM_REGION_FLAG, "plot");
 
         calculateClaimArea();
-        calculateClaimCost();
         return true;
     }
 
@@ -216,15 +213,6 @@ public final class Claim {
 
         }
         return false;
-    }
-
-    private void calculateClaimCost() {
-        if (isPlot) {
-            calculateClaimVolume();
-            final double tmpCost = ANOLC.getInstance().getConfig().getDouble("Claims.Plots.PricePerBlock") * claimVolume;
-            final double baseCost = ANOLC.getInstance().getConfig().getDouble("Claims.Plots.BaseCost");
-            claimCost = Math.max(tmpCost, baseCost);
-        } else claimCost = claimArea * ANOLC.getInstance().getConfig().getDouble("Claims.Regions.PricePerBlock");
     }
 
     private void calculateClaimArea() {
@@ -323,7 +311,6 @@ public final class Claim {
     }
 
     public static String parsePlaceholders(String string, final Claim claim) {
-        string = string.replace("{RegionCost}", String.format("$%.2f", claim.getClaimCost()));
         string = string.replace("{RegionSize}", String.valueOf(claim.getClaimArea()));
         string = string.replace("{RegionName}", claim.getRegionName());
         string = string.replace("{PlayerName}", claim.getPlayerName());

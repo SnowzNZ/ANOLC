@@ -87,7 +87,7 @@ public final class MainCommand implements CommandExecutor {
                                 "&3Are You Sure You Want To Claim This Region?"
                             ),
                             guiManager.parseLoreString(Claim.parsePlaceholders(
-                                "&5Region Name: &f{RegionName}|&5Region Cost: &f{RegionCost}|&5Region Size: &f{RegionLength} x {RegionHeight} x {RegionWidth}|&aClick to confirm purchase.",
+                                "&5Region Name: &f{RegionName}|&5Region Size: &f{RegionLength} x {RegionHeight} x {RegionWidth}|&aClick to confirm claim.",
                                 claim
                             )),
                             13
@@ -134,7 +134,7 @@ public final class MainCommand implements CommandExecutor {
                             Material.DIRT,
                             ChatColor.translateAlternateColorCodes('&', "&3Are You Sure You Want To Claim This Plot?"),
                             guiManager.parseLoreString(Claim.parsePlaceholders(
-                                "&5Region Name: &f{RegionName}|&5Region Cost: &f{RegionCost}|&5Region Size: &f{RegionLength} x {RegionHeight} x {RegionWidth}|&aClick to confirm purchase.",
+                                "&5Region Name: &f{RegionName}|&5Region Size: &f{RegionLength} x {RegionHeight} x {RegionWidth}|&aClick to confirm claim.",
                                 claim
                             )),
                             13
